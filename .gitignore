@@ -1,3 +1,5 @@
-reports/proposal_v1/*.log
-reports/proposal_v1/*.aux
-reports/proposal_v1/*.pdf
+*.log
+*.aux
+*.pdf
+*.fdb_latexmk
+*.fls
