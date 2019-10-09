@@ -4,8 +4,8 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
-\title{Frequent-Collision Blockchains for Local Geographic Authentification}
-\author{Robinett, Ryan and Tiago Royer}
+\title{Frequent-Collision Blockchains for Local Geographic Authentication}
+\author{Ryan Robinett and Tiago Royer}
 \date{10 Oct 2019}
 \begin{document}
 
@@ -51,37 +51,53 @@ WE NEED TO DO THIS.
 WE NEED TO DO THIS.
 
 \section*{Milestones and Dates}
-We need to sit down after class on Thursday and write this out concretely. Right now, I am thinking the following tasks will be necessary:
+\subsection*{Project Outline:}
 \begin{itemize}
 	\item Minimally necessary:
 	\begin{itemize}
-		\item Write a Python class that will allow us to simulate blockchains with arbitrary settings. Settings include:
+		\item Write a Python class that will allow us to simulate
+			blockchains with arbitrary settings. Settings include:
 		\begin{itemize}
 			\item Protocol for initiating a handshake
 			\item Protocol for propogating handshake through network
 			\item Rate of block creation
 		\end{itemize}
-		\item Write a Python class that will allow us, given a simulated blockchain, to implement it (probabilistically) with various ``populations'' of geometrically dispersed users
+		\item Write a Python class that will allow us, given a simulated
+			blockchain, to implement it (probabilistically) with
+			various ``populations'' of geometrically dispersed users
 		\begin{itemize}
-			\item i.e. a person is a unique ID together, together with a location in $\mathbb{R}^2$.
-			\item interactions between persons A and B are a function of their distance (and possibly history of misbehavior...?)
+			\item i.e. a person is a unique ID together,
+				together with a location in $\mathbb{R}^2$.
+			\item interactions between persons A and B are
+				a function of their distance (and possibly
+				history of misbehavior...?)
 			\item Should we write in adversarial and negligent nodes?
 		\end{itemize}
-		\item Create strong mathematical statements about the behaviors of frequent-collision block chains, with applications to local geographic identification in mind. I imagine some of this will be led by our manipulation of variables on paper, and that the rest will be led by our empirical observations from the simulations.
-	\end{itemize}
-	\item If we do a real implementation (i.e. outside Python simulation):
-	\begin{itemize}
-		\item Implement blockchain (with fixed parameters) in something like ROS
-		\item Perform experiments with volunteers
-		\item Analyze and visualize data
+		\item Create strong mathematical statements about
+			the behaviors of frequent-collision block chains,
+			with applications to local geographic identification
+			in mind. I imagine some of this will be led by our
+			manipulation of variables on paper,
+			and that the rest will be led by our empirical
+			observations from the simulations.
 	\end{itemize}
 \end{itemize}
 
+\subsection*{Project Deadlines:}
+\begin{description}
+	\item[Oct 31st:] Have Python framework written for simulating different
+		blockchain protocols.
+	\item[Nov 19th:] Turn in first report; have protocol fully defined and
+		simulated.
+	\item[Dec 1st:] Prove robustness of protocol to first-order adversarial
+		attacks; prove that blockchain holds desired standing properties
+		consistently.
+	\item[Dec 10th:] Final report and analysis.
+\end{description}
+
 \section*{Requested Resources}
-\begin{itemize}
-	\item At worst, we might need some extra computing power to run some large stochastic simulations...?
-	\item If we wanted to, we could experiment with cheap wireless hardware and try to perform small-scale experiments.
-\end{itemize}
+At worst, we might need some extra computing power to run some large stochastic
+simulations. As long as we have access to this, we should be fine.
 
 \end{document}
 
