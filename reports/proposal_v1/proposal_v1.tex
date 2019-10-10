@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage[margin=1in]{geometry} % More room for text with small margins
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -69,10 +70,39 @@ the government could try to coerce the centralized node
 to censor or misrepresent data about the protester.
 Having a decentralized solution eliminates this possibility.
 
-\section*{Approach to the problem}
+\section*{Approach to the Problem}
+Blockchain networks behave as probablistic state machines, as no nodes in the
+network (i.e. no node within the graph corresponding to an individual state) has
+general knowledge of the rest of the network/state and must act probabilistically
+based on certain assumptions about the network\cite{saito_2016}. Despite this
+state machine construction, blockchain networks strive to mitigate the
+possibility of a network fork as much as possible. In the case of Bitcoin, this
+avoidance has been successful since the blockchain's inception\cite{decker_2013}.
+Bitcoin avoids forks and maintains a single long-term history of transactions
+(i.e. the longest path from the root node to the leaf on the longest branch), as
+well as controls the rate of growth of the blockchain, by carefully moderating
+the rate of block creation.
 
-The idea is to adapt the concept blockchain to allow for multiple concurrent chains,
-each of them representing a geographical location.
+While the Bitcoin network moderates block creation so as to create a single,
+decentralized ledger for all Bitcoin transactions for all of time, we seek to use
+the blockchain dynamics described in \cite{decker_2013} to create a
+blockchain-like decentralized ledger which records close-proximity peer-to-peer
+handshakes as transactions and which creates blocks of these transactions at such
+a rate as to force the network to fork into local networks. The intent is to
+create a decentralized ledger of peer-to-peer interactions that
+\begin{enumerate}
+	\item creates blocks and transactions at such an exacerbatory rate that
+		it is unfeasible for any node to cache a chain of blocks for
+		longer than a period of one or two days; and
+	\item creates blocks and transactions at such an exacerbatory rate that
+		users are incentivized to only cache blocks necessary to verify
+		handshakes they have made over the cache-life of a block.
+\end{enumerate}
+We believe that this will allow people to create a robust ledger, whose
+credibility is granted by mass consensus and mutual distrust, of their geographic
+over short periods of time, in such a way that makes long-term storage of these
+geographic data untenable by third parties while making sure short-term
+information about location is agreed upon by several nodes in the network.
 
 \section*{Milestones and Dates}
 \subsection*{Project Deliverables:}
