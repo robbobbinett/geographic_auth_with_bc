@@ -3,3 +3,7 @@
 *.pdf
 *.fdb_latexmk
 *.fls
+*.bbl
+*.blg
+*.run.xml
+*-blx.bib
