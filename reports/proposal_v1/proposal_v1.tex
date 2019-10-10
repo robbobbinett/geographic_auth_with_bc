@@ -18,7 +18,7 @@
 
 \section*{Problem}
 
-The goal is to have a descentralized network
+Have a decentralized network
 that can provide historical geographical authentication.
 Consider the following use cases.
 
@@ -27,7 +27,7 @@ Consider the following use cases.
 		Police argues the person was not even involved in the protest
 		and died for unrelated causes;
 		other protesters can use the network to contest police claims
-		and show that this specific protester was indeed involved in the protest.
+		and show that this specific protester was indeed present in the protest.
 
 	\item A person from a racial minority is being accused of committing a crime.
 		This person can use the network to show that the accusation
@@ -50,7 +50,7 @@ Consider the following use cases.
 
 \section*{Motivation}
 
-The problem of authenticating users based on gographical location
+The problem of authenticating users based on geographical location
 has been considered over 20 years ago~\cite{denning_1996}.
 Denning and MacDoran consider the problem of finding where an intruder is located,
 but we may also imagine geographically restricted broadcasts
@@ -71,7 +71,7 @@ to censor or misrepresent data about the protester.
 Having a decentralized solution eliminates this possibility.
 
 \section*{Approach to the Problem}
-Blockchain networks behave as probablistic state machines, as no nodes in the
+Blockchain networks behave as probabilistic state machines, as no nodes in the
 network (i.e. no node within the graph corresponding to an individual state) has
 general knowledge of the rest of the network/state and must act probabilistically
 based on certain assumptions about the network\cite{saito_2016}. Despite this
@@ -99,7 +99,7 @@ create a decentralized ledger of peer-to-peer interactions that
 		handshakes they have made over the cache-life of a block.
 \end{enumerate}
 We believe that this will allow people to create a robust ledger, whose
-credibility is granted by mass consensus and mutual distrust, of their geographic
+credibility is granted by mass consensus and mutual distrust, of their geographic location
 over short periods of time, in such a way that makes long-term storage of these
 geographic data untenable by third parties while making sure short-term
 information about location is agreed upon by several nodes in the network.
@@ -112,7 +112,7 @@ information about location is agreed upon by several nodes in the network.
 		Settings include:
 	\begin{itemize}
 		\item Protocol for initiating a handshake
-		\item Protocol for propogating handshake through network
+		\item Protocol for propagating handshake through network
 		\item Rate of block creation
 	\end{itemize}
 	\item Write a Python class that will allow us, given a simulated
