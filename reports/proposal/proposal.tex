@@ -1,12 +1,17 @@
 \documentclass{article}
-\usepackage[margin=1in]{geometry} % More room for text with small margins
+\usepackage[margin=1in]{geometry}
+
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+
 \usepackage[moderate]{savetrees}
-\usepackage[backend=bibtex,style=ieee,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
-\addbibresource{blockchain.bib} % The filename of the bibliography
+
+\usepackage[backend=bibtex,style=ieee,natbib=true]{biblatex}
+\addbibresource{blockchain.bib}
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
 \title{Frequent-Collision Blockchains for Local Geographic Authentication}
@@ -157,7 +162,6 @@ This is a tension between protocol resiliance and data preservation.
 At worst, we might need some extra computing power to run some large stochastic
 simulations. As long as we have access to this, we should be fine.
 
-\printbibliography[title={Bibliography}] % Print the bibliography, section title in curly brackets
+\printbibliography[title={Bibliography}]
 
 \end{document}
-
