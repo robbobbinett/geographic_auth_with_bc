@@ -16,11 +16,30 @@
 
 \maketitle
 
-\section*{Problem}
+\section*{Problem Motivation}
 
-Have a decentralized network
-that can provide historical geographical authentication.
-Consider the following use cases.
+The problem of authenticating users based on geographical location
+has been considered over 20 years ago~\cite{denning_1996}.
+Denning and MacDoran consider the problem of finding where an intruder is located,
+but we may also imagine geographically restricted broadcasts
+and restriction of content for legal reasons~\cite{gdpr}.
+
+Besides simple geographical authentication,
+there are situations in which historical data is useful,
+to prove someone was or was not present in a certain situation.
+This is most useful in case of conflicting information,
+as some of the use cases above outline.
+
+Centralized solutions create a single point of failure.
+Furthermore,
+the reliability of the data can be compromised;
+in the first example,
+the government could try to coerce the centralized node
+to censor or misrepresent data about the protester.
+Having a decentralized solution eliminates this possibility.
+
+
+\section*{Use Cases}
 
 \begin{itemize}
 	\item A protester is found dead in a location distant from where the protest happened.
@@ -48,27 +67,6 @@ Consider the following use cases.
 		in order to have access to this content.
 \end{itemize}
 
-\section*{Motivation}
-
-The problem of authenticating users based on geographical location
-has been considered over 20 years ago~\cite{denning_1996}.
-Denning and MacDoran consider the problem of finding where an intruder is located,
-but we may also imagine geographically restricted broadcasts
-and restriction of content for legal reasons~\cite{gdpr}.
-
-Besides simple geographical authentication,
-there are situations in which historical data is useful,
-to prove someone was or was not present in a certain situation.
-This is most useful in case of conflicting information,
-as some of the use cases above outline.
-
-Centralized solutions create a single point of failure.
-Furthermore,
-the reliability of the data can be compromised;
-in the first example,
-the government could try to coerce the centralized node
-to censor or misrepresent data about the protester.
-Having a decentralized solution eliminates this possibility.
 
 \section*{Approach to the Problem}
 Blockchain networks behave as probabilistic state machines, as no nodes in the
