@@ -1,5 +1,6 @@
-from random import choice
+from random import choice, sample
 from scipy.stats import bernoulli
+import numpy as np
 
 def default_drop(self):
 	to_drop = choice(self.neighbors)
@@ -40,6 +41,7 @@ class person_node:
 
 		if not isinstance(universe, set):
 			raise TypeError("universe must be of type set; currently of type "+str(type(universe))+".")
+		self.universe = universe
 
 		self.neighbors = set()
 
@@ -71,3 +73,26 @@ class person_node:
 		if not isinstance(other, person_node):
 			raise TypeError("other must be of type person_node; currently of type "+str(type(other))+".")
 		return self.name == other.name
+
+class universe_wrapper:
+	def __init__(self, universe, percentage_update_action=0.1):
+		if not isinstance(universe, set):
+			raise TypeError("universe should be of type set; currently of type "+str(type(universe))+".")
+		if not all(isinstance(item, person_node) for item in universe):
+			raise TypeError("All items in universe should be of type person_node. Currently, universe contains instances of the following types: "+", ".join(set([str(type(item)) for item in universe])))
+		self.universe = universe
+
+		if not isinstance(percentage_update_action, float):
+			raise TypeError("percentage_update_action should be of type float; currently of type "+str(type(percentage_update_action))+".")
+		self.percentage_update = percentage_update_action
+
+	def run_update(self):
+		to_update = sample(self.universe, np.floor(self.percentage_update*len(self.universe)))
+		for node in to_update:
+			node.update_action()
+
+def make_universe_of_nodes(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
+	universe = set()
+	for j in range(num_nodes):
+		universe.add(person_node("node_"+str(j), universe, add_behavior=add_behavior, drop_behavior=drop_behavior, pass_prob=pass_prob, get_add_prob=get_add_prob))
+	return universe_wrapper(universe)
