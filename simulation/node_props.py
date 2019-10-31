@@ -4,11 +4,23 @@ from scipy.sparse import csc_matrix
 import numpy as np
 
 def default_drop(self):
+	"""
+	The default drop method to be used by the person_node class, given
+	no other method is given. The idea is to drop a neighbor at random.
+	"""
 	to_drop = choice(self.neighbors)
 	self.remove(to_drop)
 	to_drop.remove(self)
 
 def default_add(self):
+	"""
+	The default add method to be used by the person_node class, given
+	no other method is given. The idea is, if the node has no neighbors,
+	to add a random node from the universe of nodes that is not self; if
+	the node does have neighbors, it attempts to add a random non-self
+	node with probability 0.2 and attempts to add a neighbor's neighbor
+	(that is not currently neighbor) with probability 0.8.
+	"""
 	if len(self.neighbors) == 0:
 		cond = False
 		while not cond:
@@ -32,9 +44,29 @@ def default_add(self):
 	to_add.neighbors.add(self)
 
 def default_get_add_prob(self):
+	"""
+	The default add_prob method of the person_node class, if no other
+	method is passed in. The idea is, if the node chooses to not pass,
+	it has 1.0 - 0.2x probability of adding a neighbor (where x is the
+	number of neighbors it currently has) and the conjugate probability
+	of dropping a neighbor.
+	"""
 	return 1.0 - 0.2*len(self.neighbors)
 
 class person_node:
+	"""
+	This is the primitive to be used for simulating locality of persons.
+
+	Transactions will only occur between adjacent person_nodes, and
+	transactions and blocks will only be propagated between adjacent
+	person_nodes.
+
+	person_node A has person_node B as a neighbor iff B has A as a neighbor.
+	On each person_timestep (which might be distinct from a machine_timestep),
+	a person_node maintains its set of neighbors with probability pass_prob
+	and otherwise adds or drops neighbors according to the output of
+	self.get_add_prob.
+	"""
 	def __init__(self, name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 		if not isinstance(name, str):
 			raise TypeError("name must be of type str; currently of type "+str(type(name))+".")
@@ -55,6 +87,11 @@ class person_node:
 		setattr(self, "add_prob", get_add_prob)
 
 	def update_action(self):
+		"""
+		Do nothing with probability self.pass_prob. Otherwise, call
+		self.get_add_prob to determine whether a neighbor is added or
+		dropped.
+		"""
 		passive = bernoulli.rvs(self.pass_prob, size=1)
 		if not passive:
 			prob_add = self.get_add_prob()
@@ -68,14 +105,32 @@ class person_node:
 		return self.name
 
 	def __hash__(self):
+		"""
+		Have the hash of self be equal to the hash of self.name; this is so
+		we can use this class as keys for dictionaries, sets, etc. without
+		having to explicitly typecast to str.
+		"""
 		return hash(self.name)
 
 	def __eq__(self, other):
+		"""
+		Equality can only hold between two instances of type person_node.
+		Equality holds, given the above, iff self.name == other.name.
+
+		For our purposes, it is sufficient to make sure that we use each
+		node name exactly once to make this equality method valid.
+		"""
 		if not isinstance(other, person_node):
 			raise TypeError("other must be of type person_node; currently of type "+str(type(other))+".")
 		return self.name == other.name
 
 class universe_wrapper:
+	"""
+	A wrapper which manages all the person_node instances to be used in a
+	simulation. It handles all the person_node updates as a single event,
+	and it outputs the adjacency matrix of the person_node neighborhood
+	by a single method call.
+	"""
 	def __init__(self, universe, percentage_update_action=0.1):
 		if not isinstance(universe, set):
 			raise TypeError("universe should be of type set; currently of type "+str(type(universe))+".")
