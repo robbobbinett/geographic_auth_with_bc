@@ -94,7 +94,7 @@ class person_node:
 		"""
 		passive = bernoulli.rvs(self.pass_prob, size=1)
 		if not passive:
-			prob_add = self.get_add_prob()
+			prob_add = self.add_prob()
 			adding = bernoulli(prob_add, size=1)
 			if adding:
 				self.add()
@@ -149,7 +149,7 @@ class universe_wrapper:
 		self.percentage_update = percentage_update_action
 
 	def run_update(self):
-		to_update = sample(self.universe, np.floor(self.percentage_update*len(self.universe)))
+		to_update = sample(self.universe, int(np.floor(self.percentage_update*len(self.universe))))
 		for node in to_update:
 			node.update_action()
 
