@@ -82,9 +82,10 @@ class person_node:
 			raise TypeError("pass_prob must be of type float; currently of type "+str(type(pass_prob))+".")
 		self.pass_prob=pass_prob
 
-		setattr(self, "add", add_behavior)
-		setattr(self, "drop", drop_behavior)
-		setattr(self, "add_prob", get_add_prob)
+		setattr(self, "add", lambda: add_behavior(self))
+		setattr(self, "drop", lambda: drop_behavior(self))
+		setattr(self, "add_prob", lambda: get_add_prob(self))
+
 
 	def update_action(self):
 		"""
@@ -95,7 +96,7 @@ class person_node:
 		passive = bernoulli.rvs(self.pass_prob, size=1)
 		if not passive:
 			prob_add = self.add_prob()
-			adding = bernoulli(prob_add, size=1)
+			adding = bernoulli.rvs(prob_add, size=1)
 			if adding:
 				self.add()
 			else:
