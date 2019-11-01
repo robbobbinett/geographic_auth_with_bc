@@ -29,10 +29,45 @@ class free_block:
 null_block = free_block(0)
 
 class fixed_block:
-	def __init__(self, free_seed):
+	def __init__(self, free_seed, parent):
 		if not isinstance(free_seed, free_block):
 			raise TypeError("free_seed must be of type free_block; currently of type "+str(type(free_seed))+".")
 		self.block = free_seed
+
+		if not isinstance(parent, fixed_block):
+			if self.block == null_block:
+				if parent is not None:
+					raise TypeError("If free_seed is the null_block, then parent must be None; parent is currently of type "+str(type(parent))+".")
+			else:
+				raise TypeError("parent must be of type fixed_block; currently of type "+str(type(parent))+".")
+		self.parent = parent
+
+		if self.parent is None:
+			self.height = 0
+		else:
+			self.height = parent.height + 1
+
+		self.children = []
+		self.shoulder_weight = 0
+
+	def cascading_shoulder_weight_add(self):
+		self.shoulder_weight += 1
+		if self.parent is not None:
+			self.parent.cascading_shoulder_weight_add()
+
+	def add_child(self, free_child):
+		if not isinstance(free_child, free_block):
+			raise TypeError("child must be of type free_block; currently of type "+str(type(child))+".")
+		fixed_child = fixed_block(free_child, self)
+		self.children.append(fixed_child)
+		self.children.sort(key=lambda x: str(x.block))
+		self.cascading_shoulder_weight_add()
+
+	def get_root(self):
+		if self.parent is None:
+			return self
+		else:
+			return self.parent.get_root()
 
 class local_blockchain:
 	"""
