@@ -8,9 +8,9 @@ def default_drop(self):
 	The default drop method to be used by the person_node class, given
 	no other method is given. The idea is to drop a neighbor at random.
 	"""
-	to_drop = choice(self.neighbors)
-	self.remove(to_drop)
-	to_drop.remove(self)
+	to_drop = choice(list(self.neighbors))
+	self.neighbors.remove(to_drop)
+	to_drop.neighbors.remove(self)
 
 def default_add(self):
 	"""
@@ -24,7 +24,7 @@ def default_add(self):
 	if len(self.neighbors) == 0:
 		cond = False
 		while not cond:
-			to_add = choice(self.universe)
+			to_add = choice(list(self.universe))
 			if len(to_add.neighbors) < 5 and to_add != self:
 				cond = True
 	else:
@@ -32,14 +32,12 @@ def default_add(self):
 		while not cond:
 			e = bernoulli.rvs(0.8, size=1)
 			if e:
-				recommender = choice(self.neighbors)
-				to_add = choice(recommender.neighbors)
-				if to_add not in self.neighbors:
-					cond = True
+				recommender = choice(list(self.neighbors))
+				to_add = choice(list(recommender.neighbors))
 			else:
-				to_add = choice(self.universe)
-				if len(to_add.neighbors) < 5 and to_add != self:
-					cond = True
+				to_add = choice(list(self.universe))
+			if len(to_add.neighbors) < 5 and to_add != self and (to_add not in self.neighbors):
+				cond = True
 	self.neighbors.add(to_add)
 	to_add.neighbors.add(self)
 
@@ -96,7 +94,10 @@ class person_node:
 		passive = bernoulli.rvs(self.pass_prob, size=1)
 		if not passive:
 			prob_add = self.add_prob()
-			adding = bernoulli.rvs(prob_add, size=1)
+			try:
+				adding = bernoulli.rvs(prob_add, size=1)
+			except ValueError:
+				raise ValueError("The value of prob_add is "+str(prob_add))
 			if adding:
 				self.add()
 			else:
@@ -143,7 +144,7 @@ class universe_wrapper:
 		self.node_names.sort()
 
 		self.name_to_node = dict((str(node), node) for node in self.universe)
-		self.node_to_number = dict((item, j) for j, item in enumerate(self.node_names))
+		self.node_to_number = dict((self.name_to_node[item], j) for j, item in enumerate(self.node_names))
 
 		if not isinstance(percentage_update_action, float):
 			raise TypeError("percentage_update_action should be of type float; currently of type "+str(type(percentage_update_action))+".")
@@ -158,7 +159,7 @@ class universe_wrapper:
 		connections_matrix = np.zeros((len(self.universe),)*2)
 		for j, name in enumerate(self.node_names):
 			for neigh in self.name_to_node[name].neighbors:
-				connections_matrix[j, self.name_to_number[neigh]] = 1
+				connections_matrix[j, self.node_to_number[neigh]] = 1
 		return csc_matrix(connections_matrix)
 
 def make_universe_of_nodes(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
