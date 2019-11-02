@@ -1,12 +1,13 @@
 from node_props import *
+from block_props import *
 
-message_denoms = ["null", "problem_proposal", "tentative_solution", "problem_solved"]
+message_denoms = ["null", "problem_proposal", "problem_solved"]
 
 class message:
 	"""
 	Parent class for all kinds of messages to be passed between nodes
 	"""
-	def __init__(self, author, orig_timestamp, denom="null", body_id=0):
+	def __init__(self, author, orig_timestamp, denom="null", self_block=null_block):
 		if not isinstance(author, person_node):
 			raise TypeError("author must be of type person_node; currently of type "+str(type(author))+".")
 		self.orig_author = author
@@ -22,21 +23,15 @@ class message:
 				raise ValueError("denom must be of type str; currently of type "+str(type(denom))+".")
 		self.denomination = denom
 
-		if not isinstance(body_id, int):
-			raise TypeError("body_id must be of type int; currently of type "+str(type(body_int))+".")
-		self.body_id = body_id
-
-	def __str__(self):
-		return "Message Denom: "+self.denomination+"\nAuthor: "+str(self.author.id)+"\nBody: "+str(self.body_id)+"\nTimestamp: "+str(self.orig_timestamp)
-
-	def __disp__(self):
-		return str(self)
+		if not isinstance(self_block, free_block):
+			raise TypeError("self_block must be of type free_block; currently of type "+str(type(self_block))+".")
+		self.block = self_block
 
 	def __hash__(self):
 		"""
 		Will only be in a hash table with other messages of same denomination
 		"""
-		return hash((self.author, self.orig_timestamp))
+		return hash(self.block)
 
 	def __eq__(self, other):
 		if not isinstance(other, message):
@@ -44,7 +39,7 @@ class message:
 		elif self.denomination != other.denomination:
 			raise ValueError("self and other must be of same denomination; currently of denominations "+" and ".join([x.denomination for x in (self, other)])+", respectively.")
 		else:
-			return self.author == other.author and self.timestamp == other.timestamp and self.body_id == other.body_id
+			return self.author == other.author and self.timestamp == other.timestamp and self.block == other.block
 
 N = 100
 
@@ -59,7 +54,7 @@ class cooperative_node(person_node):
 
 	def pass_message(message_instance, recipient):
 		if not isinstance(message_instance, message):
-			raise TypeError("message_instance must be of type message (duh); currently of type "+str(type(message_instance))+".")
+			raise TypeError("message_instance must be of type message; currently of type "+str(type(message_instance))+".")
 		if not isinstance(recipient, cooperative_node):
 			raise TypeError("recipient must be of type cooperative_node; currently of type "+str(type(recipient))+".")
 
@@ -70,7 +65,7 @@ class cooperative_node(person_node):
 			if message_instance.orig_author == self:
 				# Add to recipient's queue iff message not currently in
 				# queue
-				other.null.add(message_instance)
+				other.null.add(message_instance.block)
 
 		# Processing problem_proposal messages
 		if message_instance.denomination == "problem_proposal":
@@ -81,6 +76,17 @@ class cooperative_node(person_node):
 			# passer must be the same.
 			elif message_instance.orig_author == self:
 				# only add to queue iff message author not currently author
-				# off another message in queue.
+				# of another message in queue.
 				if self not in [x.orig_author for x in other.problem_proposal]:
 					other.problem_proposal.add(message_instance)
+
+		# Processing problem_solved messages
+		if message_instance.denomination == "problem_solved":
+			# Only entertain if message_instance.self_block is in
+			# other.problem_proposal
+			if message_instance.self_block in other.problem_proposal:
+				other.problem_proposal.remove(message_instance)
+				other.problem_solved.add(message_instance.block)
+				for neigh in other.neighbors:
+					other.pass_message(message_instance, neigh)
+			else:
