@@ -1,4 +1,4 @@
-from txn_n_block_props import *
+from block_props import *
 
 def test_free_block_creation():
 	"""
