@@ -8,6 +8,8 @@ class free_block:
 					raise TypeError("If unique_id is 0, then parent should be None.")
 			else:
 				raise TypeError("parent must be of type free_block; currently of type "+str(type(parent))+".")
+		if unique_id == 0 and parent is not None:
+			raise TypeError("If unique_id is 0, then parent should be None.")
 
 		self.id = unique_id
 		self.parent = parent
@@ -29,7 +31,7 @@ class free_block:
 null_block = free_block(0)
 
 class fixed_block:
-	def __init__(self, free_seed, parent):
+	def __init__(self, free_seed, parent=None):
 		if not isinstance(free_seed, free_block):
 			raise TypeError("free_seed must be of type free_block; currently of type "+str(type(free_seed))+".")
 		self.block = free_seed
@@ -62,6 +64,7 @@ class fixed_block:
 		self.children.append(fixed_child)
 		self.children.sort(key=lambda x: str(x.block))
 		self.cascading_shoulder_weight_add()
+		return fixed_child
 
 	def get_root(self):
 		if self.parent is None:
@@ -69,16 +72,7 @@ class fixed_block:
 		else:
 			return self.parent.get_root()
 
-class local_blockchain:
-	"""
-	'Nuf said.
-	"""
-	def __init__(self, seed=None):
-		if not seed:
-			self.root_node = null_block
-			self.weight = 1
-			self.height = 1
-		elif not isinstance(seed, local_blockchain):
-			raise TypeError("seed must be of type local_blockchain; currently of type "+str(type(seed))+".")
-		else:
-			pass
+	def __eq__(self, other):
+		if not isinstance(other, fixed_block):
+			raise TypeError("other should be of type fixed_block; currently of type "+str(type(other))+".")
+		return self.block == other.block
