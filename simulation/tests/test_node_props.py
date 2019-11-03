@@ -1,6 +1,6 @@
 import simpy
 from tqdm import tqdm
-from message_props import make_universe_of_nodes
+from node_props import make_universe_of_nodes
 
 env = simpy.Environment()
 
