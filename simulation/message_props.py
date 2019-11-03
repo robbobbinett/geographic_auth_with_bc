@@ -1,92 +1,81 @@
 from node_props import *
 from block_props import *
 
-message_denoms = ["null", "problem_proposal", "problem_solved"]
+message_types = ["proposal", "solution"]
+class block_id_generator:
+	def __init__(self):
+		self.current_id = 1
+		self.id_to_node = {}
+
+	def new_id(self):
+		pass
 
 class message:
-	"""
-	Parent class for all kinds of messages to be passed between nodes
-	"""
-	def __init__(self, author, orig_timestamp, denom="null", self_block=null_block):
-		if not isinstance(author, person_node):
-			raise TypeError("author must be of type person_node; currently of type "+str(type(author))+".")
-		self.orig_author = author
+	def __init__(self, block, message_type, orig_author, final_author=None):
+		if not isinstance(block, free_block):
+			raise TypeError("block should be of type free_block; currently of type "+str(type(block))+".")
+		self.block = block
 
-		if not isinstance(orig_timestamp, int):
-			raise TypeError("orig_timestamp must be of type int; currently of type "+str(type(orig_timestamp))+".")
-		self.orig_timestamp = orig_timestamp
+		if message_type not in message_types:
+			raise ValueError("message_type must be 'proposal' or 'solution'.")
+		self.message_type = message_type
 
-		if denom not in message_denoms:
-			if isinstance(denom, str):
-				raise ValueError("denom must be one of the following: "+", ".join(message_denoms)+". Currently, denom is "+denom+".")
-			else:
-				raise ValueError("denom must be of type str; currently of type "+str(type(denom))+".")
-		self.denomination = denom
+		if not isinstance(orig_author, cooperative_node):
+			raise TypeError("orig_author should be of type cooperative_node; currently of type "+str(type(orig_author))+".")
 
-		if not isinstance(self_block, free_block):
-			raise TypeError("self_block must be of type free_block; currently of type "+str(type(self_block))+".")
-		self.block = self_block
-
-	def __hash__(self):
-		"""
-		Will only be in a hash table with other messages of same denomination
-		"""
-		return hash(self.block)
+		if message_type == "proposal":
+			if final_author != None:
+				raise ValueError("If message_type is 'proposal', final_author should be None.")
+		else:
+			if not isinstance(final_author, cooperative_node):
+				raise TypeError("final_author should be of type cooperative_node; currently of type "+str(type(final_author))+".")
+		self.final_author = final_author
 
 	def __eq__(self, other):
 		if not isinstance(other, message):
 			raise TypeError("other must be of type message; currently of type "+str(type(other))+".")
-		elif self.denomination != other.denomination:
-			raise ValueError("self and other must be of same denomination; currently of denominations "+" and ".join([x.denomination for x in (self, other)])+", respectively.")
-		else:
-			return self.author == other.author and self.timestamp == other.timestamp and self.block == other.block
-
-N = 100
+		return self.block == other.block and self.message_type == other.message_type and self.orig_author == other.orig_author
 
 class cooperative_node(person_node):
-	"""
-	The person_node class, with added message-passing/queueing/processing capability
-	"""
 	def __init__(self, name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 		super().__init__(name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob)
-		for denom in message_denoms:
-			setattr(self, denom, set())
+		self.open_problems = set()
+		self.closed_problems = {null_block: fixed_block(null_block)}
 
-	def pass_message(message_instance, recipient):
+	def find_prob_message_by_author(self, orig_author):
+		for x in self.open_problems:
+			if x.orig_author == orig_author:
+				return x
+		raise KeyError("unrecognized orig_author")
+
+	def create_problem_proposal(self):
+		pass
+
+	def add_fixed_block(self, free_seed):
+		self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
+
+	def pass_message(self, message_instance, other):
 		if not isinstance(message_instance, message):
-			raise TypeError("message_instance must be of type message; currently of type "+str(type(message_instance))+".")
-		if not isinstance(recipient, cooperative_node):
-			raise TypeError("recipient must be of type cooperative_node; currently of type "+str(type(recipient))+".")
+			raise TypeError("message_instance should be of type message; currently of type "+str(type(message_instance))+".")
 
-		# Processing null messages
-		if message_instance.denomination == "null":
-			# For null messages, message author and message passer
-			# must be the same.
+		if message_instance.message_type == "proposal":
 			if message_instance.orig_author == self:
-				# Add to recipient's queue iff message not currently in
-				# queue
-				other.null.add(message_instance.block)
-
-		# Processing problem_proposal messages
-		if message_instance.denomination == "problem_proposal":
-			# Can only have N problems enqueued at once
-			if len(other.problem_proposal.add) >= N:
 				pass
-			# For problem_proposal messages, message author and message
-			# passer must be the same.
-			elif message_instance.orig_author == self:
-				# only add to queue iff message author not currently author
-				# of another message in queue.
-				if self not in [x.orig_author for x in other.problem_proposal]:
-					other.problem_proposal.add(message_instance)
-
-		# Processing problem_solved messages
-		if message_instance.denomination == "problem_solved":
-			# Only entertain if message_instance.self_block is in
-			# other.problem_proposal
-			if message_instance.self_block in other.problem_proposal:
-				other.problem_proposal.remove(message_instance)
-				other.problem_solved.add(message_instance.block)
-				for neigh in other.neighbors:
-					other.pass_message(message_instance, neigh)
+			elif message_instance.orig_author in [x.orig_author for x in other.open_problems]:
+				pass
 			else:
+				other.open_problems.add(message_instance)
+				for neigh in other.neighbors:
+					if neigh != self:
+						other.pass_message(message_instance, neigh)
+
+		if message_instance.message_type == "solution":
+			if message_instance.orig_author in [x.orig_author for x in other.open_problems]:
+				other.open_problems.remove(other.find_prob_message_by_author(message_instance.orig_author))
+			temp_list = list(other.closed_problems.keys())
+			if message_instance.block not in temp_list:
+				if message_instance.block.parent in temp_list:
+					other.add_fixed_block(message_instance.block)
+					for neigh in other.neighbors:
+						if neigh != self:
+							other.pass_message(message_instance, neigh)
