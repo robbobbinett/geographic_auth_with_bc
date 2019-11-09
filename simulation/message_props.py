@@ -1,3 +1,4 @@
+from random import choice, sample
 from node_props import *
 from block_props import *
 
@@ -9,6 +10,8 @@ class block_id_generator:
 
 	def new_id(self):
 		pass
+
+num_highest_nodes_to_return = 10
 
 class message:
 	def __init__(self, block, message_type, orig_author, final_author=None):
@@ -41,6 +44,7 @@ class cooperative_node(person_node):
 		super().__init__(name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob)
 		self.open_problems = set()
 		self.closed_problems = {null_block: fixed_block(null_block)}
+		self.problem_posed = False
 
 	def find_prob_message_by_author(self, orig_author):
 		for x in self.open_problems:
@@ -50,6 +54,7 @@ class cooperative_node(person_node):
 
 	def add_fixed_block(self, free_seed):
 		self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
+		self.open_problems.remove(free_seed)
 
 	def pass_message(self, message_instance, other):
 		if not isinstance(message_instance, message):
@@ -84,6 +89,19 @@ class cooperative_wrapper(universe_wrapper):
 			raise TypeError("All nodes in a cooperative_wrapper instance must be of cooperative_node type.")
 
 		self.next_block_id = 1
+
+	def bestow_block(self):
+		winner = choice(list(self.universe))
+		if len(winner.open_problems) == 0:
+			raise ValueError("winning node has zero open problems :(")
+		free_seed = choice(winner.open_problems)
+		winner.add_fixed_block(free_seed)
+
+	def pose_problem(self):
+		pass
+#		for node in universe:
+#			if not node.problem_posed:
+#				node.problem_posed = True
 
 def make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 	universe = set()

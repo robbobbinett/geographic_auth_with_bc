@@ -10,8 +10,15 @@ def test_cooperative_wrapper_doesnt_crash():
 	"""
 	universe = make_cooperative_wrapper(1000)
 
-	# Running 1000 updates per node on each node in a 1000-node universe
+	# Running 1000 position updates per node on each node in a 1000-node universe
 	for _ in tqdm(range(1000)):
 		universe.run_update()
+
+	# Try bestowing a block; should raise an error due to lack of open problem instances
+	try:
+		universe.bestow_block()
+		assert False
+	except ValueError:
+		pass
 
 	test_mat = universe.output_connections()
