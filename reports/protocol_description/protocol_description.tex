@@ -58,7 +58,7 @@
 				upon discovering nonce $n_{\mathcal{P},S}$.
 		\end{itemize}
 		By this construction, $\mathcal{P}^*$ can be understood as the tuple
-		$(\mathcal{P}_h,\mathcal{P})r,\mathcal{P}^*_f)$, or as the tuple
+		$(\mathcal{P}_h,\mathcal{P}_r,\mathcal{P}^*_f)$, or as the tuple
 		$(\mathcal{P},\mathcal{P}^*_f)$. On short time scales, two different
 		nodes $S,S^\prime$ might concurrently propagate distinct nonces
 		for $\mathcal{P}$ through the network, causing a global fork. It is
@@ -69,6 +69,22 @@
 		talking about scenarios wherein two peers agree on the validity of a
 		block $\mathcal{P}^*$, we may refer to $\mathcal{P}^*$ and $\mathcal{P}$
 		interchangeably, when doing so should not cause confusion.
+	\item[\textbf{Hash Function Generator (HFG):}] The hash function generator $\mathcal{H}$
+		is one of the few globally-defined parameters in the network. $\mathcal{H}$
+		is a one-way function which takes a problem proposal $\mathcal{P}$ and
+		returns a unique hash function $H_\mathcal{P}$. In a Bitcoin-like fashion,
+		we accept a nonce $n$ to be ``a'' solution $H_\mathcal{P}$ if
+		$H_\mathcal{P}(n)<\tau$ for some predefined threshold $\tau$
+		which is known \textit{a priori} by the entire network.
+	\item[\textbf{Local Blockchain:}] The reference tags of blocks naturally
+		parent-child node relationships, which in turn induce a rooted tree
+		structure. The blocks which are accepted by node $C$, therefore,
+		comprise the local blockchain of $C$ (or, when no ambiguity is present,
+		just ``the blockchain of $C$.''
+	\item[\textbf{Null Parent:}] The block $\varnothing:=(\text{Null},\text{Null},\text{Null})$ which
+		is universally accepted by each node $C$ upon $C$'s entry into the network.
+		This allows for two nodes to cooperatively form blocks when neither has
+		a local chain from which to continue block formation.
 \end{description}
 
 \section*{Preliminary Assumptions}
@@ -93,5 +109,10 @@
 \end{enumerate}
 
 \section*{Protocol Outline}
+\begin{description}
+	\item[\textbf{\textit{a priori:}}] Each node enters the network aware of the
+		hash function generator (HFG) $\mathcal{H}$, the threshold parameter
+		$\tau$, and the null parent node $\varnothing$.
+\end{description}
 
 \end{document}
