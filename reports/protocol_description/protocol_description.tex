@@ -115,8 +115,9 @@
 		\hspace{5mm}\texttt{problem\_posed} $\gets$ \texttt{FALSE}; \\
 		\hspace{5mm}\texttt{// ``$\varnothing$'' below refers to the null parent} \\
 		\hspace{5mm}\texttt{known\_blocks} $\gets$ $\{\varnothing\}$; \\
-		\hspace{5mm}\texttt{// ``$\{\}$'0 below refers to an empty set'} \\
+		\hspace{5mm}\texttt{// ``$\{\}$' below refers to an empty set} \\
 		\hspace{5mm}\texttt{neighbors} $\gets$ $\{\}$; \\
+		\hspace{5mm}\texttt{known\_problems} $\gets$ $\{\}$ \\
 	UPDATE CONNECTIONS \\
 		\hspace{5mm}\texttt{// Ping neighbors} \\
 		\hspace{5mm}\textbf{for} \texttt{neighbor} \textbf{in} \texttt{neighbors}: \\
@@ -127,13 +128,35 @@
 		\hspace{5mm}\textbf{for} \texttt{neighbor} \textbf{in} \texttt{potential\_neighbors}: \\
 		\hspace{10mm}\textbf{if} \texttt{confirm\_connection(self, neighbor)}: \\
 		\hspace{15mm}\texttt{neighbors.add(neighbor)}; \\
-	GET HIGHEST BLOCKS \\
+	GET HIGHEST BLOCKS[ ] $\to$ [\texttt{list of highest blocks}] \\
 		\hspace{5mm}\texttt{// Returns a list of the 10 highest blocks from the root of the
 			local blockchain} \\
-		\hspace{5mm}\texttt{// When multiple blocks are tied in height, it appends them in random order up to that 10 blocks are returned} \\
-		\hspace{5mm}\textbf{return} \texttt{highest\_blocks} \\
+		\hspace{5mm}\texttt{// When multiple blocks are tied in height, it appends them in random order} \\
+		\hspace{5mm}\texttt{// up to that 10 blocks are returned} \\
+	PROBLEM ACCEPTANCE HEURISTIC[\texttt{list\_of\_bools}] $\to$ $\{\texttt{TRUE,FALSE}\}$\\
+		\hspace{5mm}\texttt{// Some heuristic for determining if \texttt{list\_of\_bools} indicates} \\
+		\hspace{5mm}\texttt{// that an acceptable percentage of neighbors recognize the problem} \\
+		\hspace{5mm}\texttt{// as valid} \\
 	CREATE PROBLEM \\
 		\hspace{5mm}\textbf{if not} \texttt{problem\_posed}: \\
+		\hspace{10mm}\textbf{for} \texttt{block} \textbf{in} \texttt{get\_highest\_blocks()}: \\
+		\hspace{15mm}\texttt{problem} $\gets$ $\mathcal{H}(\texttt{current\_timestamp()},\texttt{self.public\_key},\texttt{block})$; \\
+		\hspace{15mm}\texttt{acceptance\_list} $\gets$ \texttt{array()}; \\
+		\hspace{15mm}\textbf{for} \texttt{neighbor} \textbf{in} \texttt{neighbors}: \\
+		\hspace{20mm}\texttt{// ``accepted'' will be ``TRUE'' or ``FALSE''} \\
+		\hspace{20mm}\texttt{accepted} $\gets$ \texttt{send\_problem(self, neighbor)}; \\
+		\hspace{20mm}\texttt{acceptance\_list.append(accepted)}; \\
+		\hspace{15mm}\textbf{if} \texttt{problem\_acceptance\_heuristic(acceptance\_list)}: \\
+		\hspace{20mm}\texttt{// Terminate; problem was created and propagated successfully} \\
+		\hspace{20mm}\texttt{problem\_posed} $\gets$ \texttt{TRUE}; \\
+		\hspace{20mm}\texttt{known\_problems.add(problem)}; \\
+		\hspace{20mm}\texttt{return}; \\
+		\hspace{15mm}\textbf{else:} \\
+		\hspace{20mm}\texttt{// problem not accepted appreciably; bleach local blockchain and} \\
+		\hspace{20mm}\texttt{// copy a random neighbor's copy of the chain} \\
+		\hspace{20mm}\texttt{neighbor} $\gets$ \texttt{neighbors.random()}; \\
+		\hspace{20mm}\texttt{copy\_local\_blockchain(neighbor)}; \\
+		\hspace{20mm}\texttt{create\_problem()}; \\
 		
 	\caption{The protocol as executed locally by each node. All variable references,
 		with the exception of $\mathcal{H}$, $\tau$, and $\varnothing$, are
