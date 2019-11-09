@@ -127,7 +127,14 @@
 		\hspace{5mm}\textbf{for} \texttt{neighbor} \textbf{in} \texttt{potential\_neighbors}: \\
 		\hspace{10mm}\textbf{if} \texttt{confirm\_connection(self, neighbor)}: \\
 		\hspace{15mm}\texttt{neighbors.add(neighbor)}; \\
-	
+	GET HIGHEST BLOCKS \\
+		\hspace{5mm}\texttt{// Returns a list of the 10 highest blocks from the root of the
+			local blockchain} \\
+		\hspace{5mm}\texttt{// When multiple blocks are tied in height, it appends them in random order up to that 10 blocks are returned} \\
+		\hspace{5mm}\textbf{return} \texttt{highest\_blocks} \\
+	CREATE PROBLEM \\
+		\hspace{5mm}\textbf{if not} \texttt{problem\_posed}: \\
+		
 	\caption{The protocol as executed locally by each node. All variable references,
 		with the exception of $\mathcal{H}$, $\tau$, and $\varnothing$, are
 		references to local variables.}
