@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\usepackage[moderate]{savetrees}
+
+\title{Frequent-Collision Blockchains for Local Geographic Authentication}
+\author{Ryan Robinett and Tiago Royer}
+\date{9 Nov 2019}
+\begin{document}
+
+\maketitle
+
+\section*{Preliminary Definitions}
+\begin{description}
+	\item[\textbf{Public Key:}] If $C$ is a node in the network with unique public key
+		$\mathcal{C}$, we will refer to $C$ using both ``$C$'' and ``$\mathcal{C}$''
+		interchangeably.
+	\item[\textbf{Problem Proposal:}] A problem proposal $(t_a,\mathcal{C},\mathcal{P})$
+		is a tuple consisting of a timestamp $t_a$ (based on the local clock
+		of node $\mathcal{C}$), the public key 
+\end{description}
+
+\section*{Preliminary Assumptions}
+\begin{enumerate}
+	\item We use the terms ``node'' and ``actor'' interchangeably. We mean for this
+		interchangeability to reflect our assumption that each communicating
+		node in the network corresponds to exactly one person, and that the
+		computational power is roughly equal across all nodes.
+	\item All communications between nodes are direct (i.e. without any intermediary
+		router, peer, etc.) through a local wireless protocol like WiFi 2.4/5 or
+		Bluetooth.
+	\item All nodes are subject to the same maximum number of neighbors with whom
+		connections can be maintained for an extended period of time. These
+		connections, of course, are only possible iff two nodes are within
+		sufficient geographic proximity for a nontrival number of seconds.
+	\item We assume that any connection between a pair of nodes $A,B$ is transient;
+		that is, we assume that any connection between $A$ and $B$ will eventually
+		be broken. It is therefore plausible---even probable, and certainly our
+		intention---that this result in discrepancies between local blockchains
+		of participating nodes, such that the global blockchain effectively
+		``forks.''
+\end{enumerate}
+
+\section*{Protocol Outline}
+
+\end{document}
