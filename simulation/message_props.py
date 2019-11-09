@@ -67,11 +67,11 @@ class cooperative_node(person_node):
 						other.pass_message(message_instance, neigh)
 
 		if message_instance.message_type == "solution":
-			if message_instance.orig_author in [x.orig_author for x in other.open_problems]:
-				other.open_problems.remove(other.find_prob_message_by_author(message_instance.orig_author))
 			temp_list = list(other.closed_problems.keys())
 			if message_instance.block not in temp_list:
 				if message_instance.block.parent in temp_list:
+					if message_instance.orig_author in [x.orig_author for x in other.open_problems]:
+						other.open_problems.remove(other.find_prob_message_by_author(message_instance.orig_author))
 					other.add_fixed_block(message_instance.block)
 					for neigh in other.neighbors:
 						if neigh != self:
@@ -82,3 +82,11 @@ class cooperative_wrapper(universe_wrapper):
 		super().__init__(universe, percentage_update_action)
 		if not all(isinstance(item, cooperative_node) for item in self.universe):
 			raise TypeError("All nodes in a cooperative_wrapper instance must be of cooperative_node type.")
+
+		self.next_block_id = 1
+
+def make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
+	universe = set()
+	for j in range(num_nodes):
+		universe.add(cooperative_node("node_"+str(j), universe, add_behavior=add_behavior, drop_behavior=drop_behavior, pass_prob=pass_prob, get_add_prob=get_add_prob))
+	return cooperative_wrapper(universe)
