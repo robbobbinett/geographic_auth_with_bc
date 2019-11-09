@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
+\usepackage[ruled]{algorithm2e}
 
 \title{Frequent-Collision Blockchains for Local Geographic Authentication}
 \author{Ryan Robinett and Tiago Royer}
@@ -109,10 +110,26 @@
 \end{enumerate}
 
 \section*{Protocol Outline}
-\begin{description}
-	\item[\textbf{\textit{a priori:}}] Each node enters the network aware of the
-		hash function generator (HFG) $\mathcal{H}$, the threshold parameter
-		$\tau$, and the null parent node $\varnothing$.
-\end{description}
-
+\begin{algorithm}[H]
+	INITIALIZATION \\
+		\hspace{5mm}\texttt{problem\_posed} $\gets$ \texttt{FALSE}; \\
+		\hspace{5mm}\texttt{// ``$\varnothing$'' below refers to the null parent} \\
+		\hspace{5mm}\texttt{known\_blocks} $\gets$ $\{\varnothing\}$; \\
+		\hspace{5mm}\texttt{// ``$\{\}$'0 below refers to an empty set'} \\
+		\hspace{5mm}\texttt{neighbors} $\gets$ $\{\}$; \\
+	UPDATE CONNECTIONS \\
+		\hspace{5mm}\texttt{// Ping neighbors} \\
+		\hspace{5mm}\textbf{for} \texttt{neighbor} \textbf{in} \texttt{neighbors}: \\
+		\hspace{10mm}\textbf{if not} \texttt{confirm\_connection(self, neighbor)}: \\
+		\hspace{15mm}\texttt{neighbors.remove(neighbor)}; \\
+		\hspace{5mm}\texttt{// Ping to check for new neighbors} \\
+		\hspace{5mm}\texttt{potential\_neighbors} $\gets$  \texttt{get\_list\_of\_available\_connections()}; \\
+		\hspace{5mm}\textbf{for} \texttt{neighbor} \textbf{in} \texttt{potential\_neighbors}: \\
+		\hspace{10mm}\textbf{if} \texttt{confirm\_connection(self, neighbor)}: \\
+		\hspace{15mm}\texttt{neighbors.add(neighbor)}; \\
+	
+	\caption{The protocol as executed locally by each node. All variable references,
+		with the exception of $\mathcal{H}$, $\tau$, and $\varnothing$, are
+		references to local variables.}
+\end{algorithm}
 \end{document}
