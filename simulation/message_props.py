@@ -25,6 +25,7 @@ class message:
 
 		if not isinstance(orig_author, cooperative_node):
 			raise TypeError("orig_author should be of type cooperative_node; currently of type "+str(type(orig_author))+".")
+		self.orig_author = orig_author
 
 		if message_type == "proposal":
 			if final_author != None:
@@ -56,6 +57,11 @@ class cooperative_node(person_node):
 		self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
 		self.open_problems.remove(free_seed)
 
+	def get_highest_blocks(self):
+		blocks = list(self.closed_problems.values())
+		blocks.sort(key=lambda x: x.height)
+		return blocks[:num_highest_nodes_to_return]
+
 	def pass_message(self, message_instance, other):
 		if not isinstance(message_instance, message):
 			raise TypeError("message_instance should be of type message; currently of type "+str(type(message_instance))+".")
@@ -78,6 +84,8 @@ class cooperative_node(person_node):
 					if message_instance.orig_author in [x.orig_author for x in other.open_problems]:
 						other.open_problems.remove(other.find_prob_message_by_author(message_instance.orig_author))
 					other.add_fixed_block(message_instance.block)
+					if message_instance.orig_author == other:
+						other.problem_proposed = False
 					for neigh in other.neighbors:
 						if neigh != self:
 							other.pass_message(message_instance, neigh)
@@ -90,6 +98,11 @@ class cooperative_wrapper(universe_wrapper):
 
 		self.next_block_id = 1
 
+	def get_next_block_id(self):
+		to_return = self.next_block_id
+		self.next_block_id += 1
+		return to_return
+
 	def bestow_block(self):
 		winner = choice(list(self.universe))
 		if len(winner.open_problems) == 0:
@@ -97,11 +110,14 @@ class cooperative_wrapper(universe_wrapper):
 		free_seed = choice(winner.open_problems)
 		winner.add_fixed_block(free_seed)
 
-	def pose_problem(self):
-		pass
-#		for node in universe:
-#			if not node.problem_posed:
-#				node.problem_posed = True
+	def pose_problems(self):
+		for node in self.universe:
+			if not node.problem_posed:
+				node.problem_posed = True
+				new_free_block = free_block(self.get_next_block_id(), node.get_highest_blocks()[0].block)
+				prob_message = message(new_free_block, "proposal", node)
+				for neigh in node.neighbors:
+					node.pass_message(prob_message, neigh)
 
 def make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 	universe = set()

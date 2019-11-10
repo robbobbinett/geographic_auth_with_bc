@@ -21,4 +21,8 @@ def test_cooperative_wrapper_doesnt_crash():
 	except ValueError:
 		pass
 
+	# Try updating problem states for all nodes
+	for _ in tqdm(range(100)):
+		universe.pose_problems()
+
 	test_mat = universe.output_connections()
