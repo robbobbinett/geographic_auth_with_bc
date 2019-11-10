@@ -35,6 +35,9 @@ class message:
 				raise TypeError("final_author should be of type cooperative_node; currently of type "+str(type(final_author))+".")
 		self.final_author = final_author
 
+	def __hash__(self):
+		return hash(self.block) + hash(self.message_type) + hash(self.orig_author)
+
 	def __eq__(self, other):
 		if not isinstance(other, message):
 			raise TypeError("other must be of type message; currently of type "+str(type(other))+".")
@@ -53,9 +56,13 @@ class cooperative_node(person_node):
 				return x
 		raise KeyError("unrecognized orig_author")
 
-	def add_fixed_block(self, free_seed):
+	def add_fixed_block(self, message_instance):
+		free_seed = message_instance.block
 		self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
-		self.open_problems.remove(free_seed)
+		try:
+			self.open_problems.remove(message_instance)
+		except KeyError:
+			raise KeyError(", ".join([str(item) for item in self.open_problems]))
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
@@ -67,7 +74,7 @@ class cooperative_node(person_node):
 			raise TypeError("message_instance should be of type message; currently of type "+str(type(message_instance))+".")
 
 		if message_instance.message_type == "proposal":
-			if message_instance.orig_author == self:
+			if message_instance.orig_author == other:
 				pass
 			elif message_instance.orig_author in [x.orig_author for x in other.open_problems]:
 				pass
@@ -104,11 +111,25 @@ class cooperative_wrapper(universe_wrapper):
 		return to_return
 
 	def bestow_block(self):
-		winner = choice(list(self.universe))
-		if len(winner.open_problems) == 0:
-			raise ValueError("winning node has zero open problems :(")
-		free_seed = choice(winner.open_problems)
-		winner.add_fixed_block(free_seed)
+		cond = False
+		count = 0
+		while not cond:
+			winner = choice(list(self.universe))
+			if len(winner.open_problems) != 0:
+				cond = True
+			elif count == 1000:
+				raise ValueError("Excessive runtime in first while loop of bestow_block")
+			count += 1
+		cond = False
+		count = 0
+		while not cond:
+			solved_problem = choice(list(winner.open_problems))
+			if solved_problem.orig_author != winner:
+				cond = True
+			elif count == 1000:
+				raise ValueError("Excessive runtime in first while loop of bestow_block")
+			count += 1
+		winner.add_fixed_block(solved_problem)
 
 	def pose_problems(self):
 		for node in self.universe:

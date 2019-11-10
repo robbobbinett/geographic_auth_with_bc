@@ -8,7 +8,7 @@ def test_cooperative_wrapper_doesnt_crash():
 	universe should hopefully preclude (in probability) errors
 	arising
 	"""
-	universe = make_cooperative_wrapper(1000)
+	universe = make_cooperative_wrapper(100)
 
 	# Running 1000 position updates per node on each node in a 1000-node universe
 	for _ in tqdm(range(1000)):
@@ -21,8 +21,9 @@ def test_cooperative_wrapper_doesnt_crash():
 	except ValueError:
 		pass
 
-	# Try updating problem states for all nodes
-	for _ in tqdm(range(100)):
+	# Try alternating node updates and block bestowals
+	for _ in tqdm(range(1000)):
 		universe.pose_problems()
+		universe.bestow_block()
 
 	test_mat = universe.output_connections()
