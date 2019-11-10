@@ -22,8 +22,10 @@ def test_cooperative_wrapper_doesnt_crash():
 		pass
 
 	# Try alternating node updates and block bestowals
-	for _ in tqdm(range(1000)):
+	for _ in tqdm(range(100)):
 		universe.pose_problems()
+		for _ in range(100):
+			universe.process_queues()
 		universe.bestow_block()
 
 	test_mat = universe.output_connections()

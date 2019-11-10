@@ -101,34 +101,6 @@ class cooperative_node(person_node):
 							if neigh != self:
 								neigh.message_queue.append(message_instance)
 
-	def pass_message(self, message_instance, other):
-		if not isinstance(message_instance, message):
-			raise TypeError("message_instance should be of type message; currently of type "+str(type(message_instance))+".")
-
-		if message_instance.message_type == "proposal":
-			if message_instance.orig_author == other:
-				pass
-			elif message_instance.orig_author in [x.orig_author for x in other.open_problems]:
-				pass
-			else:
-				other.open_problems.add(message_instance)
-				for neigh in other.neighbors:
-					if neigh != self:
-						other.pass_message(message_instance, neigh)
-
-		if message_instance.message_type == "solution":
-			temp_list = list(other.closed_problems.keys())
-			if message_instance.block not in temp_list:
-				if message_instance.block.parent in temp_list:
-					if message_instance.orig_author in [x.orig_author for x in other.open_problems]:
-						other.open_problems.remove(other.find_prob_message_by_author(message_instance.orig_author))
-					other.add_fixed_block(message_instance)
-					if message_instance.orig_author == other:
-						other.problem_proposed = False
-					for neigh in other.neighbors:
-						if neigh != self:
-							other.pass_message(message_instance, neigh)
-
 class cooperative_wrapper(universe_wrapper):
 	def __init__(self, universe, percentage_update_action=0.1):
 		super().__init__(universe, percentage_update_action)
@@ -164,7 +136,6 @@ class cooperative_wrapper(universe_wrapper):
 		winner.add_fixed_block(solved_problem)
 		for neigh in winner.neighbors:
 			neigh.message_queue.append(message(solved_problem.block, "solution", solved_problem.orig_author, winner))
-#			winner.pass_message(message(solved_problem.block, "solution", solved_problem.orig_author, winner), neigh)
 
 	def pose_problems(self):
 		for node in self.universe:
@@ -174,7 +145,10 @@ class cooperative_wrapper(universe_wrapper):
 				prob_message = message(new_free_block, "proposal", node)
 				for neigh in node.neighbors:
 					neigh.message_queue.append(prob_message)
-#					node.pass_message(prob_message, neigh)
+
+	def process_queues(self):
+		for node in self.universe:
+			node.process_queued_message()
 
 def make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 	universe = set()
