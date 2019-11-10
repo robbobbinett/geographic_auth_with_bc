@@ -57,12 +57,13 @@ class cooperative_node(person_node):
 		raise KeyError("unrecognized orig_author")
 
 	def add_fixed_block(self, message_instance):
-		free_seed = message_instance.block
-		self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
 		try:
 			self.open_problems.remove(message_instance)
+			free_seed = message_instance.block
+			self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
 		except KeyError:
-			raise KeyError(", ".join([str(item) for item in self.open_problems]))
+			pass
+#			raise KeyError(", ".join([str(item) for item in self.open_problems]))
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
@@ -90,7 +91,7 @@ class cooperative_node(person_node):
 				if message_instance.block.parent in temp_list:
 					if message_instance.orig_author in [x.orig_author for x in other.open_problems]:
 						other.open_problems.remove(other.find_prob_message_by_author(message_instance.orig_author))
-					other.add_fixed_block(message_instance.block)
+					other.add_fixed_block(message_instance)
 					if message_instance.orig_author == other:
 						other.problem_proposed = False
 					for neigh in other.neighbors:
@@ -130,6 +131,8 @@ class cooperative_wrapper(universe_wrapper):
 				raise ValueError("Excessive runtime in first while loop of bestow_block")
 			count += 1
 		winner.add_fixed_block(solved_problem)
+		for neigh in winner.neighbors:
+			winner.pass_message(message(solved_problem.block, "solution", solved_problem.orig_author, winner), neigh)
 
 	def pose_problems(self):
 		for node in self.universe:
