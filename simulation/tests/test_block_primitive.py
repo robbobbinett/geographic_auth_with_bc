@@ -104,3 +104,8 @@ def test_fixed_block_tree_formation():
 	# is this weight minus two
 	assert root.shoulder_weight == 15
 	assert fixed_block_book[1].shoulder_weight == 13
+
+	# Check that fixed_block.return_bfs returns an appropriate ordering of nodes
+	list_of_nodes = root.return_bfs()
+	for j in range(len(list_of_nodes)-1):
+		assert list_of_nodes[j].height <= list_of_nodes[j+1].height

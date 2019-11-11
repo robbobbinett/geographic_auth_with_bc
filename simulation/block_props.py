@@ -112,3 +112,19 @@ class fixed_block:
 		if not isinstance(other, fixed_block):
 			raise TypeError("other should be of type fixed_block; currently of type "+str(type(other))+".")
 		return self.block == other.block
+
+	def return_bfs(self, list_to_return=None, block_queue=None):
+		"""
+		Get list of nodes, in the subtree rooted at self, ordered by height.
+		"""
+		if not list_to_return and not block_queue:
+			list_to_return = []
+			block_queue = []
+		elif not list_to_return and block_queue:
+			raise ValueError("If list_to_return == None, it should be that block_queue is also None.")
+		list_to_return.append(self)
+		for child in self.children:
+			block_queue.append(child)
+		while len(block_queue) > 0:
+			block_queue.pop(0).return_bfs(list_to_return=list_to_return, block_queue=block_queue)
+		return list_to_return
