@@ -6,6 +6,7 @@ def visualize_subtree(quasi_root):
 
 	# Get BFS ordering of blocks by height
 	blocks_by_height = quasi_root.return_bfs()
+	print(blocks_by_height)
 
 	# Get dictionary storing blocks by given height
 	height_collection = {}
