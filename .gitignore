@@ -8,4 +8,8 @@
 *.run.xml
 *-blx.bib
 *.dvi
+*.nav
+*.out
+*.snm
+*.toc
 __pycache__
