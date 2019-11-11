@@ -3,13 +3,6 @@ from node_props import *
 from block_props import *
 
 message_types = ["proposal", "solution"]
-class block_id_generator:
-	def __init__(self):
-		self.current_id = 1
-		self.id_to_node = {}
-
-	def new_id(self):
-		pass
 
 num_highest_nodes_to_return = 10
 
@@ -64,7 +57,6 @@ class cooperative_node(person_node):
 			self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
 		except KeyError:
 			pass
-#			raise KeyError(", ".join([str(item) for item in self.open_problems]))
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())

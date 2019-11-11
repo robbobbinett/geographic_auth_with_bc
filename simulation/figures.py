@@ -1,38 +1,24 @@
-from block_props import fixed_block
+from random import choice
+from tqdm import tqdm
+from node_props import *
+from block_props import *
+from message_props import *
+from figure_props import *
 
-def visualize_subtree(quasi_root):
-	if not isinstance(quasi_root, fixed_block):
-		raise TypeError("quasi_root should be of type fixed_block; currently of type "+str(type(fixed_block)))
+num_nodes = 25
 
-	# Get BFS ordering of blocks by height
-	blocks_by_height = quasi_root.return_bfs()
+chance_the = make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob)
 
-	# Get dictionary storing blocks by given height
-	height_collection = {}
-	for block in blocks_by_height:
-		try:
-			height_collection[block.height].append(block)
-		except KeyError:
-			height_collection[block.height] = []
+# ALlow for random formation of neighbors
+for _ in tqdm(range(1000)):
+	chance_the.run_update()
 
-	# Count number of blocks of given height
-	heights = list(height_collection.keys())
-	heights.sort()
-	height_dict = dict((key, len(height_collection[key])) for key in heights)
+# Bestow blocks and stuff
+for _ in tqdm(range(20)):
+	chance_the.pose_problems()
+	for _ in range(100):
+		chance_the.process_queues()
+	chance_the.bestow_block()
 
-	# Create graphviz nodes for all blocks, starting from quasi_root
-	replace1 = ""
-	for height in heights:
-		width = height_collection[height]
-		for j, block in zip(range(height_dict[height]), range(width)):
-			replace1 += str(block.block.id)+' [pos="'+str((j+1)/width)+','+str(-height)+"!"+'];\n'
-
-	# Draw edges from parents to children
-	for block in blocks_by_height:
-		for child in block.children:
-			replace1 += str(block.block.id) + " -> " + str(child.block.id) + ";\n"
-
-	# Export .dot file
-	with open("figure_templates/local_chain_template.txt", "r") as base_file:
-		with open ("figure_intermediates/local_chains/"+str(quasi_root.block.id)+".dot", "w") as new_file:
-			new_file.write(base_file.read().replace('//replace', replace1))
+test_node = choice(list(chance_the.universe))
+visualize_subtree(test_node.closed_problems[null_block])

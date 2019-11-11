@@ -9,3 +9,5 @@
 *-blx.bib
 *.dvi
 __pycache__
+simulation/figure_intermediates/*
+simulation/figure_outputs/*
