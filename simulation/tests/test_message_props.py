@@ -29,3 +29,33 @@ def test_cooperative_wrapper_doesnt_crash():
 		universe.bestow_block()
 
 	test_mat = universe.output_connections()
+
+def test_specific_cooperative_wrapper():
+	"""
+	Cooperative wrapper with three cooperative nodes;
+	Nodes are forced to all be neighbors (full clique).
+	"""
+	chance_the = make_cooperative_wrapper(100)
+	for node in chance_the.universe:
+		for other_node in chance_the.universe:
+			if node != other_node:
+				node.neighbors.add(other_node)
+
+	# Check that local blockchains are "minimal" to begin with
+	for node in chance_the.universe:
+		root = node.closed_problems[null_block]
+		assert root.block == null_block
+		assert len(root.children) == 0
+
+	# Try alternating node updates and block bestowals
+	chance_the.pose_problems()
+	for _ in range(5):
+		chance_the.process_queues()
+	chance_the.bestow_block()
+	for _ in range(5):
+		chance_the.process_queues()
+	for node in chance_the.universe:
+		root = node.closed_problems[null_block]
+		assert root.block == null_block
+		assert len(root.children) == 1
+		assert len(root.children[0].children) == 0

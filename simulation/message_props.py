@@ -54,8 +54,10 @@ class cooperative_node(person_node):
 		try:
 			self.open_problems.remove(message_instance)
 			free_seed = message_instance.block
-			self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
-		except KeyError:
+			self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
+#			self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
+		except TypeError:
+#		except KeyError:
 			pass
 
 	def get_highest_blocks(self):
