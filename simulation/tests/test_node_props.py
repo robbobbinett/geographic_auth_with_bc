@@ -1,8 +1,5 @@
-import simpy
 from tqdm import tqdm
 from node_props import make_universe_of_nodes
-
-env = simpy.Environment()
 
 def test_universe_wrapper_doesnt_crash():
 	"""
