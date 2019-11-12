@@ -39,26 +39,27 @@ class message:
 class cooperative_node(person_node):
 	def __init__(self, name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 		super().__init__(name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob)
-		self.open_problems = set()
+		self.open_problems = {}
 		self.closed_problems = {null_block: fixed_block(null_block)}
 		self.problem_posed = False
 		self.message_queue =[]
 
 	def find_prob_message_by_author(self, orig_author):
-		for x in self.open_problems:
+		for x in self.open_problems.values():
 			if x.orig_author == orig_author:
 				return x
 		raise KeyError("unrecognized orig_author")
 
 	def add_fixed_block(self, message_instance):
+		free_seed = message_instance.block
 		try:
-			self.open_problems.remove(message_instance)
-			free_seed = message_instance.block
+			del self.open_problems[free_seed]
 			self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
-#			self.closed_problems[free_seed] = fixed_block(free_seed, self.closed_problems[free_seed.parent])
-		except TypeError:
-#		except KeyError:
-			pass
+		except KeyError:
+			if isinstance(free_seed, free_block):
+				pass
+			else:
+				raise TypeError("free_seed should be a free_block instance; currently of type "+str(type(free_seed)))
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
@@ -74,10 +75,10 @@ class cooperative_node(person_node):
 			if message_instance.message_type == "proposal":
 				if message_instance.orig_author == self:
 					pass
-				elif message_instance.orig_author in [x.orig_author for x in self.open_problems]:
+				elif message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
 					pass
 				else:
-					self.open_problems.add(message_instance)
+					self.open_problems[message_instance.block] = message_instance
 					for neigh in self.neighbors:
 						if neigh != self:
 							neigh.message_queue.append(message_instance)
@@ -86,8 +87,8 @@ class cooperative_node(person_node):
 				temp_list = list(self.closed_problems.keys())
 				if message_instance.block not in temp_list:
 					if message_instance.block.parent in temp_list:
-						if message_instance.orig_author in [x.orig_author for x in self.open_problems]:
-							self.open_problems.remove(self.find_prob_message_by_author(message_instance.orig_author))
+						if message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
+							del self.open_problems[self.find_prob_message_by_author(message_instance.orig_author).block]
 						self.add_fixed_block(message_instance)
 						if message_instance.orig_author == self:
 							self.problem_proposed = False
@@ -121,7 +122,7 @@ class cooperative_wrapper(universe_wrapper):
 		cond = False
 		count = 0
 		while not cond:
-			solved_problem = choice(list(winner.open_problems))
+			solved_problem = choice(list(winner.open_problems.values()))
 			if solved_problem.orig_author != winner:
 				cond = True
 			elif count == 1000:
