@@ -48,14 +48,24 @@ def test_specific_cooperative_wrapper():
 		assert len(root.children) == 0
 
 	# Try alternating node updates and block bestowals
+	for node in chance_the.universe:
+		assert len(node.open_problems) == 0
 	chance_the.pose_problems()
+	for node in chance_the.universe:
+		assert len(node.open_problems) == 1
+		assert list(node.open_problems.values())[0].orig_author == node
 	for _ in range(5):
 		chance_the.process_queues()
+	for node in chance_the.universe:
+		assert len(node.open_problems) == 3, "There are "+str(len(node.open_problems))+" open problems:"+"\n".join(str(problem))
+		for other_node in chance_the.universe:
+			assert other_node in [message.orig_author for message in node.open_problems.values()]
 	chance_the.bestow_block()
 	for _ in range(5):
 		chance_the.process_queues()
 	for node in chance_the.universe:
 		root = node.closed_problems[null_block]
 		assert root.block == null_block
+		assert len(root.children) != 0
 		assert len(root.children) == 1
 		assert len(root.children[0].children) == 0

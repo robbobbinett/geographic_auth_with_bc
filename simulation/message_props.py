@@ -36,6 +36,8 @@ class message:
 			raise TypeError("other must be of type message; currently of type "+str(type(other))+".")
 		return self.block == other.block and self.message_type == other.message_type and self.orig_author == other.orig_author
 
+	def __str__(self)
+
 class cooperative_node(person_node):
 	def __init__(self, name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 		super().__init__(name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob)
@@ -138,6 +140,7 @@ class cooperative_wrapper(universe_wrapper):
 				node.problem_posed = True
 				new_free_block = free_block(self.get_next_block_id(), node.get_highest_blocks()[0].block)
 				prob_message = message(new_free_block, "proposal", node)
+				node.open_problems[new_free_block] = prob_message
 				for neigh in node.neighbors:
 					neigh.message_queue.append(prob_message)
 
