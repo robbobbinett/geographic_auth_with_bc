@@ -1,5 +1,7 @@
 \documentclass{beamer}
 
+\usepackage{tikz}
+
 \begin{document}
 
 \title{Frequent-Collision Blockchains for Local Geographic Authentication}
@@ -34,6 +36,46 @@
 
 \begin{frame}
 	\frametitle{Blockchains to the rescue!}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\hfil
+			\begin{tikzpicture}[
+					every node/.style = {
+						shape = rectangle,
+						draw,
+						minimum width = 1cm,
+						minimum height = 0.5cm,
+					},
+			]
+				\draw (0, 0) node (a1) {};
+				\draw (0, 1) node (a2) [rectangle] {};
+				\draw (0, 2) node (a3) [rectangle] {};
+				\draw (1, 3) node (b4) [rectangle] {};
+				\draw (1, 4) node (b5) [rectangle] {};
+				\draw (1, 5) node (b6) [rectangle] {};
+				\draw (-1, 3) node (c4) [rectangle] {};
+				\draw (-1, 4) node (c5) [rectangle] {};
+				\draw (-1, 5) node (c6) [rectangle] {};
+
+				\draw (a1) -- (a2);
+				\draw (a2) -- (a3);
+				\draw (a3) -- (b4);
+				\draw (b4) -- (b5);
+				\draw (b5) -- (b6);
+				\draw (a3) -- (c4);
+				\draw (c4) -- (c5);
+				\draw (c5) -- (c6);
+			\end{tikzpicture}
+		\end{column}
+
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item Each smartphone is a node
+				\item Frequent blockchain forks
+				\item Each chain represents one geographical location
+			\end{itemize}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \begin{frame}
