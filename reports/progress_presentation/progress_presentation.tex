@@ -1,6 +1,7 @@
 \documentclass{beamer}
 
 \usepackage{tikz}
+\usepackage{graphicx}
 
 \begin{document}
 
@@ -36,6 +37,37 @@
 				\item We want to ask, \textbf{``Where have you been in the recent past, and do others who have been there corroborate your story?''}
 			\end{itemize}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Blockchain as candidate for decentralized ledger}
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{decker_figures/decker_3.png}
+				\includegraphics[width=\textwidth]{decker_figures/decker_5.png}
+				\includegraphics[width=\textwidth]{decker_figures/decker_7.png}
+			\end{figure}
+		\end{column}
+
+		\begin{column}{0.7\textwidth}
+			\begin{itemize}
+				\item In Bitcoin network, the time between creation of subsequent blocks follows an exponential distribution
+				\begin{itemize}
+					\item $p(t_{i+1}-t_i)=\lambda e^{-\lambda\left(t_{i+1}-t_i\right)}$
+				\end{itemize}
+				\item The rate of block creation is controlled s.t. \textbf{forks} occur only in local chains
+				\begin{itemize}
+					\item These forks are resolved in small timescales with high probability
+				\end{itemize}
+				\item Propagating false blocks so as to adversarially control the global chain is (asymptotically) preventative as the chain grows
+				\begin{itemize}
+					\item Why an adversary has to control approx. 50\% of nodes to invalidate the ledger in case of Bitcoin
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \begin{frame}
