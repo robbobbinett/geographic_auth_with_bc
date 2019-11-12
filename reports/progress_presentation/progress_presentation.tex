@@ -40,7 +40,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Blockchain as candidate for decentralized ledger}
+	\frametitle{Blockchain as decentralized ledger (Decker 2013)}
 	\begin{columns}
 		\begin{column}{0.3\textwidth}
 			\begin{figure}
@@ -73,7 +73,7 @@
 \begin{frame}
 	\frametitle{Blockchains to the rescue!}
 	\begin{columns}
-		\begin{column}{0.5\textwidth}
+		\begin{column}{0.3\textwidth}
 			\hfil
 			\begin{tikzpicture}[
 					every node/.style = {
@@ -104,11 +104,19 @@
 			\end{tikzpicture}
 		\end{column}
 
-		\begin{column}{0.5\textwidth}
+		\begin{column}{0.7\textwidth}
 			\begin{itemize}
 				\item Each smartphone is a node
-				\item Frequent blockchain forks
-				\item Each chain represents one geographical location
+				\item \textbf{IDEA:} Create blocks at an exacerbatory rate
+				\begin{itemize}
+					\item \textbf{Local forks} still mitigated in short timescales
+					\item \textbf{Global forks} forced to occur with high probability
+					\item Each chain represents one geographical location
+				\end{itemize}
+				\item \textbf{EXPECTATION:} each \textbf{orphan chain} corresponds to a specific geographic clique
+				\begin{itemize}
+					\item While there is no global consensus, the rate of block creation enforces (locally) a decentralized ledger which requires approx. 50\% of local nodes to control
+				\end{itemize}
 			\end{itemize}
 		\end{column}
 	\end{columns}
