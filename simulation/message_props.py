@@ -36,7 +36,8 @@ class message:
 			raise TypeError("other must be of type message; currently of type "+str(type(other))+".")
 		return self.block == other.block and self.message_type == other.message_type and self.orig_author == other.orig_author
 
-	def __str__(self)
+	def __str__(self):
+		return "\n".join(str(item) for item in [self.block, self.message_type, self.orig_author])
 
 class cooperative_node(person_node):
 	def __init__(self, name, universe, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):

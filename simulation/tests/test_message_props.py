@@ -57,7 +57,7 @@ def test_specific_cooperative_wrapper():
 	for _ in range(5):
 		chance_the.process_queues()
 	for node in chance_the.universe:
-		assert len(node.open_problems) == 3, "There are "+str(len(node.open_problems))+" open problems:"+"\n".join(str(problem))
+		assert len(node.open_problems) == 3, "There are "+str(len(node.open_problems))+" open problems:"+"\n".join(str(problem) for problem in node.open_problems)
 		for other_node in chance_the.universe:
 			assert other_node in [message.orig_author for message in node.open_problems.values()]
 	chance_the.bestow_block()
