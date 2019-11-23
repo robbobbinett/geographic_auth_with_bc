@@ -35,7 +35,7 @@ def test_specific_cooperative_wrapper():
 	Cooperative wrapper with three cooperative nodes;
 	Nodes are forced to all be neighbors (full clique).
 	"""
-	chance_the = make_cooperative_wrapper(100)
+	chance_the = make_cooperative_wrapper(3)
 	for node in chance_the.universe:
 		for other_node in chance_the.universe:
 			if node != other_node:
@@ -66,6 +66,6 @@ def test_specific_cooperative_wrapper():
 	for node in chance_the.universe:
 		root = node.closed_problems[null_block]
 		assert root.block == null_block
-		assert len(root.children) != 0
-		assert len(root.children) == 1
+		assert len(root.children) == 1, "For node "+str(node)+", root.children is of length "+str(len(root.children))+" and node.closed_problems is of length "+str(len(node.closed_problems))+". Further, node.message_queue is of length "+str(len(node.message_queue))+". Further, the top message in node.message_queue looks like "+str(node.message_queue[0])
 		assert len(root.children[0].children) == 0
+		assert len(node.message_queue) == 0

@@ -76,6 +76,8 @@ class cooperative_node(person_node):
 				raise TypeError("message_instance should be of type message; currently of type "+str(type(message_instance))+".")
 
 			if message_instance.message_type == "proposal":
+				if message_instance.block in self.closed_problems:
+					pass
 				if message_instance.orig_author == self:
 					pass
 				elif message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
@@ -90,8 +92,6 @@ class cooperative_node(person_node):
 				temp_list = list(self.closed_problems.keys())
 				if message_instance.block not in temp_list:
 					if message_instance.block.parent in temp_list:
-						if message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
-							del self.open_problems[self.find_prob_message_by_author(message_instance.orig_author).block]
 						self.add_fixed_block(message_instance)
 						if message_instance.orig_author == self:
 							self.problem_proposed = False
