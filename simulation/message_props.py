@@ -78,11 +78,11 @@ class cooperative_node(person_node):
 			if message_instance.message_type == "proposal":
 				if message_instance.block in self.closed_problems:
 					pass
-				if message_instance.orig_author == self:
-					pass
-				elif message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
+				elif message_instance.orig_author == self:
 					pass
 				else:
+					if message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
+						del self.open_problems[self.find_prob_message_by_author(message_instance.orig_author).block]
 					self.open_problems[message_instance.block] = message_instance
 					for neigh in self.neighbors:
 						if neigh != self:
@@ -117,20 +117,31 @@ class cooperative_wrapper(universe_wrapper):
 		count = 0
 		while not cond:
 			winner = choice(list(self.universe))
-			if len(winner.open_problems) != 0:
-				cond = True
-			elif count == 1000:
-				raise ValueError("Excessive runtime in first while loop of bestow_block")
+			if len(winner.open_problems) == 0:
+				pass
+			else:
+				solved_problem = choice(list(winner.open_problems.values()))
+				if solved_problem.orig_author != winner:
+					cond = True
+			if count == 1000:
+				raise ValueError("Excessive runtime in second while loop of bestow_block")
 			count += 1
-		cond = False
-		count = 0
-		while not cond:
-			solved_problem = choice(list(winner.open_problems.values()))
-			if solved_problem.orig_author != winner:
-				cond = True
-			elif count == 1000:
-				raise ValueError("Excessive runtime in first while loop of bestow_block")
-			count += 1
+#		while not cond:
+#			winner = choice(list(self.universe))
+#			if len(winner.open_problems) != 0:
+#				cond = True
+#			elif count == 1000:
+#				raise ValueError("Excessive runtime in first while loop of bestow_block")
+#			count += 1
+#		cond = False
+#		count = 0
+#		while not cond:
+#			solved_problem = choice(list(winner.open_problems.values()))
+#			if solved_problem.orig_author != winner:
+#				cond = True
+#			elif count == 1000:
+#				raise ValueError("Excessive runtime in second while loop of bestow_block")
+#			count += 1
 		winner.add_fixed_block(solved_problem)
 		for neigh in winner.neighbors:
 			neigh.message_queue.append(message(solved_problem.block, "solution", solved_problem.orig_author, winner))
