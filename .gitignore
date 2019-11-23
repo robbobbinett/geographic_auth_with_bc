@@ -8,6 +8,10 @@
 *.run.xml
 *-blx.bib
 *.dvi
+*.nav
+*.out
+*.snm
+*.toc
 __pycache__
 simulation/figure_intermediates/*
 simulation/figure_outputs/*
