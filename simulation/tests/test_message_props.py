@@ -23,7 +23,7 @@ def test_cooperative_wrapper_doesnt_crash():
 		pass
 
 	# Try alternating node updates and block bestowals
-	for _ in tqdm(range(1000)):
+	for _ in tqdm(range(100)):
 		universe.pose_problems()
 		for _ in range(100):
 			universe.process_queues()
@@ -67,11 +67,10 @@ def test_specific_cooperative_wrapper():
 		for other_node in chance_the.universe:
 			assert other_node in [message.orig_author for message in node.open_problems.values()]
 	chance_the.bestow_block()
-	for _ in range(5):
+	for _ in range(100):
 		chance_the.process_queues()
 	for node in chance_the.universe:
 		root = node.closed_problems[null_block]
 		assert root.block == null_block
 		assert len(root.children) == 1, "For node "+str(node)+", root.children is of length "+str(len(root.children))+" and node.closed_problems is of length "+str(len(node.closed_problems))+". Further, node.message_queue is of length "+str(len(node.message_queue))+". Further, the top message in node.message_queue looks like "+str(node.message_queue[0])
 		assert len(root.children[0].children) == 0
-		assert len(node.message_queue) == 0
