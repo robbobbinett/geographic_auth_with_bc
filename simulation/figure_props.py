@@ -6,7 +6,6 @@ def visualize_subtree(quasi_root):
 
 	# Get BFS ordering of blocks by height
 	blocks_by_height = quasi_root.return_bfs()
-	print(blocks_by_height)
 
 	# Get dictionary storing blocks by given height
 	height_collection = {}
@@ -14,7 +13,7 @@ def visualize_subtree(quasi_root):
 		try:
 			height_collection[block.height].append(block)
 		except KeyError:
-			height_collection[block.height] = []
+			height_collection[block.height] = [block]
 
 	# Count number of blocks of given height
 	heights = list(height_collection.keys())
@@ -26,7 +25,7 @@ def visualize_subtree(quasi_root):
 	for height in heights:
 		width = height_dict[height]
 		for j, block in zip(range(width), height_collection[height]):
-			replace1 += str(block.block.id)+' [pos="'+str((j+1)/width)+','+str(-height)+"!"+'];\n'
+			replace1 += str(block.block.id)+' [pos="'+str((j+1)/width)+','+str(-height)+'!"];\n'
 
 	# Draw edges from parents to children
 	for block in blocks_by_height:

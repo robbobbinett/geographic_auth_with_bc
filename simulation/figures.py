@@ -14,11 +14,13 @@ for _ in tqdm(range(1000)):
 	chance_the.run_update()
 
 # Bestow blocks and stuff
-for _ in tqdm(range(20)):
+for _ in tqdm(range(100)):
 	chance_the.pose_problems()
 	for _ in range(100):
 		chance_the.process_queues()
 	chance_the.bestow_block()
+	for _ in range(100):
+		chance_the.process_queues()
 
 test_node = choice(list(chance_the.universe))
 visualize_subtree(test_node.closed_problems[null_block])
