@@ -23,7 +23,6 @@ def test_free_block_creation():
 	assert temp1 != temp2
 
 def test_fixed_block_tree_formation():
-#	assert True
 	"""
 	Test that the fixed_block primitive creates trees in the expected
 	fashion; tested using toy tree examples.
