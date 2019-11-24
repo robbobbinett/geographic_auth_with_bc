@@ -1,4 +1,5 @@
 from message_props import *
+from node_extensions import *
 from tqdm import tqdm
 import numpy as np
 
@@ -74,3 +75,22 @@ def test_specific_cooperative_wrapper():
 		assert root.block == null_block
 		assert len(root.children) == 1, "For node "+str(node)+", root.children is of length "+str(len(root.children))+" and node.closed_problems is of length "+str(len(node.closed_problems))+". Further, node.message_queue is of length "+str(len(node.message_queue))+". Further, the top message in node.message_queue looks like "+str(node.message_queue[0])
 		assert len(root.children[0].children) == 0
+
+def test_full_clique():
+	"""
+	Test full clique of three nodes.
+	"""
+	num_nodes = 3
+	chance_the = make_full_clique(num_nodes)
+
+	for j in tqdm(range(10)):
+		chance_the.pose_problems()
+		for _ in range(10):
+			chance_the.process_queues()
+		for node in chance_the.universe:
+			assert len(node.open_problems) == 3, "In iteration "+str(j)+", found that a node had this many open problems: "+str(len(node.open_problems))+". Of these open problems, this many were self: "+str(len([1 for prob in node.open_problems.values() if prob.orig_author == node]))
+		chance_the.bestow_block()
+		for _ in range(10):
+			chance_the.process_queues()
+		for node in chance_the.universe:
+			assert len(node.closed_problems) == j+2, "In iteration "+str(j)+", found that a node had this many closed problems: "+str(len(node.closed_problems))+". Of these, the heights are: "+", ".join([str(item.height) for item in node.closed_problems.values()])

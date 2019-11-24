@@ -66,7 +66,7 @@ class cooperative_node(person_node):
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
-		blocks.sort(key=lambda x: x.height)
+		blocks.sort(key=lambda x: x.height, reverse=True)
 		return blocks[:num_highest_nodes_to_return]
 
 	def process_queued_message(self):
@@ -94,10 +94,9 @@ class cooperative_node(person_node):
 					if message_instance.block.parent in temp_list:
 						self.add_fixed_block(message_instance)
 						if message_instance.orig_author == self:
-							self.problem_proposed = False
+							self.problem_posed = False
 						for neigh in self.neighbors:
-							if neigh != self:
-								neigh.message_queue.append(message_instance)
+							neigh.message_queue.append(message_instance)
 
 class cooperative_wrapper(universe_wrapper):
 	def __init__(self, universe, percentage_update_action=0.1):
@@ -142,6 +141,8 @@ class cooperative_wrapper(universe_wrapper):
 #			elif count == 1000:
 #				raise ValueError("Excessive runtime in second while loop of bestow_block")
 #			count += 1
+		del winner.open_problems[solved_problem.block]
+		winner.problem_proposed = False
 		winner.add_fixed_block(solved_problem)
 		for neigh in winner.neighbors:
 			neigh.message_queue.append(message(solved_problem.block, "solution", solved_problem.orig_author, winner))
