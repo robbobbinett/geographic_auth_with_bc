@@ -88,9 +88,19 @@ def test_full_clique():
 		for _ in range(10):
 			chance_the.process_queues()
 		for node in chance_the.universe:
+			assert len(node.message_queue) == 0, "Though a message queue should be empty, it contains messages of types: "+", ".join(item.message_type for item in node.message_queue)
+		for node in chance_the.universe:
+			for other in chance_the.universe:
+				for key in node.open_problems.keys():
+					assert key in other.open_problems, "The open-problem key "+str(key)+" is in node "+str(node)+" but not node "+str(other)
+		for node in chance_the.universe:
 			assert len(node.open_problems) == 3, "In iteration "+str(j)+", found that a node had this many open problems: "+str(len(node.open_problems))+". Of these open problems, this many were self: "+str(len([1 for prob in node.open_problems.values() if prob.orig_author == node]))
 		chance_the.bestow_block()
 		for _ in range(10):
 			chance_the.process_queues()
+		for node in chance_the.universe:
+			for other in chance_the.universe:
+				for key in node.closed_problems.keys():
+					assert key in other.closed_problems, "The closed-problem key "+str(key)+" is in node "+str(node)+" but not node "+str(other)
 		for node in chance_the.universe:
 			assert len(node.closed_problems) == j+2, "In iteration "+str(j)+", found that a node had this many closed problems: "+str(len(node.closed_problems))+". Of these, the heights are: "+", ".join([str(item.height) for item in node.closed_problems.values()])
