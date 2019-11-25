@@ -19,7 +19,10 @@ class free_block:
 		self.parent = parent
 
 	def __str__(self):
-		return "Free Block\nID: "+str(self.id)+"\nParent ID: "+str(self.parent.id)+"\n"
+		try:
+			return "Free Block\nID: "+str(self.id)+"\nParent ID: "+str(self.parent.id)+"\n"
+		except AttributeError:
+			return "null_block"
 
 	def __disp__(self):
 		return str(self)
@@ -107,11 +110,17 @@ class fixed_block:
 
 	def __eq__(self, other):
 		"""
-		self == other iff self.block == other.block
+		self == other iff self.block == other.block and self.parent == other.parent
 		"""
 		if not isinstance(other, fixed_block):
 			raise TypeError("other should be of type fixed_block; currently of type "+str(type(other))+".")
 		return self.block == other.block
+
+	def __hash__(self):
+		"""
+		Make hashable based on string typecasts of self.block and self.parent.block
+		"""
+		return hash(str(self.block))
 
 	def return_bfs(self, list_to_return=None, block_queue=None):
 		"""

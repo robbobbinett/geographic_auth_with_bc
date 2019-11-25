@@ -4,8 +4,6 @@ from block_props import *
 
 message_types = ["proposal", "solution"]
 
-num_highest_nodes_to_return = 10
-
 class message:
 	def __init__(self, block, message_type, orig_author, final_author=None):
 		if not isinstance(block, free_block):
@@ -64,7 +62,7 @@ class cooperative_node(person_node):
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
 		blocks.sort(key=lambda x: x.height, reverse=True)
-		return blocks[:num_highest_nodes_to_return]
+		return [block for block in blocks if block.height == blocks[0].height]
 
 	def process_queued_message(self):
 		if len(self.message_queue) != 0:
@@ -143,6 +141,18 @@ class cooperative_wrapper(universe_wrapper):
 	def process_queues(self):
 		for node in self.universe:
 			node.process_queued_message()
+
+	def count_num_longest_chains(self):
+		# NOTE: Each unique chain can be uniquely identified by its highest block's ID
+		highest_block_counter = {}
+		for node in self.universe:
+			highest_blocks = node.get_highest_blocks()
+			for block in highest_blocks:
+				try:
+					highest_block_counter[block] += 1
+				except KeyError:
+					highest_block_counter[block] = 1
+		return highest_block_counter
 
 def make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 	universe = set()

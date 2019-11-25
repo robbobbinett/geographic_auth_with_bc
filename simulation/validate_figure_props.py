@@ -91,3 +91,45 @@ for lagrange in ranges:
 					assert key in other.closed_problems, "In round "+str(j)+", the closed-problem key "+str(key)+" is in node "+str(node)+" but not node "+str(other)
 
 	visualize_subtree(list(chance_the.universe)[0].closed_problems[null_block], filename="test_"+str(lagrange))
+
+"""
+Test colormap_like plot
+"""
+ranges = [10, 50, 100]
+
+for lagrange in ranges:
+	num_nodes = 3
+	chance_the = make_full_clique(num_nodes)
+	for node in chance_the.universe:
+		assert len(node.neighbors) == 2
+		assert len(node.open_problems) == 0
+		assert len(node.closed_problems) == 1
+
+	list_of_dicts = []
+
+	for j in tqdm(range(lagrange)):
+
+		chance_the.pose_problems()
+		for _ in range(10):
+			chance_the.process_queues()
+			list_of_dicts.append(get_longest_chain_hist(chance_the))
+		for node in chance_the.universe:
+			assert len(node.message_queue) == 0, "In round "+str(j)+", though a message queue should be empty, it contains messages of types: "+", ".join(item.message_type for item in node.message_queue)
+		for node in chance_the.universe:
+			for other in chance_the.universe:
+				for key in node.open_problems.keys():
+					assert key in other.open_problems, "In round "+str(j)+", the open-problem key "+str(key)+" is in node "+str(node)+" but not node "+str(other)
+		for node in chance_the.universe:
+			assert len(node.open_problems) == num_nodes, "In iteration "+str(j)+", found that a node had this many open problems: "+str(len(node.open_problems))+". Of these open problems, this many were self: "+str(len([1 for prob in node.open_problems.values() if prob.orig_author == node]))
+		chance_the.bestow_block()
+		for _ in range(10):
+			chance_the.process_queues()
+			list_of_dicts.append(get_longest_chain_hist(chance_the))
+		for k, node in enumerate(chance_the.universe):
+			assert len(node.closed_problems) == j+2, "In iteration "+str(j)+", found that a node had this many closed problems: "+str(len(node.closed_problems))+". Of these, the heights are: "+", ".join([str(item.height) for item in node.closed_problems.values()])+". This was the "+str(k)+"th node checked."
+		for node in chance_the.universe:
+			for other in chance_the.universe:
+				for key in node.closed_problems.keys():
+					assert key in other.closed_problems, "In round "+str(j)+", the closed-problem key "+str(key)+" is in node "+str(node)+" but not node "+str(other)
+
+	heatmap_from_hists(list_of_dicts, array_of_times=np.array([(j+1) for j in range(len(list_of_dicts))]))
