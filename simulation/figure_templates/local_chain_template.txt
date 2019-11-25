@@ -2,7 +2,7 @@ digraph test{
 	ratio = fill;
 	graph [ fontsize=36, label="", fontcolor=white];
 	style=solid;
-	rankdir=LR;
+	rankdir=BT;
 	subgraph cluster_1 {
 		graph [ label="NAME", fontcolor=black];
 		style=solid;

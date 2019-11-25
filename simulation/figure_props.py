@@ -1,8 +1,11 @@
 from block_props import fixed_block
 
-def visualize_subtree(quasi_root, filename=None):
+def visualize_subtree(quasi_root, filename=None, scale=None):
 	if not isinstance(quasi_root, fixed_block):
 		raise TypeError("quasi_root should be of type fixed_block; currently of type "+str(type(fixed_block)))
+
+	if not scale:
+		scale = 3.0
 
 	# Get BFS ordering of blocks by height
 	blocks_by_height = quasi_root.return_bfs()
@@ -25,7 +28,7 @@ def visualize_subtree(quasi_root, filename=None):
 	for height in heights:
 		width = height_dict[height]
 		for j, block in zip(range(width), height_collection[height]):
-			replace1 += str(block.block.id)+' [pos="'+str((j+1)/width)+','+str(-height)+'!"];\n'
+			replace1 += str(block.block.id)+' [pos="'+str(scale*(j+1)/width)+','+str(-scale*height)+'!"];\n'
 
 	# Draw edges from parents to children
 	for block in blocks_by_height:
