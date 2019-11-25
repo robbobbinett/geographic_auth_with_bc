@@ -4,6 +4,7 @@ mkdir figure_intermediates
 mkdir figure_intermediates/local_chains
 mkdir figure_outputs
 mkdir figure_outputs/local_chains
+mkdir figure_outputs/global_chains
 
 python3 validate_figure_props.py
 

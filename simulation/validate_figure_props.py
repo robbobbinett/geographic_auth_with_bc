@@ -95,7 +95,7 @@ for lagrange in ranges:
 """
 Test colormap_like plot
 """
-ranges = [10, 50]
+ranges = [10, 50, 100]
 
 for lagrange in ranges:
 	num_nodes = 30
@@ -118,4 +118,7 @@ for lagrange in ranges:
 			chance_the.process_queues()
 			list_of_dicts.append(get_longest_chain_hist(chance_the))
 
-	heatmap_from_hists(list_of_dicts, array_of_times=np.array([(j+1) for j in range(len(list_of_dicts))]))
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	heatmap_from_hists(list_of_dicts, array_of_times=np.array([(j+1) for j in range(len(list_of_dicts))]), ax=ax)
+	fig.savefig("figure_outputs/global_chains/"+str(lagrange)+".pdf")

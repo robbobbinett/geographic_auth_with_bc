@@ -66,7 +66,7 @@ def get_longest_chain_hist(coop_wrapper):
 		num_counter[key] /= tot_count
 	return num_counter
 
-def heatmap_from_hists(list_of_dicts, array_of_times=None, filename=None, cm_name="hot", ax=None):
+def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=None):
 	if not isinstance(list_of_dicts, list):
 		raise TypeError("list_of_dicts should be of type list; currently of type"+str(type(list_of_dicts)))
 	if not all(isinstance(item, dict) for item in list_of_dicts):
@@ -78,9 +78,6 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, filename=None, cm_nam
 		assert len(list_of_dicts) == len(array_of_times), "list_of_dicts and array_of_times must be of equal length"
 	else:
 		array_of_times = np.array(list(range(len(list_of_dicts))))
-
-	if not filename:
-		filename = "chain_dominance_over_time"
 
 	# Adapted from Yann's answer to the following StackOverflow post:
 	# https://stackoverflow.com/questions/8931268/using-colormaps-to-set-color-of-line-in-matplotlib
