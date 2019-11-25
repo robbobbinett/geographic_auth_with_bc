@@ -96,8 +96,10 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, filename=None, cm_nam
 		ax = fig.add_subplot(111)
 	for time, book in zip(array_of_times, list_of_dicts):
 		for num in book.keys():
-#			ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker="s")
-			ax.plot([time], [num], color="k", marker="s")
+			ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker=".")
+	ax.set_xlabel("Timestep")
+	ax.set_ylabel("Number of Nodes Adhering to Chain")
+	ax.set_title("Relative Frequency of Different Chain-Adherences")
 
 	if show_fig:
 		plt.show()
