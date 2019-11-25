@@ -57,12 +57,9 @@ class cooperative_node(person_node):
 		free_seed = message_instance.block
 		try:
 			del self.open_problems[free_seed]
-			self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
 		except KeyError:
-			if isinstance(free_seed, free_block):
-				pass
-			else:
-				raise TypeError("free_seed should be a free_block instance; currently of type "+str(type(free_seed)))
+			raise KeyError("self.open_problems have the following keys: "+", ".join(str(key) for key in self.open_problems.keys())+". The unrecognized key was: "+str(free_seed)+".")
+		self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
@@ -80,6 +77,8 @@ class cooperative_node(person_node):
 					pass
 				elif message_instance.orig_author == self:
 					pass
+				elif message_instance.block in self.open_problems:
+					pass
 				else:
 					if message_instance.orig_author in [x.orig_author for x in self.open_problems.values()]:
 						del self.open_problems[self.find_prob_message_by_author(message_instance.orig_author).block]
@@ -90,7 +89,8 @@ class cooperative_node(person_node):
 
 			if message_instance.message_type == "solution":
 				temp_list = list(self.closed_problems.keys())
-				if message_instance.block not in temp_list:
+				other_temp_list = list(self.open_problems.keys())
+				if message_instance.block not in temp_list and message_instance.block in other_temp_list:
 					if message_instance.block.parent in temp_list:
 						self.add_fixed_block(message_instance)
 						if message_instance.orig_author == self:
@@ -125,23 +125,6 @@ class cooperative_wrapper(universe_wrapper):
 			if count == 1000:
 				raise ValueError("Excessive runtime in second while loop of bestow_block")
 			count += 1
-#		while not cond:
-#			winner = choice(list(self.universe))
-#			if len(winner.open_problems) != 0:
-#				cond = True
-#			elif count == 1000:
-#				raise ValueError("Excessive runtime in first while loop of bestow_block")
-#			count += 1
-#		cond = False
-#		count = 0
-#		while not cond:
-#			solved_problem = choice(list(winner.open_problems.values()))
-#			if solved_problem.orig_author != winner:
-#				cond = True
-#			elif count == 1000:
-#				raise ValueError("Excessive runtime in second while loop of bestow_block")
-#			count += 1
-		del winner.open_problems[solved_problem.block]
 		winner.problem_proposed = False
 		winner.add_fixed_block(solved_problem)
 		for neigh in winner.neighbors:
