@@ -5,7 +5,7 @@ mkdir figure_intermediates/local_chains
 mkdir figure_outputs
 mkdir figure_outputs/local_chains
 
-python3 test_figure_props.py
+python3 validate_figure_props.py
 
 commandOutput="$(python3 figure_templates/get_dots_for_chains.py)"
 
