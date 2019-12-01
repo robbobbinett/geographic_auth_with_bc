@@ -1,0 +1,46 @@
+\section{Connectivity Model}
+
+The protocol runs over an ad-hoc network,
+where each node is a smartphone
+and the nodes connect wirelessly to each other.
+In the simulation,
+we modelled this underlying infrastructure using a dynamic random graph.
+
+The most commonly studied model of random graphs is the Erdős--Rényi model.
+Given parameters $n$ and $p$,
+the model generates a graph with $n$ vertices
+and each edge is added to the graph independently with probability $p$.
+This model, however,
+has no information about node positions,
+which makes it a poor representative of ad-hoc networks~\cite{Hekmat2006}.
+
+Instead,
+we will use random geometric graphs as our connectivity model.
+Given parameters $n$ and $r$,
+the model randomly chooses $n$ points in the unit square $[0, 1]^2$,
+uniformly and independently,
+and adds an edge between each points which are at a distance $r$ from each other.
+Random geometric graphs
+have been proposed as accurate models for ad-hoc networks~\cite{Kenniche2010,Hekmat2006}.
+
+Nodes which are close to the borders of the unit square
+are affected by the so-called ``border effect'':
+if the distance of a node is smaller than $r$
+from any of the borders,
+then part of the ``area of coverage'' for this node
+(that is,
+the area which may contain adjacent vertices)
+lies outside of the unit square.
+This effectively truncates the degree of that node,
+because no nodes are generated outside the unit square.
+For smaller values of $r$ this effect is less pronounced,
+because less nodes are affected.
+
+In order to avoid the border effect,
+we will use toroidal distances instead~\cite{Kenniche2010,Hekmat2006}.
+The nodes will be placed on the unit torus $[0, 1)^2$
+and distances will be measured according to a toroidal metric.
+So,
+for example,
+for $r = 0.1$,
+the nodes at $(0.01, 0.01)$ and $(0.99, 0.99)$ are adjacent in this metric.
