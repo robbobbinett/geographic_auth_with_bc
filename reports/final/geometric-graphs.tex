@@ -44,3 +44,46 @@ So,
 for example,
 for $r = 0.1$,
 the nodes at $(0.01, 0.01)$ and $(0.99, 0.99)$ are adjacent in this metric.
+
+We will denote
+the toroidal random geometric graph model with parameters $n$ and $r$
+by $T(n, r)$.
+
+We want to model the underlying infrastructure to be dynamic,
+to represent the fact that nodes move around in the world.
+That is,
+we will have a sequence $G_0, G_1, \dots$ of graphs over the same set of nodes,
+which represent the evolution of the network.
+
+Using the toroidal has the benefit that
+if the nodes move around randomly, but independently,
+then each resulting graph is still a geometric graph.
+More precisely,
+
+\begin{proposition}
+	Let $G_0 \in T(n, r)$ be a random graph.
+	For each $i \in \mathbb N$,
+	define $G_{i+1}$ by translating each vertex $v \in V(G_i)$
+	by a random translation vector $u_v$,
+	chosen independently according to some distribution,
+	and connecting vertices which are within a distance of $r$ of each other.
+	Then, for each $i$,
+	the graph $G_i$ is a random geometric graph distributed according to $T(n, r)$.
+\end{proposition}
+
+Note that each $G_i$ will be distributed according to $T(n, r)$,
+regardless of the distribution of the translation vectors $u_v$
+(as long as each translation vector is chosen independently,
+and irrespective of the vector $v$).
+
+% TODO: Proof?
+
+However,
+there are little literature using several different translation parameters.
+We will use a simplified version of the dynamic model of~\cite{Diaz2008}.
+Fixed a parameter $s$,
+$G_{i+1}$ is generated from $G_i$
+by translating each vertex by a vector with norm $s$,
+chosen uniformly among all $s$-normed vectors in $\mathbb R^2$.
+
+% TODO: Picture?
