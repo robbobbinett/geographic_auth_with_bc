@@ -43,7 +43,7 @@ class cooperative_node(person_node):
 		self.open_problems = {}
 		self.closed_problems = {null_block: fixed_block(null_block)}
 		self.problem_posed = False
-		self.message_queue =[]
+		self.message_queue = []
 
 	def find_prob_message_by_author(self, orig_author):
 		for x in self.open_problems.values():

@@ -109,3 +109,94 @@ def test_fixed_block_tree_formation():
 	assert len(list_of_nodes) == 16
 	for j in range(len(list_of_nodes)-1):
 		assert list_of_nodes[j].height <= list_of_nodes[j+1].height
+
+def test_union_tree_creation():
+	# Create the following tree...
+	# o  o  o
+	# |  | /
+	# o  o
+	# |  |
+	# o  o
+	# | /
+	# o
+	# |
+	# o
+	#
+	# As the union of the following trees by the function union_of_local_chains:
+	# o
+	# |
+	# o
+	# |
+	# o
+	# |
+	# o
+	# |
+	# o
+	#
+	# ----------
+	#
+	#    o
+	#    |
+	#    o
+	#    |
+	#    o
+	#   /
+	# o
+	# |
+	# o
+	#
+	# ----------
+	#
+	#       o
+	#      /
+	#    o
+	#    |
+	#    o
+	#   /
+	# o
+	# |
+	# o
+
+	# Create the tree expected from the union_of_local_chains function
+	solution_blocks = {0: fixed_block(null_block)}
+	prev_block = solution_blocks[0]
+	for j in range(4):
+		prev_block = prev_block.add_child(free_block(j+1, prev_block.block))
+		solution_blocks[j+1] = prev_block
+
+	prev_block = solution_blocks[1]
+	for j in range(5, 8):
+		prev_block = prev_block.add_child(free_block(j, prev_block.block))
+		solution_blocks[j] = prev_block
+
+	prev_block = solution_blocks[6]
+	prev_block = prev_block.add_child(free_block(8, prev_block.block))
+
+	# Create each of the local chains to be input into union_of_local_chains
+	blocks_1 = {0: fixed_block(null_block)}
+	prev_block = blocks_1[0]
+	for j in range(4):
+		prev_block = prev_block.add_child(free_block(j+1, prev_block.block))
+		blocks_1[j+1] = prev_block
+
+	blocks_2 = {0: fixed_block(null_block)}
+	prev_block = blocks_2[0]
+	prev_block = prev_block.add_child(free_block(1, prev_block.block))
+	blocks_2[1] = prev_block
+	for j in range(5, 8):
+		prev_block = prev_block.add_child(free_block(j, prev_block.block))
+		blocks_2[j] = prev_block
+
+	blocks_3 = {0: fixed_block(null_block)}
+	prev_block = blocks_3[0]
+	prev_block = prev_block.add_child(free_block(1, prev_block.block))
+	blocks_3[1] = prev_block
+	for j in range(5, 7):
+		prev_block = prev_block.add_child(free_block(j, prev_block.block))
+		blocks_3[j] = prev_block
+	prev_block = prev_block.add_child(free_block(8, prev_block.block))
+	blocks_3[8] = prev_block
+
+	union_root = union_of_local_chains([blocks[0] for blocks in [blocks_1, blocks_2, blocks_3]])
+	for block_a, block_b in zip(solution_blocks[0].return_bfs(), union_root.return_bfs()):
+		assert block_a.height == block_b.height, ", ".join([str(node) for node in union_root.return_bfs()])+", ".join([str(node) for node in solution_blocks[0].return_bfs()])

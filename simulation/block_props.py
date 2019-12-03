@@ -122,6 +122,12 @@ class fixed_block:
 		"""
 		return hash(str(self.block))
 
+	def __str__(self):
+		"""
+		Return the string representation of the free_seed
+		"""
+		return str(self.block)
+
 	def return_bfs(self, list_to_return=None, block_queue=None):
 		"""
 		Get list of nodes, in the subtree rooted at self, ordered by height.
@@ -137,3 +143,35 @@ class fixed_block:
 		while len(block_queue) > 0:
 			block_queue.pop(0).return_bfs(list_to_return=list_to_return, block_queue=block_queue)
 		return list_to_return
+
+def union_of_local_chains(list_of_quasi_roots):
+	"""
+	Take a list of fixed_block instances with identical free_seed attributes;
+	return the root new chain of fixed blocks which represents their union of
+	the trees of which each fixed_block instance is root.
+	"""
+	# Assert trivial type conformity
+	if not isinstance(list_of_quasi_roots, list):
+		raise TypeError("list_of_quasi_roots should be of type list; currently of type "+str(type(list_of_quasi_roots)))
+	if not all([isinstance(block, fixed_block) for block in list_of_quasi_roots]):
+		raise TypeError("All items in list_of_quasi_roots should be of type fixed_block.")
+
+	# Assert that all quasi_roots have same free_seed
+	if not all([quasi_root.block == list_of_quasi_roots[0].block for quasi_root in list_of_quasi_roots]):
+		raise ValueError("All fixed_block instances in list_of_quasi_roots should have the same free_seed attribute.")
+
+	# Create union of trees, storing each new fixed_block instance using
+	# its free_seed as key
+	blocks_in_union = {}
+
+	# Create all fixed blocks
+	for quasi_root in list_of_quasi_roots:
+		for block in quasi_root.return_bfs():
+			if block.block not in blocks_in_union:
+				blocks_in_union[block.block] = fixed_block(block.block, block.parent)
+			for child in block.children:
+				if child.block not in [new_child.block for new_child in blocks_in_union[block.block].children]:
+					blocks_in_union[child.block] = blocks_in_union[block.block].add_child(child.block)
+
+	# Return root of union tree
+	return blocks_in_union[list_of_quasi_roots[0].block]

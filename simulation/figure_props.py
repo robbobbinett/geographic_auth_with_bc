@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
 from block_props import fixed_block
-from message_props import cooperative_wrapper
+from message_props import cooperative_wrapper, cooperative_node
 
 def visualize_subtree(quasi_root, filename=None, scale=None):
 	if not isinstance(quasi_root, fixed_block):
@@ -100,3 +100,20 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=Non
 
 	if show_fig:
 		plt.show()
+
+def global_chain_adherence_graph(list_of_nodes):
+	"""
+	From a set of node instances from the same cooperative_wrapper,
+	create the union of all local blockchains. From here, show for each node
+	which subset of this union they adhere to. Meant to motivate local forking
+	of blockchains
+	"""
+	# Assert trivial type-conformity
+	if not isinstance(list_of_nodes, list):
+		raise TypeError("list_of_nodes should be of type list; currently of type "+str(type(list_of_nodes)))
+	if not all([isinstance(node, cooperative_node) for node in list_of_nodes]):
+		raise TypeError("All items in list_of_nodes should be of type cooperative_node.")
+
+	# Assert that all nodes share same cooperative_wrapper
+	if not all([node.universe == list_of_nodes[0].universe for node in list_of_nodes]):
+		raise ValueError("All nodes in list_of_nodes should share the same universe attribute.")
