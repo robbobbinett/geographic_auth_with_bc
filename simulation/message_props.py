@@ -64,6 +64,9 @@ class cooperative_node(person_node):
 		blocks.sort(key=lambda x: x.height, reverse=True)
 		return [block for block in blocks if block.height == blocks[0].height]
 
+	def get_root_block(self):
+		return list(self.closed_problems.values())[0].get_root()
+
 	def process_queued_message(self):
 		if len(self.message_queue) != 0:
 			message_instance = self.message_queue.pop(0)

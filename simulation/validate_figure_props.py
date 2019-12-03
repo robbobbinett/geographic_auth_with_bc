@@ -122,3 +122,8 @@ for lagrange in ranges:
 	ax = fig.add_subplot(111)
 	heatmap_from_hists(list_of_dicts, array_of_times=np.array([(j+1) for j in range(len(list_of_dicts))]), ax=ax)
 	fig.savefig("figure_outputs/global_chains/"+str(lagrange)+".pdf")
+
+"""
+Test formation of union_chains from local chains
+"""
+

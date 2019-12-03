@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
-from block_props import fixed_block
+from block_props import fixed_block, union_of_local_chains
 from message_props import cooperative_wrapper, cooperative_node
 
 def visualize_subtree(quasi_root, filename=None, scale=None):
@@ -101,7 +101,7 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=Non
 	if show_fig:
 		plt.show()
 
-def global_chain_adherence_graph(list_of_nodes):
+def global_chain_adherence_graph(list_of_nodes, dir_name):
 	"""
 	From a set of node instances from the same cooperative_wrapper,
 	create the union of all local blockchains. From here, show for each node
@@ -113,7 +113,18 @@ def global_chain_adherence_graph(list_of_nodes):
 		raise TypeError("list_of_nodes should be of type list; currently of type "+str(type(list_of_nodes)))
 	if not all([isinstance(node, cooperative_node) for node in list_of_nodes]):
 		raise TypeError("All items in list_of_nodes should be of type cooperative_node.")
+	if not isinstance(dir_name, str):
+		raise TypeError("dir_name should be of type str; currently of type "+str(type(dir_name)))
 
 	# Assert that all nodes share same cooperative_wrapper
 	if not all([node.universe == list_of_nodes[0].universe for node in list_of_nodes]):
 		raise ValueError("All nodes in list_of_nodes should share the same universe attribute.")
+
+	# Get list of quasi_roots from these cooperative_node instances
+	quasi_roots = [node.get_root_block() for node in list_of_nodes]
+
+	# Get union of local chains
+	union_root = union_of_local_chains(quasi_roots)
+
+	for j, quasi_root in enumerate([union_root]+quasi_roots):
+		visualize_subtree(quasi_root, filename=dir_name+"_"+str(j))
