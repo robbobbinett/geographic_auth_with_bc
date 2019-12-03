@@ -154,6 +154,15 @@ class cooperative_wrapper(universe_wrapper):
 					highest_block_counter[block] = 1
 		return highest_block_counter
 
+	def empty_queues(self):
+		"""
+		Call self.process_queues until no more messages are propagating through the network
+		"""
+		cond = False
+		while not cond:
+			self.process_queues()
+			cond = all([len(node.message_queue) == 0 for node in self.universe])
+
 def make_cooperative_wrapper(num_nodes, add_behavior=default_add, drop_behavior=default_drop, pass_prob=0.5, get_add_prob=default_get_add_prob):
 	universe = set()
 	for j in range(num_nodes):
