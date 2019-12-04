@@ -71,7 +71,7 @@ class toroidal_node(person_node):
 			if self.distance_to(neighbor_candidate) < self.r:
 				self.neighbors.add(neighbor_candidate)
 				neighbor_candidate.neighbors.add(self)
-	
+
 	def update_action(self):
 		"""
 		Moves and updates neighbors.
