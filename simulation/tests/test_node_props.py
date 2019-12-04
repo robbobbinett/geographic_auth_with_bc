@@ -15,3 +15,5 @@ def test_universe_wrapper_doesnt_crash():
 		universe.run_update()
 
 	test_mat = universe.output_connections()
+
+test_universe_wrapper_doesnt_crash()

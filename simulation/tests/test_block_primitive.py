@@ -109,3 +109,6 @@ def test_fixed_block_tree_formation():
 	assert len(list_of_nodes) == 16
 	for j in range(len(list_of_nodes)-1):
 		assert list_of_nodes[j].height <= list_of_nodes[j+1].height
+
+test_free_block_creation()
+test_fixed_block_tree_formation()
