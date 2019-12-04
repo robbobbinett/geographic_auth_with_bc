@@ -1,0 +1,89 @@
+\subsection{Connectivity Model}
+
+The protocol runs over an ad-hoc network,
+where each node is a smartphone
+and the nodes connect wirelessly to each other.
+In the simulation,
+we modelled this underlying infrastructure using a dynamic random graph.
+
+The most commonly studied model of random graphs is the Erdős--Rényi model.
+Given parameters $n$ and $p$,
+the model generates a graph with $n$ vertices
+and each edge is added to the graph independently with probability $p$.
+This model, however,
+has no information about node positions,
+which makes it a poor representative of ad-hoc networks~\cite{Hekmat2006}.
+
+Instead,
+we will use random geometric graphs as our connectivity model.
+Given parameters $n$ and $r$,
+the model randomly chooses $n$ points in the unit square $[0, 1]^2$,
+uniformly and independently,
+and adds an edge between each points which are at a distance $r$ from each other.
+Random geometric graphs
+have been proposed as accurate models for ad-hoc networks~\cite{Kenniche2010,Hekmat2006}.
+
+Nodes which are close to the borders of the unit square
+are affected by the so-called ``border effect'':
+if the distance of a node is smaller than $r$
+from any of the borders,
+then part of the ``area of coverage'' for this node
+(that is,
+the area which may contain adjacent vertices)
+lies outside of the unit square.
+This effectively truncates the degree of that node,
+because no nodes are generated outside the unit square.
+For smaller values of $r$ this effect is less pronounced,
+because less nodes are affected.
+
+In order to avoid the border effect,
+we will use toroidal distances instead~\cite{Kenniche2010,Hekmat2006}.
+The nodes will be placed on the unit torus $[0, 1)^2$
+and distances will be measured according to a toroidal metric.
+So,
+for example,
+for $r = 0.1$,
+the nodes at $(0.01, 0.01)$ and $(0.99, 0.99)$ are adjacent in this metric.
+
+We will denote
+the toroidal random geometric graph model with parameters $n$ and $r$
+by $T(n, r)$.
+
+We want to model the underlying infrastructure to be dynamic,
+to represent the fact that nodes move around in the world.
+That is,
+we will have a sequence $G_0, G_1, \dots$ of graphs over the same set of nodes,
+which represent the evolution of the network.
+
+Using the toroidal has the benefit that
+if the nodes move around randomly, but independently,
+then each resulting graph is still a geometric graph.
+More precisely,
+
+\begin{proposition}
+	Let $G_0 \in T(n, r)$ be a random graph.
+	For each $i \in \mathbb N$,
+	define $G_{i+1}$ by translating each vertex $v \in V(G_i)$
+	by a random translation vector $u_v$,
+	chosen independently according to some distribution,
+	and connecting vertices which are within a distance of $r$ of each other.
+	Then, for each $i$,
+	the graph $G_i$ is a random geometric graph distributed according to $T(n, r)$.
+\end{proposition}
+
+Note that each $G_i$ will be distributed according to $T(n, r)$,
+regardless of the distribution of the translation vectors $u_v$
+(as long as each translation vector is chosen independently,
+and irrespective of the vector $v$).
+
+% TODO: Proof?
+
+However,
+there are little literature using several different translation parameters.
+We will use a simplified version of the dynamic model of~\cite{Diaz2008}.
+Fixed a parameter $s$,
+$G_{i+1}$ is generated from $G_i$
+by translating each vertex by a vector with norm $s$,
+chosen uniformly among all $s$-normed vectors in $\mathbb R^2$.
+
+% TODO: Picture?

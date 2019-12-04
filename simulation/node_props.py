@@ -140,20 +140,27 @@ class universe_wrapper:
 			raise TypeError("All items in universe should be of type person_node. Currently, universe contains instances of the following types: "+", ".join(set([str(type(item)) for item in universe])))
 		self.universe = universe
 
-		self.node_names = [str(node) for node in self.universe]
+		self.node_names = [node.name for node in self.universe]
 		self.node_names.sort()
 
-		self.name_to_node = dict((str(node), node) for node in self.universe)
-		self.node_to_number = dict((self.name_to_node[item], j) for j, item in enumerate(self.node_names))
+		self.name_to_node = dict((node.name, node) for node in self.universe)
+		self.node_to_number = dict((self.name_to_node[name], j) for j, name in enumerate(self.node_names))
 
 		if not isinstance(percentage_update_action, float):
 			raise TypeError("percentage_update_action should be of type float; currently of type "+str(type(percentage_update_action))+".")
 		self.percentage_update = percentage_update_action
 
 	def run_update(self):
+		"""
+		Calls person_node.update_action() for a fraction of the nodes of the universe.
+		The fraction of nodes that is updated is percentage_update_action.
+		The nodes are always updated in alphabetical order of their names.
+		"""
 		to_update = sample(self.universe, int(np.floor(self.percentage_update*len(self.universe))))
-		for node in to_update:
-			node.update_action()
+		for node_name in self.node_names:
+			node = self.name_to_node[node_name]
+			if node in to_update:
+				node.update_action()
 
 	def output_connections(self):
 		connections_matrix = np.zeros((len(self.universe),)*2)
