@@ -140,11 +140,11 @@ class universe_wrapper:
 			raise TypeError("All items in universe should be of type person_node. Currently, universe contains instances of the following types: "+", ".join(set([str(type(item)) for item in universe])))
 		self.universe = universe
 
-		self.node_names = [str(node) for node in self.universe]
+		self.node_names = [node.name for node in self.universe]
 		self.node_names.sort()
 
-		self.name_to_node = dict((str(node), node) for node in self.universe)
-		self.node_to_number = dict((self.name_to_node[item], j) for j, item in enumerate(self.node_names))
+		self.name_to_node = dict((node.name, node) for node in self.universe)
+		self.node_to_number = dict((self.name_to_node[name], j) for j, name in enumerate(self.node_names))
 
 		if not isinstance(percentage_update_action, float):
 			raise TypeError("percentage_update_action should be of type float; currently of type "+str(type(percentage_update_action))+".")
