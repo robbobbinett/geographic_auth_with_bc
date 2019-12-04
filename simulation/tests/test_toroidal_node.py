@@ -163,5 +163,26 @@ def test_toroidal_nodes():
 	assert n3.neighbors == {n2, n4}
 	assert n4.neighbors == {n3}
 
+def test_toroidal_universe_maker():
+	rng_values = [0.0, 0.0, 0.1, 0.1, 0.2, 0.1, 0.3, 0.0]
+	torus = make_torus_of_nodes(4, 0.15, 0.1, make_rigged_rng(rng_values))
+	n1 = torus.name_to_node['toroidal_node_0']
+	n2 = torus.name_to_node["toroidal_node_1"]
+	n3 = torus.name_to_node["toroidal_node_2"]
+	n4 = torus.name_to_node["toroidal_node_3"]
+	assert math.isclose(n1.x, 0.0)
+	assert math.isclose(n1.y, 0.0)
+	assert math.isclose(n2.x, 0.1)
+	assert math.isclose(n2.y, 0.1)
+	assert math.isclose(n3.x, 0.2)
+	assert math.isclose(n3.y, 0.1)
+	assert math.isclose(n4.x, 0.3)
+	assert math.isclose(n4.y, 0.0)
+	assert n1.neighbors == {n2}
+	assert n2.neighbors == {n1, n3}
+	assert n3.neighbors == {n2, n4}
+	assert n4.neighbors == {n3}
+
 test_toroidal_distances()
 test_toroidal_nodes()
+test_toroidal_universe_maker()

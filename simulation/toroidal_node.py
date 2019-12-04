@@ -1,4 +1,5 @@
 import math
+import random
 from node_props import *
 
 def _nop(self):
@@ -83,3 +84,11 @@ class toroidal_node(person_node):
 
 	def __str__(self):
 		return "Node %s at (%f, %f), r=%f, s=%f" % (self.name, self.x, self.y, self.r, self.s)
+
+def make_torus_of_nodes(num_nodes, r, s, rng = random.random):
+	universe = set()
+	for j in range(num_nodes):
+		universe.add(toroidal_node("toroidal_node_"+str(j), universe, r, s, rng))
+	for node in universe:
+		node.update_neighbors()
+	return universe_wrapper(universe)
