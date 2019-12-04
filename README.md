@@ -64,7 +64,7 @@ however, to support safe internet practices, the creators encourage users to onl
 
 ## Running the tests
 
-To run all tests of the underlying simulation framework, simply call `nosetests` or the like from the directory `simulation`.
+To run all tests of the underlying simulation framework, simply call `nosetests3` or the like from the directory `simulation`.
 
 The shell script `simulation/test_figure_props.sh` is written so that users can subjectively determine whether figures are being
 generated appropriately (it is hard to check this any way other than graphically; these figure tests are deliberately separated
