@@ -182,3 +182,6 @@ def test_toroidal_universe_maker():
 	assert n2.neighbors == {n1, n3}
 	assert n3.neighbors == {n2, n4}
 	assert n4.neighbors == {n3}
+
+def test_toroidal_universe_maker_with_default_rng():
+	torus = make_torus_of_nodes(150, 0.1, 0.01)
