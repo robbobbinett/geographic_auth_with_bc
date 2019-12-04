@@ -151,9 +151,16 @@ class universe_wrapper:
 		self.percentage_update = percentage_update_action
 
 	def run_update(self):
+		"""
+		Calls person_node.update_action() for a fraction of the nodes of the universe.
+		The fraction of nodes that is updated is percentage_update_action.
+		The nodes are always updated in alphabetical order of their names.
+		"""
 		to_update = sample(self.universe, int(np.floor(self.percentage_update*len(self.universe))))
-		for node in to_update:
-			node.update_action()
+		for node_name in self.node_names:
+			node = self.name_to_node[node_name]
+			if node in to_update:
+				node.update_action()
 
 	def output_connections(self):
 		connections_matrix = np.zeros((len(self.universe),)*2)
