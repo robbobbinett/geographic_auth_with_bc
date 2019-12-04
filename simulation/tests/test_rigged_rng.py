@@ -31,5 +31,3 @@ def test_rigged_rng():
 	rigged_rng()
 	l.append(5)
 	assert rigged_rng() == 5
-
-test_rigged_rng()

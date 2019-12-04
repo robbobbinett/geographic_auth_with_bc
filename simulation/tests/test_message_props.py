@@ -109,7 +109,3 @@ def test_full_clique():
 				for other in chance_the.universe:
 					for key in node.closed_problems.keys():
 						assert key in other.closed_problems, "In round "+str(j)+", the closed-problem key "+str(key)+" is in node "+str(node)+" but not node "+str(other)
-
-test_cooperative_wrapper_doesnt_crash()
-test_specific_cooperative_wrapper()
-test_full_clique()

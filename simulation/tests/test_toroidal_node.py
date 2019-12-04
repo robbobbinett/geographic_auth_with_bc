@@ -182,7 +182,3 @@ def test_toroidal_universe_maker():
 	assert n2.neighbors == {n1, n3}
 	assert n3.neighbors == {n2, n4}
 	assert n4.neighbors == {n3}
-
-test_toroidal_distances()
-test_toroidal_nodes()
-test_toroidal_universe_maker()
