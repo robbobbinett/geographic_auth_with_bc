@@ -41,6 +41,7 @@ class toroidal_node(person_node):
 		self.s = s
 		self.x = rng()
 		self.y = rng()
+		self.rng = rng
 
 	def distance_to(self, other):
 		"""
@@ -52,9 +53,9 @@ class toroidal_node(person_node):
 		"""
 		Moves the node a single simulation step.
 		"""
-		theta = rng() * 2 * math.pi
-		self.x += s * math.cos(theta)
-		self.y += s * math.sin(theta)
+		theta = self.rng() * 2 * math.pi
+		self.x = (self.x + self.s * math.cos(theta)) % 1
+		self.y = (self.y + self.s * math.sin(theta)) % 1
 
 	def update_neighbors(self):
 		"""
@@ -68,7 +69,7 @@ class toroidal_node(person_node):
 
 		# Compute the new neighbors
 		for neighbor_candidate in self.universe:
-			if self.distance_to(neighbor_candidate) < self.r:
+			if self != neighbor_candidate and self.distance_to(neighbor_candidate) < self.r:
 				self.neighbors.add(neighbor_candidate)
 				neighbor_candidate.neighbors.add(self)
 
@@ -79,3 +80,6 @@ class toroidal_node(person_node):
 		"""
 		self.move()
 		self.update_neighbors()
+
+	def __str__(self):
+		return "Node %s at (%f, %f), r=%f, s=%f" % (self.name, self.x, self.y, self.r, self.s)
