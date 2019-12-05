@@ -1,0 +1,31 @@
+\section{Resilience against first-order attacks}
+
+Thoughoug the entire paper,
+we made the assumption that all nodes have about the same computational power.
+In this section,
+we argue that a single node,
+without additional computational power,
+cannot disrupt the network.
+In other words,
+this protocol is resilient against first-order attacks.
+
+A misbehaving node may only interfere with either the blockchain infrastructure
+or with the message-passing algorithm.
+
+Since it is not possible to erase any blocks from the blockchain,
+the only way a misbehaving node could affect the ledger
+is by adding blocks.
+However,
+as we are supposing the malicious node
+has about the same computational power as the other nodes in the network,
+the villain would only be able to add blocks at the same rate as the other nodes,
+so these extraneous blocks would be a minority in the chain.
+Distributed consensus cannot be affected by a few blocks in the chain.
+
+For the message-passing algorithm,
+the malicious node cannot forge or alter messages due to cryptographic signatures.
+Thus,
+the worst the node can do is simply refuse to propagate messages from other users.
+This is tantamount to making the network disconnected,
+which is a situation the protocol is designed to tolerate.
+% TODO: generate extraneous cryptographic challenges?
