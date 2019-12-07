@@ -11,8 +11,22 @@
 
 \begin{document}
 
+\title{Frequent-Collision Blockchains for Local Geographic Authentication}
+\author{Ryan Robinett and Tiago Royer}
+\date{11 Dec 2019}
+\maketitle
+
 \begin{abstract}
-	TBD
+	Blockchains are an implementation of a public distributed ledger,
+	which allows for a certain information to be agreed upon by several parties
+	without the need of a central authority.
+	This work adapts this distributed ledger
+	to implement local geographical authentication.
+	By forcing the global blockchain to fork,
+	each maximal chain is shared by only a few nodes in close geographical proximity,
+	so each geographical location is represented by a maximal chain.
+	The distributed nature of the blockchain
+	prevents issues stemming from centralized authorities.
 \end{abstract}
 
 \section{Introduction}
@@ -25,7 +39,8 @@
 \subsection{Poisson law for block generation}
 \input{geometric-graphs}
 
-\section{Resilience against first order attacks}
+\input{resilience-against-first-order-attacks}
+
 
 \section{Conclusion and open problems}
 
