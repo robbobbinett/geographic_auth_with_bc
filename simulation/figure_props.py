@@ -5,7 +5,7 @@ import matplotlib.cm as cmx
 from block_props import fixed_block, union_of_local_chains
 from message_props import cooperative_wrapper, cooperative_node
 
-def visualize_subtree(quasi_root, filename=None, scale=None):
+def visualize_subtree(quasi_root, filename=None, scale=None, nodeword=None):
 	if not isinstance(quasi_root, fixed_block):
 		raise TypeError("quasi_root should be of type fixed_block; currently of type "+str(type(fixed_block)))
 
@@ -29,16 +29,18 @@ def visualize_subtree(quasi_root, filename=None, scale=None):
 	height_dict = dict((key, len(height_collection[key])) for key in heights)
 
 	# Create graphviz nodes for all blocks, starting from quasi_root
+	if nodeword is None:
+		nodeword = ""
 	replace1 = ""
 	for height in heights:
 		width = height_dict[height]
 		for j, block in zip(range(width), height_collection[height]):
-			replace1 += str(block.block.id)+' [pos="'+str(scale*(j+1)/width)+','+str(-scale*height)+'!"];\n'
+			replace1 += nodeword+str(block.block.id)+' [pos="'+str(scale*(j+1)/width)+','+str(-scale*height)+'!"];\n'
 
 	# Draw edges from parents to children
 	for block in blocks_by_height:
 		for child in block.children:
-			replace1 += str(block.block.id) + " -> " + str(child.block.id) + ";\n"
+			replace1 += nodeword+str(block.block.id) + " -> " + nodeword+str(child.block.id) + ";\n"
 
 	# Export .dot file
 	if not filename:
@@ -118,6 +120,25 @@ def global_chain_adherence_graph(quasi_roots, dir_name):
 
 	# Get union of local chains
 	union_root = union_of_local_chains(quasi_roots)
+	all_block_ids = set()
+	for bloq in union_root.return_bfs():
+		all_block_ids.add(bloq.block.id)
 
-	for j, quasi_root in enumerate([union_root]+quasi_roots):
-		visualize_subtree(quasi_root, filename=dir_name+"/"+str(j))
+	# Visualize union of local chains
+	visualize_subtree(union_root, filename=dir_name+"/union", nodeword="node_", scale=4.0)
+
+	# Visualize each local chain as a subtree of the union chain
+	for j, quasi_root in enumerate(quasi_roots):
+		# Get all block IDs recognized in the subtree rooted at quasi_root
+		block_ids = set()
+		for bloq in quasi_root.return_bfs():
+			block_ids.add(bloq.block.id)
+		neg_block_ids = [id for id in all_block_ids if id not in block_ids]
+		with open("figure_intermediates/local_chains/"+dir_name+"/union.dot", "r") as f:
+			with open("figure_intermediates/local_chains/"+dir_name+"/"+str(j)+".dot", "w") as g:
+				for k, line in enumerate(f.readlines()):
+					if k > 7 and "}" not in line:
+						if not any(("node_"+str(id) in line) for id in neg_block_ids):
+							g.write(line)
+					else:
+						g.write(line)

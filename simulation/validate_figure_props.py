@@ -95,7 +95,7 @@ for lagrange in ranges:
 """
 Test colormap_like plot
 """
-ranges = [10, 50, 100]
+ranges = [10, 50]
 
 for lagrange in ranges:
 	num_nodes = 30
