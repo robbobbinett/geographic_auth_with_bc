@@ -7,6 +7,8 @@ from os.path import isfile, join
 ###
 
 cwd = getcwd()
-onlyfiles = [f for f in listdir(cwd+"/figure_intermediates/local_chains/")]
+onlyfiles = [f for f in listdir(cwd+"/figure_intermediates/local_chains/") if "small_world" not in f]
+to_append = [f for f in listdir(cwd+"/figure_intermediates/local_chains/small_world/")]
+onlyfiles += ["small_world/"+name for name in to_append]
 number_strings = [f.replace(cwd+"/figure_intermediates/local_chains/", "").replace(".dot", "") for f in onlyfiles]
 print(" ".join(number_strings))

@@ -101,7 +101,7 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=Non
 	if show_fig:
 		plt.show()
 
-def global_chain_adherence_graph(list_of_nodes, dir_name):
+def global_chain_adherence_graph(quasi_roots, dir_name):
 	"""
 	From a set of node instances from the same cooperative_wrapper,
 	create the union of all local blockchains. From here, show for each node
@@ -109,22 +109,15 @@ def global_chain_adherence_graph(list_of_nodes, dir_name):
 	of blockchains
 	"""
 	# Assert trivial type-conformity
-	if not isinstance(list_of_nodes, list):
-		raise TypeError("list_of_nodes should be of type list; currently of type "+str(type(list_of_nodes)))
-	if not all([isinstance(node, cooperative_node) for node in list_of_nodes]):
-		raise TypeError("All items in list_of_nodes should be of type cooperative_node.")
+	if not isinstance(quasi_roots, list):
+		raise TypeError("quasi_roots should be of type list; currently of type "+str(type(quasi_roots)))
+	if not all([isinstance(node, fixed_block) for node in quasi_roots]):
+		raise TypeError("All items in quasi_roots should be of type fixed_block.")
 	if not isinstance(dir_name, str):
 		raise TypeError("dir_name should be of type str; currently of type "+str(type(dir_name)))
-
-	# Assert that all nodes share same cooperative_wrapper
-	if not all([node.universe == list_of_nodes[0].universe for node in list_of_nodes]):
-		raise ValueError("All nodes in list_of_nodes should share the same universe attribute.")
-
-	# Get list of quasi_roots from these cooperative_node instances
-	quasi_roots = [node.get_root_block() for node in list_of_nodes]
 
 	# Get union of local chains
 	union_root = union_of_local_chains(quasi_roots)
 
 	for j, quasi_root in enumerate([union_root]+quasi_roots):
-		visualize_subtree(quasi_root, filename=dir_name+"_"+str(j))
+		visualize_subtree(quasi_root, filename=dir_name+"/"+str(j))
