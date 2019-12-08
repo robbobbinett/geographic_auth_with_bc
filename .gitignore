@@ -15,5 +15,6 @@
 __pycache__
 simulation/figure_intermediates/*
 simulation/figure_outputs/*
+simulation/test_outputs/*
 compile_README_pdf.sh
 README.pdf

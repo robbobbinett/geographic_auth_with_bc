@@ -110,18 +110,16 @@ for lagrange in ranges:
 	for j in tqdm(range(lagrange)):
 
 		chance_the.pose_problems()
-		for _ in range(10):
-			chance_the.process_queues()
-			list_of_dicts.append(get_chain_hist(chance_the))
+		chance_the.empty_queues()
+		list_of_dicts.append(get_chain_hist(chance_the))
 		chance_the.bestow_block()
-		for _ in range(10):
-			chance_the.process_queues()
-			list_of_dicts.append(get_chain_hist(chance_the))
+		chance_the.empty_queues()
+		list_of_dicts.append(get_chain_hist(chance_the))
 
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	heatmap_from_hists(list_of_dicts, array_of_times=np.array([(j+1) for j in range(len(list_of_dicts))]), ax=ax)
-	fig.savefig("figure_outputs/global_chains/"+str(lagrange)+".pdf")
+	fig.savefig("test_outputs/global_chains/"+str(lagrange)+".pdf")
 
 """
 Test formation of union_chains from local chains
