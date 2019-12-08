@@ -112,11 +112,11 @@ for lagrange in ranges:
 		chance_the.pose_problems()
 		for _ in range(10):
 			chance_the.process_queues()
-			list_of_dicts.append(get_longest_chain_hist(chance_the))
+			list_of_dicts.append(get_chain_hist(chance_the))
 		chance_the.bestow_block()
 		for _ in range(10):
 			chance_the.process_queues()
-			list_of_dicts.append(get_longest_chain_hist(chance_the))
+			list_of_dicts.append(get_chain_hist(chance_the))
 
 	fig = plt.figure()
 	ax = fig.add_subplot(111)

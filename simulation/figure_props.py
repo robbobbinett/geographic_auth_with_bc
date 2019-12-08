@@ -49,6 +49,25 @@ def visualize_subtree(quasi_root, filename=None, scale=None, nodeword=None):
 		with open ("figure_intermediates/local_chains/"+filename+".dot", "w") as new_file:
 			new_file.write(base_file.read().replace('//replace', replace1))
 
+def get_chain_hist(coop_wrapper):
+	if not isinstance(coop_wrapper, cooperative_wrapper):
+		raise TypeError("coop_wrapper should be of type cooperative_wrapper; currently of type "+str(type(coop_wrapper)))
+	highest_block_counter = coop_wrapper.count_num_longest_chains()
+	num_counter = {}
+	for key in highest_block_counter.keys():
+		try:
+			num_counter[highest_block_counter[key]] += 1
+		except KeyError:
+			num_counter[highest_block_counter[key]] = 1
+
+	# Normalize hist values
+	tot_count = 0
+	for key in num_counter.keys():
+		tot_count += num_counter[key]
+	for key in num_counter.keys():
+		num_counter[key] /= tot_count
+	return num_counter
+
 def get_longest_chain_hist(coop_wrapper):
 	if not isinstance(coop_wrapper, cooperative_wrapper):
 		raise TypeError("coop_wrapper should be of type cooperative_wrapper; currently of type "+str(type(coop_wrapper)))
@@ -114,7 +133,10 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=Non
 		ax = fig.add_subplot(111)
 	for time, book in zip(array_of_times, list_of_dicts):
 		for num in book.keys():
-			ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker=".")
+			if len(list(book.keys())) != 1:
+				ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker=".")
+			else:
+				ax.plot([time], [num], color="k", marker=".")
 	ax.set_xlabel("Timestep")
 	ax.set_ylabel("Number of Nodes Adhering to Chain")
 	ax.set_title("Relative Frequency of Different Chain-Adherences")
@@ -161,3 +183,16 @@ def global_chain_adherence_graph(quasi_roots, dir_name):
 							g.write(line)
 					else:
 						g.write(line)
+
+def violins_from_leaves(list_of_hists, ax=None):
+	show_fig = False
+	if not ax:
+		show_fig = True
+		fig = plt.figure()
+		ax = fig.add_subplot(111)
+
+	ax.violinplot(list_of_hists)
+#	ax.boxplot(list_of_hists)
+
+	if show_fig:
+		plt.show()
