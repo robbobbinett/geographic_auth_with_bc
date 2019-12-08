@@ -57,7 +57,10 @@ class cooperative_node(person_node):
 			del self.open_problems[free_seed]
 		except KeyError:
 			raise KeyError("self.open_problems have the following keys: "+", ".join(str(key) for key in self.open_problems.keys())+". The unrecognized key was: "+str(free_seed)+".")
-		self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
+		try:
+			self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
+		except KeyError:
+			self.closed_problems[free_seed] = self.closed_problems[null_block].add_child(free_seed)
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
@@ -92,12 +95,11 @@ class cooperative_node(person_node):
 				temp_list = list(self.closed_problems.keys())
 				other_temp_list = list(self.open_problems.keys())
 				if message_instance.block not in temp_list and message_instance.block in other_temp_list:
-					if message_instance.block.parent in temp_list:
-						self.add_fixed_block(message_instance)
-						if message_instance.orig_author == self:
-							self.problem_posed = False
-						for neigh in self.neighbors:
-							neigh.message_queue.append(message_instance)
+					self.add_fixed_block(message_instance)
+					if message_instance.orig_author == self:
+						self.problem_posed = False
+					for neigh in self.neighbors:
+						neigh.message_queue.append(message_instance)
 
 class cooperative_wrapper(universe_wrapper):
 	def __init__(self, universe, percentage_update_action=0.1):
