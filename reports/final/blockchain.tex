@@ -1,0 +1,37 @@
+\section{Blockchain for Geographical Authentication}
+
+Once a block is generated and published,
+it is never removed from the blockchain;
+so, in a sense,
+blockchains are static objects.
+This section describes the static features of the blockchain
+that is used as the distributed ledger in our protocol.
+
+The blockchain is essentially a tree of blocks,
+containing solutions to cryptographic challenges.
+A \emph{cryptographic challenge} is a pair
+\begin{equation*}
+	\mathcal P = (t_C, k_C)
+\end{equation*}
+where $t$ is a timestamp and $k$ is the public key of the problem creator.
+Each \emph{block} is, in turn, a tuple of the form
+\begin{equation*}
+	B = (t_C, k_C, t_S, k_S, n, b),
+\end{equation*}
+where $(t_C, k_C)$ form a cryptographic challenge,
+$n$ is the nonce which solves the challenge (described below)
+$k_S$ is the public key of the problem solver,
+$t_S$ is the timestamp of when $n$ was found,
+and $b$ is a pointer to another block.
+Additionally,
+the empty block $(\varnothing, \varnothing, \varnothing, \varnothing, \varnothing)$
+is a valid block.
+This is the global root of the blockchain tree.
+
+We assume the existence of a cryptographically secure hash function $H$.
+Denote by $t_c k_C k_S b$ the concatenation of $t_c$, $k_C$, $k_S$ and $b$.
+A nonce $n$ is a \emph{solution} to the problem contained in a block $B$ as above
+if $H(t_C k_C k_S b) < \tau$,
+where $\tau$ is a predefined threshold value known \emph{a priori} by the network.
+
+% TODO: add example
