@@ -1,0 +1,84 @@
+\section{Introduction}
+
+The problem of authenticating users based on geographical location
+has been considered for over 20 years~\cite{denning_1996}.
+The authors of \cite{denning_1996} consider the problem of finding
+the location of an intruder;
+their approach easily generalizes to such applications as
+geographically restricted broadcasts~\cite{gdpr}.
+
+Beyond the scope of simple geographical authentication, however,
+are applications in which both geographical data and \textit{post facto}
+temporal data are useful, such as
+proving someone was or was not present in a certain vicinity within a
+certain timeframe.
+This is most useful in cases of conflicting information or in cases sensitive to
+the falsification of geo-temporal data.
+
+\subsection{Use Cases}
+
+\begin{itemize}
+	\item A protester is found dead in a location distant from where the protest happened.
+		Police argue the person was not involved in the protest
+		and died from unrelated causes.
+		Other protesters can use the network to contest police claims
+		and show that this specific protester was indeed present in the protest.
+
+	\item A person from a racial minority is being accused of committing a crime.
+		This person can use the network to show that the accusation
+		is incompatible with the locations that the person has been
+		during the time the crime happened.
+
+	\item Some expensive lab equipment disappeared overnight.
+		A student not involved with this situation
+		can prove her innocence by showing her location during that night
+		is far away from the lab.
+
+	\item A professor forgot to take attendance for a class.
+		Each student can prove if they were in class
+		even after the class has ended.
+
+	\item BBC wants to provide exclusive content for people located in London.
+		People can prove that they indeed are that geographical location
+		in order to have access to this content.
+\end{itemize}
+
+\subsection{Solution Overview}
+
+In order to meet the requirement of not having a centralized authority,
+we propose the use of a distributed ledger to record data in the network.
+In particular, we will use blockchains.
+
+Blockchain networks behave as probabilistic state machines, as no nodes in the
+network (i.e. no node within the graph corresponding to an individual state) has
+general knowledge of the rest of the network/state and must act probabilistically
+based on certain assumptions about the network~\cite{saito_2016}. Despite this
+state machine construction, blockchain networks strive to mitigate the
+possibility of a network fork as much as possible. In the case of Bitcoin, this
+avoidance has been successful since the blockchain's inception~\cite{decker_2013}.
+Bitcoin avoids forks and maintains a single long-term history of transactions
+(i.e. the longest path from the root node to the leaf on the longest branch), as
+well as controls the rate of growth of the blockchain, by carefully moderating
+the rate of block creation.
+
+While the Bitcoin network moderates block creation so as to create a single,
+decentralized ledger for all Bitcoin transactions for all of time, we seek to use
+the blockchain dynamics described in \cite{decker_2013} to create a
+blockchain-like decentralized ledger which records close-proximity peer-to-peer
+handshakes as transactions and which creates blocks of these transactions at such
+a rate as to force the network to fork into local networks. The intent is to
+create a decentralized ledger of peer-to-peer interactions that
+\begin{enumerate}
+	\item creates blocks and transactions at such an exacerbatory rate that
+		it is unfeasible for any node to cache a chain of blocks for
+		longer than a period of one or two days; and
+	\item creates blocks and transactions at such an exacerbatory rate that
+		users are incentivized to only cache blocks necessary to verify
+		handshakes they have made over the cache-life of a block.
+\end{enumerate}
+
+This will allow people to create a robust ledger, whose
+credibility is granted by mass consensus and mutual distrust, of their temporo-geographic
+location over short periods of time, in such a way that makes long-term storage of these
+geographic data untenable by third parties while making sure short-term
+information about location is agreed upon by several nodes in the network.
