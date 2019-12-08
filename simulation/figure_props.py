@@ -106,7 +106,7 @@ def get_leaf_hist(coop_wrapper):
 		num_counter[key] /= tot_count
 	return num_counter
 
-def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=None):
+def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="binary", ax=None):
 	if not isinstance(list_of_dicts, list):
 		raise TypeError("list_of_dicts should be of type list; currently of type"+str(type(list_of_dicts)))
 	if not all(isinstance(item, dict) for item in list_of_dicts):
@@ -119,12 +119,6 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=Non
 	else:
 		array_of_times = np.array(list(range(len(list_of_dicts))))
 
-	# Adapted from Yann's answer to the following StackOverflow post:
-	# https://stackoverflow.com/questions/8931268/using-colormaps-to-set-color-of-line-in-matplotlib
-	cm = plt.get_cmap(cm_name)
-	cNorm = colors.Normalize(vmin=0, vmax=1)
-	scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
-
 	# Make dat plot!!!
 	show_fig = False
 	if not ax:
@@ -132,11 +126,18 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=Non
 		fig = plt.figure()
 		ax = fig.add_subplot(111)
 	for time, book in zip(array_of_times, list_of_dicts):
+		# Adapted from Yann's answer to the following StackOverflow post:
+		# https://stackoverflow.com/questions/8931268/using-colormaps-to-set-color-of-line-in-matplotlib
+		cm = plt.get_cmap(cm_name)
+		vmax = max(value for value in book.values())
+		cNorm = colors.Normalize(vmin=0, vmax=vmax)
+		scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
+
 		for num in book.keys():
 			if len(list(book.keys())) != 1:
 				ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker=".")
 			else:
-				ax.plot([time], [num], color="k", marker=".")
+				ax.plot([time], [num], color=scalarMap.to_rgba(vmax), marker=".")
 	ax.set_xlabel("Timestep")
 	ax.set_ylabel("Number of Nodes Adhering to Chain")
 	ax.set_title("Relative Frequency of Different Chain-Adherences")
