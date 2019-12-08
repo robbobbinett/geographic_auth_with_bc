@@ -1,0 +1,27 @@
+\section{Conclusions and Future Work}
+
+% TODO: Write more about simulation results
+
+The protocol, as described in this paper,
+is able to provide distributed geographical authentication
+An obvious next step would be actually deploying this protocol in a real-life scenario,
+to both test its reliability and compute the simulation parameters.
+
+As outlined in Section~\ref{sec:first-order-attacks},
+making the protocol resilient to first-order attacks is an open problem.
+A possible solution involves adding a computational cost
+to enter and stay in the network;
+for example,
+honest nodes could simply try to solve cryptographic challenges
+from nodes which have appeared ``recently'' in the blockchain.
+
+Another issue is that,
+in the analysis,
+we assume that the computational power of each node
+is roughly the same.
+This makes the network vulnerable to a smartphone user using,
+say,
+their personal computer to speed up the computation of hashes
+could control the network.
+A possible solution is to replace the highly parallizable hash function
+with non-parallelizable cryptographic challenges~\cite{Tritilanunt2007}.
