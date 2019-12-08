@@ -129,7 +129,7 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="binary", ax=
 		# Adapted from Yann's answer to the following StackOverflow post:
 		# https://stackoverflow.com/questions/8931268/using-colormaps-to-set-color-of-line-in-matplotlib
 		cm = plt.get_cmap(cm_name)
-		vmax = max(value for value in book.values())
+		vmax = sum(value for value in book.values())
 		cNorm = colors.Normalize(vmin=0, vmax=vmax)
 		scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
 
