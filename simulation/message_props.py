@@ -67,6 +67,11 @@ class cooperative_node(person_node):
 		blocks.sort(key=lambda x: x.height, reverse=True)
 		return [block for block in blocks if block.height == blocks[0].height]
 
+	def get_leaf_blocks(self):
+		blocks = list(self.closed_problems.values())
+		blocks.sort(key=lambda x: x.height, reverse=True)
+		return [block for block in blocks if len(block.children) == 0]
+
 	def get_root_block(self):
 		return list(self.closed_problems.values())[0].get_root()
 
@@ -158,6 +163,18 @@ class cooperative_wrapper(universe_wrapper):
 				except KeyError:
 					highest_block_counter[block] = 1
 		return highest_block_counter
+
+	def count_num_leaves(self):
+		# NOTE: Each unique chain can be uniquely identified by its highest block's ID
+		leaf_counter = {}
+		for node in self.universe:
+			leaf_blocks = node.get_leaf_blocks()
+			for block in leaf_blocks:
+				try:
+					leaf_counter[block] += 1
+				except KeyError:
+					leaf_counter[block] = 1
+		return leaf_counter
 
 	def empty_queues(self):
 		"""

@@ -68,6 +68,25 @@ def get_longest_chain_hist(coop_wrapper):
 		num_counter[key] /= tot_count
 	return num_counter
 
+def get_leaf_hist(coop_wrapper):
+	if not isinstance(coop_wrapper, cooperative_wrapper):
+		raise TypeError("coop_wrapper should be of type cooperative_wrapper; currently of type "+str(type(coop_wrapper)))
+	leaf_counter = coop_wrapper.count_num_leaves()
+	num_counter = {}
+	for key in leaf_counter.keys():
+		try:
+			num_counter[leaf_counter[key]] += 1
+		except KeyError:
+			num_counter[leaf_counter[key]] = 1
+
+	# Normalize hist values
+	tot_count = 0
+	for key in num_counter.keys():
+		tot_count += num_counter[key]
+	for key in num_counter.keys():
+		num_counter[key] /= tot_count
+	return num_counter
+
 def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="hot", ax=None):
 	if not isinstance(list_of_dicts, list):
 		raise TypeError("list_of_dicts should be of type list; currently of type"+str(type(list_of_dicts)))
