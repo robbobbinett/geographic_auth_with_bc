@@ -1,5 +1,6 @@
 from random import choice, sample
 from node_props import *
+from wrapper_props import *
 from block_props import *
 
 message_types = ["proposal", "solution"]

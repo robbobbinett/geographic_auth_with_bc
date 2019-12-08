@@ -1,5 +1,5 @@
 from tqdm import tqdm
-from node_props import make_universe_of_nodes
+from wrapper_props import make_universe_of_nodes
 
 def test_universe_wrapper_doesnt_crash():
 	"""
