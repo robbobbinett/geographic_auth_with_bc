@@ -107,6 +107,12 @@ class cooperative_node(person_node):
 					for neigh in self.neighbors:
 						neigh.message_queue.append(message_instance)
 
+class BestowBlockTimeoutError(ValueError):
+	"""
+	Use this whenever cooperative_node.bestow_block fails to bestow a block
+	in reasonable time.
+	"""
+
 class cooperative_wrapper(universe_wrapper):
 	def __init__(self, universe, percentage_update_action=0.1):
 		super().__init__(universe, percentage_update_action)
@@ -132,7 +138,8 @@ class cooperative_wrapper(universe_wrapper):
 				if solved_problem.orig_author != winner:
 					cond = True
 			if count == 1000:
-				raise ValueError("Excessive runtime in second while loop of bestow_block")
+#				raise ValueError("Excessive runtime in second while loop of bestow_block")
+				raise BestowBlockTimeoutError("Excessive runtime in second while loop of bestow_block")
 			count += 1
 		winner.problem_proposed = False
 		winner.add_fixed_block(solved_problem)

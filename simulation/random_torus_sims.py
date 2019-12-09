@@ -40,9 +40,15 @@ def standard_routine(wrapper_instance, num_cycles, message_cycles_per_update_act
 			wrapper_instance.run_update()
 
 sizes = [10, 50, 100]
-rs = [0.05, 0.1, 0.25, 0.5]
+rs = [0.05, 0.1, 0.25, 0.5, 1.0]
 ss = [0.05, 0.1, 0.15, 0.2]
 
 for size, r, s in product(sizes, rs, ss):
 	chance_the = make_coop_tor_wrapper(size, r, s, random.random)
-	standard_routine(chance_the, 10, 5)
+	try:
+		standard_routine(chance_the, 10, 5)
+	except ValueError:
+		print("The following parameter combos led to bestow_block_timeout:")
+		print("size: "+str(size))
+		print("r: "+str(r))
+		print("s: "+str(s))
