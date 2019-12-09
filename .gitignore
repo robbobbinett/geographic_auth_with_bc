@@ -17,5 +17,6 @@ simulation/figure_intermediates/*
 simulation/figure_outputs/*
 simulation/test_outputs/*
 simulation/pickle_dir/*
+simulation/analysis/*
 compile_README_pdf.sh
 README.pdf
