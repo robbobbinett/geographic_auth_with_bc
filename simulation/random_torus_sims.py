@@ -5,8 +5,10 @@ from simulation_props import standard_routine
 from message_props import BestowBlockTimeoutError
 from coop_tor_node import make_coop_tor_wrapper
 
-sizes = [10, 30, 50, 100]
-rs = [0.05, 0.1, 0.25, 0.5]
+# sizes = [10, 30, 50, 100]
+sizes = [10, 50, 100]
+# rs = [0.05, 0.1, 0.25, 0.5]
+rs = [0.1, 0.25]
 ss = [0.05, 0.1, 0.15, 0.2]
 rel_update_freqs = [3, 5, 10]
 sim_length = 100
