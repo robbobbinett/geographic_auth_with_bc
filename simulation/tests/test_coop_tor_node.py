@@ -170,7 +170,7 @@ def test_make_coop_tor_wrapper_with_default_rng():
 	try:
 		universe.bestow_block()
 		assert False
-	except ValueError:
+	except BestowBlockTimeoutError:
 		pass
 
 	# Try alternating node updates and block bestowals
@@ -180,7 +180,7 @@ def test_make_coop_tor_wrapper_with_default_rng():
 			universe.process_queues()
 		try:
 			universe.bestow_block()
-		except ValueError:
+		except BestowBlockTimeoutError:
 			raise ValueError("mean open_problems size: "+str(np.mean([len(node.open_problems) for node in universe.universe])))
 		for _ in range(100):
 			universe.process_queues()
