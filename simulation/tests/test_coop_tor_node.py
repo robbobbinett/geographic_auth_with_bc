@@ -162,8 +162,8 @@ def test_toroidal_universe_maker():
 def test_make_coop_tor_wrapper_with_default_rng():
 	universe = make_coop_tor_wrapper(150, 0.1, 0.01, random.random)
 
-	# Running 1000 position updates per node on each node in a 1000-node universe
-	for _ in tqdm(range(1000)):
+	# Running 100 position updates per node on each node in a 150-node universe
+	for _ in tqdm(range(100)):
 		universe.run_update()
 
 	# Try bestowing a block; should raise an error due to lack of open problem instances

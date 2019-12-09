@@ -11,7 +11,7 @@ class universe_wrapper:
 	and it outputs the adjacency matrix of the person_node neighborhood
 	by a single method call.
 	"""
-	def __init__(self, universe, percentage_update_action=0.1):
+	def __init__(self, universe, percentage_update_action=1.0):
 		if not isinstance(universe, set):
 			raise TypeError("universe should be of type set; currently of type "+str(type(universe))+".")
 		if not all(isinstance(item, person_node) for item in universe):

@@ -114,7 +114,7 @@ class BestowBlockTimeoutError(ValueError):
 	"""
 
 class cooperative_wrapper(universe_wrapper):
-	def __init__(self, universe, percentage_update_action=0.1):
+	def __init__(self, universe, percentage_update_action=1.0):
 		super().__init__(universe, percentage_update_action)
 		if not all(isinstance(item, cooperative_node) for item in self.universe):
 			raise TypeError("All nodes in a cooperative_wrapper instance must be of cooperative_node type.")
@@ -138,7 +138,6 @@ class cooperative_wrapper(universe_wrapper):
 				if solved_problem.orig_author != winner:
 					cond = True
 			if count == 1000:
-#				raise ValueError("Excessive runtime in second while loop of bestow_block")
 				raise BestowBlockTimeoutError("Excessive runtime in second while loop of bestow_block")
 			count += 1
 		winner.problem_proposed = False
