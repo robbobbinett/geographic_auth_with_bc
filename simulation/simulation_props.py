@@ -49,4 +49,4 @@ def standard_routine(wrapper_instance, num_cycles, message_cycles_per_update_act
 			wrapper_instance.run_update()
 			if adj_mat_store is not None:
 				adj_mat_store.append(wrapper_instance.output_connections())
-		run_message_cycle(wrapper_instance, chain_hist_store=chain_hist_store, longest_chain_hist_store=longest_chain_hist_store, leaf_hist_store=leaf_hist_store)
+		run_message_cycle(wrapper_instance, chain_hist_store=chain_hist_store, longest_chain_hist_store=longest_chain_hist_store, leaf_hist_store=leaf_hist_store, forgive_timeout=forgive_timeout)
