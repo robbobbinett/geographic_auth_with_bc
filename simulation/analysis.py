@@ -52,3 +52,17 @@ for f in tqdm(onlyfiles):
 	ax.set_title(param_str)
 	fig.savefig("analysis/longest_chain_hist/"+param_str+".pdf")
 	plt.close("all")
+
+# Only look at leaf pickles
+onlyfiles = [f for f in listdir(cwd+"/pickle_dir/") if "leaf" in f]
+print("Doing leaf graphics...")
+for f in tqdm(onlyfiles):
+	param_str = f.replace("_leaf.pkl", "")
+	with open("pickle_dir/"+f, "rb") as file:
+		hists = load(file)
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	heatmap_from_hists(hists, ax=ax)
+	ax.set_title(param_str)
+	fig.savefig("analysis/leaf/"+param_str+".pdf")
+	plt.close("all")

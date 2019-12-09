@@ -25,7 +25,7 @@ for size, r, s, ruf in product(sizes, rs, ss, rel_update_freqs):
 		if pickling:
 			file_prefix = "_".join(str(elem) for elem in [size, r, s, ruf])
 			with open("pickle_dir/"+file_prefix+"_longest_chain_hist.pkl", "wb") as f:
-				dump(chain_hist_store, f)
+				dump(longest_chain_hist_store, f)
 			with open("pickle_dir/"+file_prefix+"_chain_hist.pkl", "wb") as f:
 				dump(chain_hist_store, f)
 			with open("pickle_dir/"+file_prefix+"_leaf.pkl", "wb") as f:
