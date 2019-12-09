@@ -2,7 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
+import networkx as nx
 from block_props import fixed_block, union_of_local_chains
+from scipy.sparse import csc_matrix
 from message_props import cooperative_wrapper, cooperative_node
 
 def visualize_subtree(quasi_root, filename=None, scale=None, nodeword=None):
@@ -194,6 +196,32 @@ def violins_from_leaves(list_of_hists, ax=None):
 
 	ax.violinplot(list_of_hists)
 #	ax.boxplot(list_of_hists)
+
+	if show_fig:
+		plt.show()
+
+def connected_components_over_time(list_of_csc_mats, ax=None)
+	# Assert trivial type conformity
+	if not isinstance(list_of_csc_mats, list):
+		raise TypeError("list_of_csc_mats should be of type list; currently of type "+str(type(list_of_csc_mats)))
+	if not all([isinstance(item, csc_matrix) for item in list_of_csc_mats]):
+		raise TypeError("All elements in list_of_csc_mats should be SciPy CSC matrices.")
+
+	# Create NetworkX Graph
+	Gs = []
+	for mat in list_pf_csc_mats:
+		Gs.append(nx.from_scipy_sparse_matrix)
+	nums_conn_comps = []
+	for G in Gs:
+		L = nx.laplacian_matrix(G).todense()
+		nums_conn_comps.append(L.shape[0] - np.matrix_rank(L))
+	show_fig = False
+	if not ax:
+		show_fig = True
+		fig = plt.figure()
+		ax = fig.add_subplot(111)
+
+	ax.plot(nums_conn_comps)
 
 	if show_fig:
 		plt.show()
