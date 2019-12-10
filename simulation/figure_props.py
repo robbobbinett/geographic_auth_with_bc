@@ -137,9 +137,9 @@ def heatmap_from_hists(list_of_dicts, array_of_times=None, cm_name="binary", ax=
 
 		for num in book.keys():
 			if len(list(book.keys())) != 1:
-				ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker=".")
+				ax.plot([time], [num], color=scalarMap.to_rgba(book[num]), marker=".", markeredgecolor="k")
 			else:
-				ax.plot([time], [num], color=scalarMap.to_rgba(vmax), marker=".")
+				ax.plot([time], [num], color=scalarMap.to_rgba(vmax), marker=".", markeredgecolor="k")
 	ax.set_xlabel("Timestep")
 	ax.set_ylabel("Number of Nodes Adhering to Chain")
 	ax.set_title("Relative Frequency of Different Chain-Adherences")
