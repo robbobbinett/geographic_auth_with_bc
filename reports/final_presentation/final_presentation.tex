@@ -245,41 +245,4 @@
 	
 \end{frame}
 
-\begin{frame}
-	\frametitle{Supplementary Material: Transaction Primitives}
-	\begin{figure}
-		\scriptsize
-		\centering
-		\textbf{Transaction Primitives:} \\
-		\vspace{5mm}
-		\begin{description}
-			\item[\textbf{Challenge Proposal:}] A challenge proposal $\mathcal{P}$ by
-				node $C$ is a tuple of the form
-				$$\mathcal{P}=(t_{\mathcal{P},C},\mathcal{C};\mathcal{P}^\prime_h,\mathcal{P}^\prime_t).$$
-				Here:
-				\begin{itemize}
-					\item $t_{\mathcal{P},C}$ is the timestamp of $C$'s local clock upon
-					creation of problem $\mathcal{P}$;
-					\item $\mathcal{C}$ is the public key of node $C$;
-					\item $\mathcal{P}^\prime_h$ is the header of block instance
-					$\mathcal{P}^\prime$ (see below); and
-					\item $\mathcal{P}^\prime_t$ is the tail of block instance
-					$\mathcal{P}^\prime$. We refer to $\mathcal{P}^\prime$ as
-					the \textbf{parent} of $\mathcal{P}$.
-				\end{itemize}
-				The tuple
-				$\mathcal{P}=(t_{\mathcal{P},C},\mathcal{C};\mathcal{P}^\prime_h,\mathcal{P}^\prime_t)$
-				naturally decomposes into the tuples
-				$\mathcal{P}_h=(t_{\mathcal{P},C},\mathcal{C})$ and
-				$\mathcal{P}_r=(\mathcal{P}^\prime_h,\mathcal{P}^\prime_t)$, which we
-				refer to as the \textbf{header} and \textbf{reference tag} of $\mathcal{P}$,
-				respectively.
-			\item[\textbf{Block:}] A block $\mathcal{P}^*$ is a challenge proposal instance
-				$\mathcal{P}=(t_{\mathcal{P},C},\mathcal{C};\mathcal{P}^\prime_h,\mathcal{P}^\prime_t)$
-				together with the tuple $\mathcal{P}_t=(t_{\mathcal{P},S},\mathcal{S},n_{\mathcal{P},S})$.
-				We refer to $\mathcal{P}^*_t$ as the \textbf{footer} of $\mathcal{P}^*$.
-		\end{description}
-	\end{figure}
-\end{frame}
-
 \end{document}
