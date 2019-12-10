@@ -166,7 +166,60 @@
 
 \begin{frame}
 	\frametitle{1) The Protocol}
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\hfil
+			\begin{tikzpicture}[
+					every node/.style = {
+						shape = rectangle,
+						draw,
+						minimum width = 1cm,
+						minimum height = 0.5cm,
+					},
+			]
+				\draw (0, 0) node (a1) [rectangle] {$(C_1, C_2)$};
+				\draw (0, 1) node (a2) [rectangle] {$(C_1, C_3)$};
+				\draw (0, 2) node (a3) [rectangle] {$(C_2, C_4)$};
+				\draw (1, 3) node (b4) [rectangle] {$(C_1, C_3)$};
+				\draw (1, 4) node (b5) [rectangle] {$(C_3, C_5)$};
+				\draw (1, 5) node (b6) [rectangle] {$(C_5, C_1)$};
+				\draw (-1, 3) node (c4) [rectangle] {$(C_2, C_6)$};
+				\draw (-1, 4) node (c5) [rectangle] {$(C_6, C_4)$};
+				\draw (-1, 5) node (c6) [rectangle] {$(C_4, C_2)$};
 
+				\draw (a1) -- (a2);
+				\draw (a2) -- (a3);
+				\draw (a3) -- (b4);
+				\draw (b4) -- (b5);
+				\draw (b5) -- (b6);
+				\draw (a3) -- (c4);
+				\draw (c4) -- (c5);
+				\draw (c5) -- (c6);
+			\end{tikzpicture}
+		\end{column}
+
+		\begin{column}{0.7\textwidth}
+			\begin{itemize}
+				\item Cryptographic challenge: Tuple $(t_C, k_C)$
+					\begin{itemize}
+						\item $k_C$ is the public key of the creator
+						\item $t_C$ is timestamp of the problem creation
+					\end{itemize}
+				\item Block: Tuple $(t_C, t_S, k_S, n, b)$
+					\begin{itemize}
+						\item $(t_C, t_S)$ is a cryptographic challenge
+						\item $k_S$ is the timestamp of the solution
+						\item $k_S$ is the public key of the solver
+						\item $n$ is the solution nonce
+						\item $b$ is a pointer to a previous block
+					\end{itemize}
+				\item Hashing: $H(t_C t_S k_S n b) < \tau$
+				\item Nodes exchange cryptographic challenges
+				\item Handshakes are recorded in the ledger
+					in the form of blocks
+			\end{itemize}
+		\end{column}
+	\end{columns}
 
 \end{frame}
 
