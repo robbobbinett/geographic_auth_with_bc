@@ -76,50 +76,6 @@ for _ in range(10):
 	for j, node in enumerate(list(chance_the.universe)):
 		leaf_book[j].append([block.height for block in node.get_leaf_blocks()])
 
-# Partition the topology into the following
-# 1      2
-# |      |
-# |      |
-# 0      3
-
-# Run enought time to generate and propagate 10 blocks
-for j, node in enumerate(chance_the.universe):
-	for k, other_node in enumerate(chance_the.universe):
-		if (j, k) == (1, 2):
-			node.neighbors.remove(other_node)
-			other_node.neighbors.remove(node)
-
-for _ in range(10):
-	chance_the.pose_problems()
-	chance_the.empty_queues()
-	chance_the.bestow_block()
-	chance_the.empty_queues()
-	hist_list.append(get_leaf_hist(chance_the))
-	for j, node in enumerate(list(chance_the.universe)):
-		leaf_book[j].append([block.height for block in node.get_leaf_blocks()])
-
-# Rejoin the topology into the following
-# 1 ---- 2
-# |      |
-# |      |
-# 0      3
-
-# Run enought time to generate and propagate 10 blocks
-for j, node in enumerate(chance_the.universe):
-	for k, other_node in enumerate(chance_the.universe):
-		if (j, k) == (1, 2):
-			node.neighbors.add(other_node)
-			other_node.neighbors.add(node)
-
-for _ in range(10):
-	chance_the.pose_problems()
-	chance_the.empty_queues()
-	chance_the.bestow_block()
-	chance_the.empty_queues()
-	hist_list.append(get_leaf_hist(chance_the))
-	for j, node in enumerate(list(chance_the.universe)):
-		leaf_book[j].append([block.height for block in node.get_leaf_blocks()])
-
 global_chain_adherence_graph([node.get_root_block() for node in chance_the.universe], "horseshoe")
 for j, quasi_root in enumerate([node.get_root_block() for node in chance_the.universe]):
 	visualize_subtree(quasi_root, filename="horseshoe_"+str(j))

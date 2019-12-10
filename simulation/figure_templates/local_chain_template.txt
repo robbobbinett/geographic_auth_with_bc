@@ -4,7 +4,7 @@ digraph test{
 	style=solid;
 	rankdir=BT;
 	subgraph cluster_1 {
-		graph [ label="NAME", fontcolor=black];
+		graph [fontcolor=black];
 		style=solid;
 //replace
 	}

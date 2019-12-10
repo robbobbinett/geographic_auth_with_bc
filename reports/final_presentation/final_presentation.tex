@@ -223,25 +223,63 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{2) The Simulation}
+	\frametitle{2) SPAN Simulator Package}
 
 	\begin{columns}
 		\begin{column}{0.3\textwidth}
 			\centering
-			
+			\begin{figure}
+				\includegraphics[width=\textwidth]{horseshoe.pdf}
+				\caption{Progression of a SPAN topology over time}
+			\end{figure}
+
+			\vspace{-1cm}
+
+			\begin{figure}
+				\includegraphics[width=\textwidth]{horseshoe_0.pdf}
+				\caption{A local blockchain formed during the above
+				progression}
+			\end{figure}
 		\end{column}
 
 		\begin{column}{0.7\textwidth}
 			\centering
-
+			\begin{itemize}
+				\item Written as a general platform for simulation
+					of SPANs and blockchains distributed over
+					SPANs
+				\item SPAN Simulation
+					\begin{itemize}
+						\item Written to allow for static or dynamic
+							topologies
+						\item Accommodates various kinds of randomized
+							SPAN evolution
+					\end{itemize}
+				\item Message passing per described protocol
+				\item Local blockchain formation
+				\item Visualization
+					\begin{itemize}
+						\item Captures and exports state information for
+							each message-passing step and each change in
+							SPAN topology
+					\end{itemize}
+			\end{itemize}
 		\end{column}
 	\end{columns}	
 \end{frame}
 
 \begin{frame}
-	\frametitle{2) The Simulation}
+	\frametitle{Future Work: Quantifying Neighborhood Chains}
 
-	
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+		\end{column}
+
+		\begin{column}{0.5\textwidth}
+			\centering
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \end{document}
