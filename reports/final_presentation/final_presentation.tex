@@ -274,10 +274,27 @@
 	\begin{columns}
 		\begin{column}{0.5\textwidth}
 			\centering
+			\begin{figure}
+				\includegraphics[width=\textwidth]{adj_mat.pdf}
+				\includegraphics[width=\textwidth]{longest_chain_hist.pdf}
+			\end{figure}
 		\end{column}
 
 		\begin{column}{0.5\textwidth}
-			\centering
+			\begin{itemize}
+				\item Uncharted Territory: measuring degree to
+					which global blockchain is
+					undefined is uncharted territory
+					\begin{itemize}
+						\item Try doing this with neighborhood blockchains
+						\item Identify each \textbf{longest chain} in
+							local blockchain with its \textbf{leaf}
+						\item Calculate percentage of nodes for which leaf
+							appears as \textbf{maximal node} of a longest chain
+					\end{itemize}
+				\item Look at distribution of neighborhood chains
+					as function of number of SPAN connected components
+			\end{itemize}
 		\end{column}
 	\end{columns}
 \end{frame}
