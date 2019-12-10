@@ -73,7 +73,7 @@
 				\item Each block must reference a pre-existing block using a hash function
 				\item Guarantees \textbf{proof of work}
 				\item Bitcoin ensures (in probability) that local copies of the blockchain
-					will eventually agree on which chain is valid
+					will eventually agree on which chain is \textbf{global}
 			\end{itemize}
 		\end{column}
 	\end{columns}
@@ -124,8 +124,7 @@
 					\item Conventionally, induced as the set-theoretic
 						intersection of all local blockchains...
 					\item But we are no longer guaranteed that this
-						intersection would be a tree, or even if it would
-						be well-defined
+						intersection would be a growing tree
 					\item Per Nakamoto: For each node,
 						there exists a neighborhood of nodes for which
 						a global chain (at least among these neighbors) is
@@ -204,7 +203,7 @@
 						\item $k_C$ is the public key of the creator
 						\item $t_C$ is timestamp of the problem creation
 					\end{itemize}
-				\item Block: Tuple $(t_C, t_S, k_S, n, b)$
+				\item Block: Tuple $B = (t_C, t_S, k_S, n, b)$
 					\begin{itemize}
 						\item $(t_C, t_S)$ is a cryptographic challenge
 						\item $k_S$ is the timestamp of the solution
@@ -212,7 +211,7 @@
 						\item $n$ is the solution nonce
 						\item $b$ is a pointer to a previous block
 					\end{itemize}
-				\item Hashing: $H(t_C t_S k_S n b) < \tau$
+				\item Hashing: $H(B) < \tau$
 				\item Nodes exchange cryptographic challenges
 				\item Handshakes are recorded in the ledger
 					in the form of blocks
