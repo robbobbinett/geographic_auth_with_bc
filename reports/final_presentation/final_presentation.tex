@@ -203,10 +203,10 @@
 						\item $k_C$ is the public key of the creator
 						\item $t_C$ is timestamp of the problem creation
 					\end{itemize}
-				\item Block: Tuple $B = (t_C, t_S, k_S, n, b)$
+				\item Block: Tuple $B = (t_C, k_C, t_S, k_S, n, b)$
 					\begin{itemize}
 						\item $(t_C, t_S)$ is a cryptographic challenge
-						\item $k_S$ is the timestamp of the solution
+						\item $t_S$ is the timestamp of the solution
 						\item $k_S$ is the public key of the solver
 						\item $n$ is the solution nonce
 						\item $b$ is a pointer to a previous block
