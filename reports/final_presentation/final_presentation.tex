@@ -141,7 +141,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{What we set out to do}
+	\frametitle{What we accomplished:}
 
 	\begin{enumerate}
 		\item \textbf{Write protocol that allows for the formation of
@@ -165,112 +165,31 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Blockchains and Forking}
+	\frametitle{1) The Protocol}
 
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=\textwidth]{1kosmos_cropped.png}
-				\caption{from Decker \textit{et al.} 2013}
-			\end{figure}
 
-			\begin{figure}
-				\centering
-				\includegraphics[width=\textwidth]{decker_figures/decker_3.png}
-				\caption{by 1KOSMOS}
-			\end{figure}
-		\end{column}
-
-		\begin{column}{0.5\textwidth}
-			\begin{itemize}
-				\item \textbf{Local forks}
-			\end{itemize}
-		\end{column}
-	\end{columns}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Blockchain as decentralized ledger (Decker 2013)}
+	\frametitle{2) The Simulation}
+
 	\begin{columns}
 		\begin{column}{0.3\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=\textwidth]{decker_figures/decker_3.png}
-				\includegraphics[width=\textwidth]{decker_figures/decker_5.png}
-				\includegraphics[width=\textwidth]{decker_figures/decker_7.png}
-			\end{figure}
+			\centering
+			
 		\end{column}
 
 		\begin{column}{0.7\textwidth}
-			\begin{itemize}
-				\item In Bitcoin network, the time between creation of subsequent blocks follows an exponential distribution
-				\begin{itemize}
-					\item $p(t_{i+1}-t_i)=\lambda e^{-\lambda\left(t_{i+1}-t_i\right)}$
-				\end{itemize}
-				\item The rate of block creation is controlled s.t. \textbf{forks} occur only in local chains
-				\begin{itemize}
-					\item These forks are resolved in small timescales with high probability
-				\end{itemize}
-				\item Propagating false blocks so as to adversarially control the global chain is (asymptotically) preventative as the chain grows
-				\begin{itemize}
-					\item Why an adversary has to control approx. 50\% of nodes to invalidate the ledger in case of Bitcoin
-				\end{itemize}
-			\end{itemize}
+			\centering
+
 		\end{column}
-	\end{columns}
+	\end{columns}	
 \end{frame}
 
 \begin{frame}
-	\frametitle{Blockchains... with a twist!}
-	\begin{columns}
-		\begin{column}{0.3\textwidth}
-			\hfil
-			\begin{tikzpicture}[
-					every node/.style = {
-						shape = rectangle,
-						draw,
-						minimum width = 1cm,
-						minimum height = 0.5cm,
-					},
-			]
-				\draw (0, 0) node (a1) {};
-				\draw (0, 1) node (a2) [rectangle] {};
-				\draw (0, 2) node (a3) [rectangle] {};
-				\draw (1, 3) node (b4) [rectangle] {};
-				\draw (1, 4) node (b5) [rectangle] {};
-				\draw (1, 5) node (b6) [rectangle] {};
-				\draw (-1, 3) node (c4) [rectangle] {};
-				\draw (-1, 4) node (c5) [rectangle] {};
-				\draw (-1, 5) node (c6) [rectangle] {};
+	\frametitle{2) The Simulation}
 
-				\draw (a1) -- (a2);
-				\draw (a2) -- (a3);
-				\draw (a3) -- (b4);
-				\draw (b4) -- (b5);
-				\draw (b5) -- (b6);
-				\draw (a3) -- (c4);
-				\draw (c4) -- (c5);
-				\draw (c5) -- (c6);
-			\end{tikzpicture}
-		\end{column}
-
-		\begin{column}{0.7\textwidth}
-			\begin{itemize}
-				\item Each smartphone is a node
-				\item \textbf{IDEA:} Create blocks at an exacerbatory rate
-				\begin{itemize}
-					\item \textbf{Local forks} still mitigated in short timescales
-					\item \textbf{Global forks} forced to occur with high probability
-					\item Each chain represents one geographical location
-				\end{itemize}
-				\item \textbf{EXPECTATION:} each \textbf{orphan chain} corresponds to a specific geographic clique
-				\begin{itemize}
-					\item While there is no global consensus, the rate of block creation enforces (locally) a decentralized ledger which requires approx. 50\% of local nodes to control
-				\end{itemize}
-			\end{itemize}
-		\end{column}
-	\end{columns}
+	
 \end{frame}
 
 \begin{frame}
