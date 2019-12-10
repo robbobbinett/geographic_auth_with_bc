@@ -2,8 +2,11 @@
 
 \usepackage{tikz}
 \usepackage{graphicx}
+\usepackage{caption}
 
 \begin{document}
+\captionsetup{font=scriptsize, labelfont=scriptsize}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
 
 \title{Frequent-Collision Blockchains for Local Geographic Authentication}
 \author{Ryan Robinett and Tiago Royer}
@@ -45,10 +48,28 @@
 \begin{frame}
 	\frametitle{Blockchains and Forking}
 
-	\begin{figure}
-		\centering
-		\includegraphics[width=5cm]{decker_figures/decker_3.png}
-	\end{figure}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Blockchains and Forking}
+
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{1kosmos_cropped.png}
+				\includegraphics[width=\textwidth]{decker_figures/decker_3.png}
+				\caption{upper: 1KOSMOS; lower: Decker \textit{et al.} 2013}
+			\end{figure}
+		\end{column}
+
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item \textbf{Local forks}
+			\end{itemize}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \begin{frame}
