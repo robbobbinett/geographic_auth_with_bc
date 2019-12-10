@@ -7,7 +7,7 @@
 
 \title{Frequent-Collision Blockchains for Local Geographic Authentication}
 \author{Ryan Robinett and Tiago Royer}
-\date{12 Nov 2019}
+\date{10 Dec 2019}
 \institute[CMSC33300]{
     CMSC33300 --- Networks \\
     Department of Computer Science \\
@@ -25,18 +25,30 @@
 		\item Geographic Authentication:
 			proving you are/were in a certain location
 			at a certain point in time
-		\item Problems with centralization
-			\begin{itemize}
-				\item Single point of failure
-				\item Falsification of data
-				\item Preservation of data
-			\end{itemize}
 		\item Goal: decentralized, historic geographic authentication
 			\begin{itemize}
 				\item Conventional geographic authentication asks, \textbf{``Where are you now?''}
 				\item We want to ask, \textbf{``Where have you been in the recent past?''}
 			\end{itemize}
+		\item Proposed Solution:
+			\begin{itemize}
+				\item Peer-to-peer ``checkins'' over a \textbf{smartphone
+					\textit{ad hoc} network (SPAN)}
+				\item Store checkins using a \textbf{blockchain}
+				\item Due to disconnectedness of SPANs, this blockchain will
+					inevitably \textbf{fork}; want to use this as a feature,
+					rather than a bug
+			\end{itemize}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Blockchains and Forking}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=5cm]{decker_figures/decker_3.png}
+	\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -120,29 +132,6 @@
 			\end{itemize}
 		\end{column}
 	\end{columns}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Milestones}
-	\begin{figure}
-		\textbf{Milestones:} \\
-		\vspace{3mm}
-		\begin{tabular}{|r|l|}
-			\hline
-			Protocol design & in progress \\
-			\hline
-			Simulation of the blockchain & Done \\
-			\hline
-			Simulation of neighborhood dynamics & Done \\
-			\hline
-			Simulation of the protocol & November 23rd \\ % tentative
-			\hline
-			Analysis of first-order adversarial attacks & November 30th \\
-			\hline
-			Final presentation & December 10th \\
-			\hline
-		\end{tabular}
-	\end{figure}
 \end{frame}
 
 \begin{frame}
