@@ -48,7 +48,120 @@
 \begin{frame}
 	\frametitle{Blockchains and Forking}
 
-	
+	\begin{columns}{}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{nakamoto_hashes.png}
+				\caption{Nakamoto 2008}
+			\end{figure}
+
+			\begin{figure}
+				\centering
+				\vspace{-1cm}
+				\includegraphics[width=0.5\textwidth]{fork_fig.pdf}
+				\caption{Though local copies of the blockchain differ,
+					they ``eventually'' agree identically on the
+					\textbf{global chain}}
+			\end{figure}
+		\end{column}
+
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item The Bitcoin blockchain is the prototypical blockchain
+				\item Distinct nodes in the Bitcoin network each hold their
+					own copy of the \textit{entire} history of transactions
+				\item Each block must reference a pre-existing block using a hash function
+				\item Guarantees \textbf{proof of work}
+				\item Bitcoin ensures (in probability) that local copies of the blockchain
+					will eventually agree on which chain is valid
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Three networks evolving simultaneously}
+
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\centering
+			\textbf{SPAN}
+			\begin{figure}
+				\includegraphics[width=\textwidth]{span.jpg}
+			\end{figure}
+			\begin{scriptsize}
+				\begin{itemize}
+					\item Nodes enter/leave the network all the time
+					\item Network essentially always fragmented
+				\end{itemize}
+			\end{scriptsize}
+		\end{column}
+
+		\vrule{}
+
+		\begin{column}{0.3\textwidth}
+			\centering
+			\textbf{Local Blockchain \\ (for each node)}
+			\begin{figure}
+				\includegraphics[width=\textwidth]{fork_fig.pdf}
+			\end{figure}
+			\begin{scriptsize}
+				\begin{itemize}
+					\item Unique tree of blocks for each node
+					\item Tree growth contingent on the ``checkins'' to which
+						node is privy
+				\end{itemize}
+			\end{scriptsize}
+		\end{column}
+
+		\vrule{}
+
+		\begin{column}{0.4\textwidth}
+			\centering
+			\textbf{Global Blockchain...?}
+			\begin{scriptsize}
+				\begin{itemize}
+					\item Conventionally, induced as the set-theoretic
+						intersection of all local blockchains...
+					\item But we are no longer guaranteed that this
+						intersection would be a tree, or even if it would
+						be well-defined
+					\item Per Nakamoto: For each node,
+						there exists a neighborhood of nodes for which
+						a global chain (at least among these neighbors) is
+						well-defined
+					\item \textbf{Hope:} Each such \textbf{neighborhood chain}
+						corresponds to interaction of nodes within
+						geographic proximity over some appreciable timescale
+				\end{itemize}
+			\end{scriptsize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{What we set out to do}
+
+	\begin{enumerate}
+		\item \textbf{Write protocol that allows for the formation of
+			blockchains in the manner described}
+			\begin{itemize}
+				\item Must be robust to first-order
+					adversarial behavior
+			\end{itemize}
+		\item \textbf{Simultaneously simulate SPAN and local blockchains
+			under this protocol}
+			\begin{itemize}
+				\item Simulate evolution of SPAN using \textbf{random
+					geometric graphs}
+				\item Run blockchain protocol as the SPAN evolves to
+					create varying local chains
+				\item Tune parameters so that protocol creates
+				neighborhood chains corresponding to geographic
+				locales
+			\end{itemize}
+	\end{enumerate}
 \end{frame}
 
 \begin{frame}
@@ -59,8 +172,13 @@
 			\begin{figure}
 				\centering
 				\includegraphics[width=\textwidth]{1kosmos_cropped.png}
+				\caption{from Decker \textit{et al.} 2013}
+			\end{figure}
+
+			\begin{figure}
+				\centering
 				\includegraphics[width=\textwidth]{decker_figures/decker_3.png}
-				\caption{upper: 1KOSMOS; lower: Decker \textit{et al.} 2013}
+				\caption{by 1KOSMOS}
 			\end{figure}
 		\end{column}
 
