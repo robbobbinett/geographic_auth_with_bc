@@ -1,6 +1,7 @@
 import math
 import random
 from node_props import *
+from wrapper_props import *
 
 def _nop(self):
 	"""

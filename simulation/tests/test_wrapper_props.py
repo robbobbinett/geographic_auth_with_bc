@@ -1,5 +1,5 @@
 from tqdm import tqdm
-from node_props import make_universe_of_nodes
+from wrapper_props import make_universe_of_nodes
 
 def test_universe_wrapper_doesnt_crash():
 	"""
@@ -10,8 +10,8 @@ def test_universe_wrapper_doesnt_crash():
 	"""
 	universe = make_universe_of_nodes(1000)
 
-	# Running 1000 updates per node on each node in a 1000-node universe
-	for _ in tqdm(range(1000)):
+	# Running 100 updates per node on each node in a 1000-node universe
+	for _ in tqdm(range(100)):
 		universe.run_update()
 
 	test_mat = universe.output_connections()

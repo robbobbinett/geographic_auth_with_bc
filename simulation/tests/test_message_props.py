@@ -12,15 +12,15 @@ def test_cooperative_wrapper_doesnt_crash():
 	"""
 	universe = make_cooperative_wrapper(100)
 
-	# Running 1000 position updates per node on each node in a 1000-node universe
-	for _ in tqdm(range(1000)):
+	# Running 100 position updates per node on each node in a 100-node universe
+	for _ in tqdm(range(100)):
 		universe.run_update()
 
 	# Try bestowing a block; should raise an error due to lack of open problem instances
 	try:
 		universe.bestow_block()
 		assert False
-	except ValueError:
+	except BestowBlockTimeoutError:
 		pass
 
 	# Try alternating node updates and block bestowals
@@ -30,7 +30,7 @@ def test_cooperative_wrapper_doesnt_crash():
 			universe.process_queues()
 		try:
 			universe.bestow_block()
-		except ValueError:
+		except BestowBlockTimeoutError:
 			raise ValueError("mean open_problems size: "+str(np.mean([len(node.open_problems) for node in universe.universe])))
 		for _ in range(100):
 			universe.process_queues()

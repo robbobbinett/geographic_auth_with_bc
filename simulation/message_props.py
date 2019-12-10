@@ -1,5 +1,6 @@
 from random import choice, sample
 from node_props import *
+from wrapper_props import *
 from block_props import *
 
 message_types = ["proposal", "solution"]
@@ -57,12 +58,20 @@ class cooperative_node(person_node):
 			del self.open_problems[free_seed]
 		except KeyError:
 			raise KeyError("self.open_problems have the following keys: "+", ".join(str(key) for key in self.open_problems.keys())+". The unrecognized key was: "+str(free_seed)+".")
-		self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
+		try:
+			self.closed_problems[free_seed] = self.closed_problems[free_seed.parent].add_child(free_seed)
+		except KeyError:
+			self.closed_problems[free_seed] = self.closed_problems[null_block].add_child(free_seed)
 
 	def get_highest_blocks(self):
 		blocks = list(self.closed_problems.values())
 		blocks.sort(key=lambda x: x.height, reverse=True)
 		return [block for block in blocks if block.height == blocks[0].height]
+
+	def get_leaf_blocks(self):
+		blocks = list(self.closed_problems.values())
+		blocks.sort(key=lambda x: x.height, reverse=True)
+		return [block for block in blocks if len(block.children) == 0]
 
 	def get_root_block(self):
 		return list(self.closed_problems.values())[0].get_root()
@@ -92,15 +101,20 @@ class cooperative_node(person_node):
 				temp_list = list(self.closed_problems.keys())
 				other_temp_list = list(self.open_problems.keys())
 				if message_instance.block not in temp_list and message_instance.block in other_temp_list:
-					if message_instance.block.parent in temp_list:
-						self.add_fixed_block(message_instance)
-						if message_instance.orig_author == self:
-							self.problem_posed = False
-						for neigh in self.neighbors:
-							neigh.message_queue.append(message_instance)
+					self.add_fixed_block(message_instance)
+					if message_instance.orig_author == self:
+						self.problem_posed = False
+					for neigh in self.neighbors:
+						neigh.message_queue.append(message_instance)
+
+class BestowBlockTimeoutError(ValueError):
+	"""
+	Use this whenever cooperative_node.bestow_block fails to bestow a block
+	in reasonable time.
+	"""
 
 class cooperative_wrapper(universe_wrapper):
-	def __init__(self, universe, percentage_update_action=0.1):
+	def __init__(self, universe, percentage_update_action=1.0):
 		super().__init__(universe, percentage_update_action)
 		if not all(isinstance(item, cooperative_node) for item in self.universe):
 			raise TypeError("All nodes in a cooperative_wrapper instance must be of cooperative_node type.")
@@ -124,7 +138,7 @@ class cooperative_wrapper(universe_wrapper):
 				if solved_problem.orig_author != winner:
 					cond = True
 			if count == 1000:
-				raise ValueError("Excessive runtime in second while loop of bestow_block")
+				raise BestowBlockTimeoutError("Excessive runtime in second while loop of bestow_block")
 			count += 1
 		winner.problem_proposed = False
 		winner.add_fixed_block(solved_problem)
@@ -156,6 +170,18 @@ class cooperative_wrapper(universe_wrapper):
 				except KeyError:
 					highest_block_counter[block] = 1
 		return highest_block_counter
+
+	def count_num_leaves(self):
+		# NOTE: Each unique chain can be uniquely identified by its highest block's ID
+		leaf_counter = {}
+		for node in self.universe:
+			leaf_blocks = node.get_leaf_blocks()
+			for block in leaf_blocks:
+				try:
+					leaf_counter[block] += 1
+				except KeyError:
+					leaf_counter[block] = 1
+		return leaf_counter
 
 	def empty_queues(self):
 		"""

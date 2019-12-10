@@ -1,6 +1,7 @@
 from random import choice
 from tqdm import tqdm
 from node_props import *
+from wrapper_props import *
 from node_extensions import *
 from block_props import *
 from message_props import *
