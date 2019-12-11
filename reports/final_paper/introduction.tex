@@ -37,26 +37,8 @@ package which---unlike any preexisting package know to the authors---allows for 
 simulation of a blockchain-like ledger system implemented over arbitrary SPAN
 topologies.
 
-\section{The SPANchain Simulator}
-\label{sec:SPANchain}
-
-We present a tool which allows for the simulation of the evolution of SPANs
----represented as random geometric graphs---over time, and which, most saliently,
-allows for the simulation of a novel blockchain-like distributed ledger overlaid
-on this SPAN. While the authors are aware of 1) network simulation tools that
-accommodate dynamic network topologies~\cite{chaudhary2012study} and
-2) tools for simulating blockchain
-systems distributed over a network of nodes, we are unaware of any tool that
-allows for the simulation of a blockchain system implemented over arbitrary dynamic
-networks. Part of the reason for this is that SPANs, by nature, induce a network topology
-that fragments easily and from which nodes enter and exit with great frequency. For
-conventional blockchain systems, this inevitably leads to forking in the global
-chain---a property which, for cryptocurrency applications, is highly undesirable
-~\cite{decker_2013,nakamoto2008bitcoin}. Using our simulation tool, however, we show
-that the way global forks form in blockchain networks implemented over SPANs can encode
-geotemporal information about how the SPAN evolves over time.
-
-\subsection{Motivation}
+\section{Motivation}
+\label{sec:motivation}
 
 Many smartphones today are equipped with wireless functionality specifically
 geared towards interacting with other smartphones in near geographic proximity.
@@ -160,19 +142,14 @@ nodes $u\in U$.
 	\caption{The Nakamoto paper assumes that the blockchain protocol is
 		implemented over a relatively stable P2P network. If we attempt to
 		implement a blockchain protocol over a SPAN, however, many of the
-		notions that naturally arise in the case of Bitcoin no longer appear.}
+		notions that naturally arise in the case of Bitcoin no longer appear.
+		The SPANchain simulator was written to allow for easy simulation of 
+		blockchains implemented over SPANs, together with graphic tools which
+		the authors hope helps the research community come up with ways
+		of studying semi-global blockchains in the case of a forking global chain.}
 	\label{tab:three_table}
 \end{figure*}
 
-We use a blockchain over a Smartphone Ad-hoc Network (SPAN).
-
-The ubiquity of smartphones
-makes SPANs a cheap and simple underlying infrastructure
-that already convey a notion of locality.
-The idea is to make users handshake with other users in close geographical proximity,
-and record these handshakes in a distributed ledger.
-
-We use blockchains as the distributed ledger.
 Traditionally,
 blockchain networks strive mantain a single longest path
 starting from the root of the chain;
@@ -188,11 +165,27 @@ the global blockchain will eventually fork.
 We actually embrace forking as a feature:
 each long-term fork represents a connected component of the underlying SPAN.
 
+\section{The SPANchain Simulator}
+\label{sec:SPANchain}
 
-\subsection{Network Simulation}
+We present a tool which allows for the simulation of the evolution of SPANs
+---represented as random geometric graphs---over time, and which, most saliently,
+allows for the simulation of a novel blockchain-like distributed ledger overlaid
+on this SPAN. While the authors are aware of 1) network simulation tools that
+accommodate dynamic network topologies~\cite{chaudhary2012study} and
+2) tools for simulating blockchain
+systems distributed over a network of nodes, we are unaware of any tool that
+allows for the simulation of a blockchain system implemented over arbitrary dynamic
+networks. Part of the reason for this is that SPANs, by nature, induce a network topology
+that fragments easily and from which nodes enter and exit with great frequency. For
+conventional blockchain systems, this inevitably leads to forking in the global
+chain---a property which, for cryptocurrency applications, is highly undesirable
+~\cite{decker_2013,nakamoto2008bitcoin}. Using our simulation tool, however, we show
+that the way global forks form in blockchain networks implemented over SPANs can encode
+geotemporal information about how the SPAN evolves over time.
 
 In order to observe the behavior of this network under several scenarios,
-we wrote a simulator%
+we wrote a simulator package SPANchain%
 \footnote{
 	The code for the simulator is publicly available at
 	\url{https://github.com/robbobbinett/geographic_auth_with_bc}.
@@ -200,16 +193,19 @@ we wrote a simulator%
 for the protocol.
 
 To the best of our knowledge,
-this is the first blockchain-like network
-that embraces forking as a feature rather than a bug.
+this is the first blockchain simulation framework which simulates
+blockchains implemented over SPANs, as well as the first
+to embrace forking as a feature rather than a bug.
 Therefore,
 there are no packages which are capable of simulating a forking blockchain.
 We also are not aware of any packages that implement blockchains over SPANs.
 
 Although we implemented the protocol described in sections
-\ref{sec:blockchain} and~\ref{sec:message-passing}
-in the simulator,
-the package we have written is actually agnostic to the protocol
-and even to the underlying node infrastructure.
+\ref{sec:blockchain} in the simulator,
+the package is written to be agnostic to the protocol for block formation,
+as well as processes by which the underlying topology evolves\footnote{We have,
+	however, implemented a class of SPAN-nodes to specifically handle
+	the evolution of the SPAN with respect to a random geometric graph model.}.
 We hope that these packages can be used by other researchers
-to better understand forking blockchains.
+to better understand how blockchains fork, and what information this forking
+encodes with respect to the history of the underlying topology.
