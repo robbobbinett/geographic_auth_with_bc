@@ -58,40 +58,27 @@ the falsification of geo-temporal data.
 
 \subsection{Solution Overview}
 
-In order to meet the requirement of not having a centralized authority,
-we propose the use of a distributed ledger to record data in the network.
-In particular, we will use blockchains.
+Essentially,
+we use a blockchain over a Smartphone Ad-hoc Network (SPAN).
 
-Blockchain networks behave as probabilistic state machines, as no nodes in the
-network (i.e. no node within the graph corresponding to an individual state) has
-general knowledge of the rest of the network/state and must act probabilistically
-based on certain assumptions about the network~\cite{saito_2016}. Despite this
-state machine construction, blockchain networks strive to mitigate the
-possibility of a network fork as much as possible. In the case of Bitcoin, this
-avoidance has been successful since the blockchain's inception~\cite{decker_2013}.
-Bitcoin avoids forks and maintains a single long-term history of transactions
-(i.e. the longest path from the root node to the leaf on the longest branch), as
-well as controls the rate of growth of the blockchain, by carefully moderating
-the rate of block creation.
+The ubiquity of smartphones
+makes SPANs a cheap and simple underlying infrastructure
+that already convey a notion of locality.
+The idea is to make users handshake with other users in close geographical proximity,
+and record these handshakes in a distributed ledger.
 
-While the Bitcoin network moderates block creation so as to create a single,
-decentralized ledger for all Bitcoin transactions for all of time, we seek to use
-the blockchain dynamics described in \cite{decker_2013} to create a
-blockchain-like decentralized ledger which records close-proximity peer-to-peer
-handshakes as transactions and which creates blocks of these transactions at such
-a rate as to force the network to fork into local networks. The intent is to
-create a decentralized ledger of peer-to-peer interactions that
-\begin{enumerate}
-	\item creates blocks and transactions at such an exacerbatory rate that
-		it is unfeasible for any node to cache a chain of blocks for
-		longer than a period of one or two days; and
-	\item creates blocks and transactions at such an exacerbatory rate that
-		users are incentivized to only cache blocks necessary to verify
-		handshakes they have made over the cache-life of a block.
-\end{enumerate}
-
-This will allow people to create a robust ledger, whose
-credibility is granted by mass consensus and mutual distrust, of their temporo-geographic
-location over short periods of time, in such a way that makes long-term storage of these
-geographic data untenable by third parties while making sure short-term
-information about location is agreed upon by several nodes in the network.
+We use blockchains as the distributed ledger.
+Traditionally,
+blockchain networks strive mantain a single longest path
+starting from the root of the chain;
+that is,
+the goal is to avoid global forks.
+In the case of Bitcoin,
+for example,
+local, temporary forking still happens
+but one of those forks is usually quickly abandoned by the network~\cite{decker_2013}.
+In our case,
+since SPANs are often disconnected,
+the global blockchain will eventually fork.
+We actually embrace forking as a feature:
+each long-term fork represents a connected component of the underlying SPAN.
