@@ -28,6 +28,7 @@ certain timeframe.
 This is most useful in cases of conflicting information or in cases sensitive to
 the falsification of geo-temporal data.
 
+
 \subsection{Use Cases}
 
 \begin{itemize}
@@ -82,3 +83,29 @@ since SPANs are often disconnected,
 the global blockchain will eventually fork.
 We actually embrace forking as a feature:
 each long-term fork represents a connected component of the underlying SPAN.
+
+
+\subsection{Network Simulation}
+
+In order to observe the behavior of this network under several scenarios,
+we wrote a simulator%
+\footnote{
+	The code for the simulator is publicly available at
+	\url{https://github.com/robbobbinett/geographic_auth_with_bc}.
+}
+for the protocol.
+
+To the best of our knowledge,
+this is the first blockchain-like network
+that embraces forking as a feature rather than a bug.
+Therefore,
+there are no packages which are capable of simulating a forking blockchain.
+We also are not aware of any packages that implement blockchains over SPANs.
+
+Although we implemented the protocol described in sections
+\ref{sec:blockchain} and~\ref{sec:message-passing}
+in the simulator,
+the package we have written is actually agnostic to the protocol
+and even to the underlying node infrastructure.
+We hope that these packages can be used by other researchers
+to better understand forking blockchains.
