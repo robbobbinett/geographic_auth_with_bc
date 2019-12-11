@@ -16,51 +16,64 @@ there is a central authority which confers authentication services.
 Besides all the traditional problems with centralized solutions,
 like having a single point of failure,
 services like Foursquare have to essentially believe the user's word
-when attesting they were at a certain place.
+when attesting they were at a certain place~\cite{glas2015breaking}.
 ATM's circumvent this by essentially being a large network of totems,
-which is expensive.
+which is expensive~\cite{totem_patent}.
 
-Beyond the scope of simple geographical authentication
-are applications in which both geographical data and \textit{post facto}
-temporal data are useful, such as
-proving someone was or was not present in a certain vicinity within a
-certain timeframe.
-This is most useful in cases of conflicting information or in cases sensitive to
-the falsification of geo-temporal data.
+The above solutions suffer from either having to trust too heavily upon
+the user's word, or from implementing an expensive network of totems to
+vet user dishonesty. The former makes a system unreliable, while the latter
+imposes a startup cost that is not realistic for small players trying to enter
+the market.
 
+For reasons of decentralization and low cost, we would like for there to be a
+means of local geographic authentication where users---each user represented as
+a smartphone---mutually and simultaneously encode their geographic location using
+handshakes with nearby users. In this work, we show that there exists a
+blockchain-like distributed ledger protocol which, when implemented on top of some
+smartphone ad hoc network (SPAN), encodes user geotemporal information strictly in
+terms of the topology of that user's local blockchain. We further present a simulation
+package which---unlike any preexisting package know to the authors---allows for the
+simulation of a blockchain-like ledger system implemented over arbitrary SPAN
+topologies.
 
-\subsection{Use Cases}
+\section{The SPANchain Simulator}
+\label{sec:SPANchain}
 
-\begin{itemize}
-	\item A protester is found dead in a location distant from where the protest happened.
-		Police argue the person was not involved in the protest
-		and died from unrelated causes.
-		Other protesters can use the network to contest police claims
-		and show that this specific protester was indeed present in the protest.
-
-	\item A person from a racial minority is being accused of committing a crime.
-		This person can use the network to show that the accusation
-		is incompatible with the locations that the person has been
-		during the time the crime happened.
-
-	\item Some expensive lab equipment disappeared overnight.
-		A student not involved with this situation
-		can prove her innocence by showing her location during that night
-		is far away from the lab.
-
-	\item A professor forgot to take attendance for a class.
-		Each student can prove if they were in class
-		even after the class has ended.
-
-	\item BBC wants to provide exclusive content for people located in London.
-		People can prove that they indeed are that geographical location
-		in order to have access to this content.
-\end{itemize}
+We present a tool which allows for the simulation of the evolution of SPANs
+---represented as random geometric graphs---over time, and which, most saliently,
+allows for the simulation of a novel blockchain-like distributed ledger overlaid
+on this SPAN. While the authors are aware of 1) network simulation tools that
+accommodate dynamic network topologies~\cite{chaudhary2012study} and
+2) tools for simulating blockchain
+systems distributed over a network of nodes, we are unaware of any tool that
+allows for the simulation of a blockchain system implemented over arbitrary dynamic
+networks. Part of the reason for this is that SPANs, by nature, induce a network topology
+that fragments easily and from which nodes enter and exit with great frequency. For
+conventional blockchain systems, this inevitably leads to forking in the global
+chain---a property which, for cryptocurrency applications, is highly undesirable
+~\cite{decker_2013,nakamoto2008bitcoin}. Using our simulation tool, however, we show
+that the way global forks form in blockchain networks implemented over SPANs can encode
+geotemporal information about how the SPAN evolved over time.
 
 \subsection{Solution Overview}
 
-Essentially,
-we use a blockchain over a Smartphone Ad-hoc Network (SPAN).
+Many smartphones today are equipped with wireless functionality specifically
+geared towards interacting with other smartphones in near geographic proximity.
+Assuming these connections faithfully represent one's geographic
+authentication\footnote{This is an important problem which we do not attempt to
+address in this paper. We are only concerned with whether a blockchain-like distributed
+ledger implemented over a SPAN can reliably encode information about the SPAN's evolution
+over time using nothing more than the topology of local copies of the blockchain.},
+it follows immediately that, if each smartphone is a node $u$ connected to node $v$ if and only
+if $u$ and $v$ are within interaction proximity---the set of neighbors of $u$ serves as
+a valid representation of $u$'s geographic location. Further, if two nodes $u,v$ claim to be
+in the same geographic location (given the location is sufficiently granular), it is expected
+that the set of neighbors they report would significantly overlap. For this reason,
+recording ``handshakes'' with peers in geographic proximity should serve as a valid
+representation of one's location over time.
+
+We use a blockchain over a Smartphone Ad-hoc Network (SPAN).
 
 The ubiquity of smartphones
 makes SPANs a cheap and simple underlying infrastructure

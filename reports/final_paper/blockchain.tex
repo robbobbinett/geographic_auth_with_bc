@@ -1,12 +1,17 @@
-\section{Blockchain for Geographical Authentication}
+\section{Adapting the Bitcoin Protocol}
 \label{sec:blockchain}
 
+\subsection{Exchanging Transactions for Handshakes}
+
 Once a block is generated and published,
-it is never removed from the blockchain;
-so, in a sense,
-blockchains are static objects.
-This section describes the static features of the blockchain
-that is used as the distributed ledger in our protocol.
+it is never removed from the local blockchain of a node recognizing
+this block. The Bitcoin network ensures this feature with high
+probability by forcing a child block to reference a pre-existing parent
+block using a nonce $n$ which, together with a hashed parent ID $P$, satisfies
+the inequality $H(n,P)<\tau$ for globally define hash function $H$ and
+threshold value $\tau$~\cite{nakamoto2008bitcoin}.
+This section formalizes how blocks are created and recognized by nodes in a SPAN
+in the SPANchain module.
 
 The blockchain is essentially a tree of blocks,
 containing solutions to cryptographic challenges.
@@ -23,7 +28,7 @@ where $(t_C, k_C)$ form a cryptographic challenge,
 $n$ is the nonce which solves the challenge (described below)
 $k_S$ is the public key of the problem solver,
 $t_S$ is the timestamp of when $n$ was found,
-and $b$ is a pointer to another block.
+and $b$ is a pointer to a parent block.
 Additionally,
 the empty block $(\varnothing, \varnothing, \varnothing, \varnothing, \varnothing)$
 is a valid block.
@@ -32,7 +37,23 @@ This is the global root of the blockchain tree.
 We assume the existence of a cryptographically secure hash function $H$.
 Denote by $t_c k_C k_S b$ the concatenation of $t_c$, $k_C$, $k_S$ and $b$.
 A nonce $n$ is a \emph{solution} to the problem contained in a block $B$ as above
-if $H(t_C k_C k_S b) < \tau$,
+if $H(B) < \tau$,
 where $\tau$ is a predefined threshold value known \emph{a priori} by the network.
+
+\subsection{Rate of Block Formation as a Function of $\tau$}
+
+Nakamoto's original paper discusses regulating the rate of block formation in
+the global chain by
+periodically updating the threshold $\tau$ for which all blocks
+$B=(t_C, k_C, t_S, k_S, n, b)$ must satisfy $H(B)<\tau$~\cite{nakamoto2008bitcoin}.
+Decker \textit{et al.} subsequently show that the rate at which block collisions
+occur in the Bitcoin network can be modeled as a function of the rate of block
+creation. Putting these together, we surmise that our rates of block formation
+and global forking can be set arbitrarily high or low relative to the rates at
+which changes occur in the topology of the underlying SPAN. This allows us to
+simulate our peer-to-peer (P2P) message passing over the SPAN in such
+a way that, given network churn is kept low, we can run SPAN updates and
+block updates/propagation as discrete events that do not overlap or otherwise
+interfere.
 
 % TODO: add example
