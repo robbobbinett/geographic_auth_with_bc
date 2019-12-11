@@ -1,13 +1,26 @@
 \section{Introduction}
 
-The problem of authenticating users based on geographical location
-has been considered for over 20 years~\cite{denning_1996}.
+Geographical authentication
+is the task of certify that someone is at a certain place;
+that is,
+the task of authenticating someone's geographical location.
+This problem has been considered for over 20 years~\cite{denning_1996}.
 The authors of \cite{denning_1996} consider the problem of finding
 the location of an intruder;
-their approach easily generalizes to such applications as
-geographically restricted broadcasts~\cite{gdpr}.
+other applications include geographically restricted broadcasts~\cite{gdpr},
+checkins at Foursquare,
+and withdrawing cash at an ATM.
 
-Beyond the scope of simple geographical authentication, however,
+In all these examples,
+there is a central authority which confers authentication services.
+Besides all the traditional problems with centralized solutions,
+like having a single point of failure,
+services like Foursquare have to essentially believe the user's word
+when attesting they were at a certain place.
+ATM's circumvent this by essentially being a large network of totems,
+which is expensive.
+
+Beyond the scope of simple geographical authentication
 are applications in which both geographical data and \textit{post facto}
 temporal data are useful, such as
 proving someone was or was not present in a certain vicinity within a
