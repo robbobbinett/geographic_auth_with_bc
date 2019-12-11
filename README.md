@@ -1,5 +1,10 @@
 # Frequent-Collision Blockchains for Local Geographic Authentication
 
+This repository is a prototype for simulating blockchain protocols distributed over a smartphone *ad hoc* network
+([SPAN](https://en.wikipedia.org/wiki/Smartphone_ad_hoc_network)).
+
+## The Motivating Problem
+
 The problem of authenticating users based on geographical location has been considered for over 20 years [1]. The
 authors of [(1)] consider the problem of finding the location of an intruder; their approach easily generalizes to such
 applications as geographically restricted broadcasts<sup>2</sup>.
@@ -24,7 +29,9 @@ thereof over time.
 
 ## Organization of this Repo
 
-For convenience, the creators of this project have the repo split into `reports` and `simulation` directories.
+For convenience, the creators of this project have the repo split into `reports` and `simulation` directories. The paper resulting from this project can
+compiled by running the `makefile` found in `reports/final_paper` (in addition to certain LaTeX package dependencies, running the `makefile`
+successfully requires installation of `latexmk`).
 
 All commands here described should be executed with `simulation` as the current working directory.
 
@@ -47,9 +54,24 @@ there is a required `universe` argument of type `universe_wrapper` (see below). 
 are further nuanced by arguments for determining the probability of not adding/dropping a neighbor when the opportunity arises (`pass_prob`) and for determining,
 if action should take place, whether that action should be a call to `person_node.add_behavior` or `person_node.drop_behavior` (`get_add_prob`).
 
+#### `toroidal_node`
+
+`toroidal_node` is a subclass of the `person_node` class. It is specifically designed to implement the aforementioned `person_node` functionality
+under the assumption that nodes form connections based on the evolution of a random geometric graph embedded in the unit torus (for a full explanation,
+please see our final writeup under `reports/final_paper`).
+
 #### `cooperative_node`
 
-The `person_node` class is made simply for the purposes of abstracting the dynamic formation of transient connections in a SPAN topology.
+The `person_node` class is made simply for the purposes of abstracting the dynamic formation of transient connections in a SPAN topology. The `cooperative_node`
+subclass of the `person_node` class layers, on top of the SPAN functionality, the message-passing and block-storage machinery necessary to distribute a blockchain
+over a SPAN. Messages are passed, and blocks awarded, according to an adaptation of the Bitcoin protocol as described in our final writeup (under
+`reports/final_paper`).
+
+#### Wrappers
+
+The `universe_wrapper` class exists to coordinate changes in connections between `person_node` instances comprising a single SPAN. Just as the `cooperative_node`
+class inherits from the `person_node` class, the `cooperative_wrapper` class inherits the coordinated SPAN functionality from the `universe_wrapper` class, in
+addition to coordinating all problem formulation, message passing, and block propagation between `cooperative_node` instances in the SPAN.
 
 ### Prerequisites
 
@@ -70,26 +92,6 @@ The shell script `simulation/test_figure_props.sh` is written so that users can 
 generated appropriately (it is hard to check this any way other than graphically; these figure tests are deliberately separated
 from the rest of the test suite for this reason).
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Will go back and do this.
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Will go back and do this.
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
 ## Built With
 
 * [Graphviz](https://graphviz.org/)
@@ -97,7 +99,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **Ryan Robinett** - *U Chicago Department of Computer Science* - [GitHub](https://github.com/robbobbinett)
+* **Ryan Robinett** - *U Chicago Department of Computer Science*
 * **Tiago Royer** - *U Chicago Department of Computer Science*
 
 ## License
@@ -106,4 +108,4 @@ This project is not yet licensed.
 
 ## Acknowledgments
 
-* Started as a project for Ben Zhao and Heather Zheng's CS333: Graduate Computer Networking taught Fall 2019
+* Started as a project for Ben Zhao and Heather Zheng's CS33300: Graduate Computer Networking taught Fall 2019
