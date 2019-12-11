@@ -75,21 +75,92 @@ representation of one's location over time.
 
 \subsection{Three Evolving Topologies: Implications of Blockchain over a SPAN}
 
+The Bitcoin protocol is heavily dependent on a few assumptions concerning
+the topology of the underlying network. While it relies on the fact that no
+node can have global knowledge of what nodes are in the network due to the
+ease with which nodes may enter and exit the network, it also assumes that the
+network is stable enough to offer such features as never partitioning and never
+being susceptible to man-in-the-middle attacks~\cite{nakamoto2008bitcoin}. This
+relative stability is what allows all nodes in the network to asymptotically
+agree on which blocks constitute the global blockchain. Further, this global
+blockchain naturally arises as the set-theoretic intersection of all local 
+chains in the network.
+
+Implementing a blockchain system over a SPAN, however, breaks all of the
+aforementioned assumptions. SPANs are highly volatile, and they can easily
+partition into disconnected components. This makes the idea of nodes
+globally converging to agreement on what is a global blockchain ridiculous, as
+the intersection of all local blockchains would cease to grow as soon as
+nodes disagree on which is the longest chain. It is guaranteed, however,
+that for all nodes $u$ in the SPAN $G$, there exists some neighborhood
+$U\subset G$ containing $u$ such that, if one takes the intersection
+$$\mathbf{B}_U=\bigcup_{u^\prime\in U}\mathcal{B}_{u^\prime}$$
+of all local blockchains $\mathcal{B}_{u^\prime}$ for all $u^\prime\in U$, 
+it holds that $\mathbf{B}_U$ grows nontrivially for all timesteps\footnote{To 
+	see that this is correct, it is sufficient to note that this trivially
+	holds for $U=\{u\}$.}.
+
+The degree to which all subsets $U\subset G$ satisfy this property is the
+degree to which a global blockchain is well defined, and the degree to which
+most subsets $U$ fail to do so can serve as a measure of the degree to which
+a global blockchain is poorly defined. For this reason, the authors present
+the idea of a \textit{semi-global blockchain}: the global blockchain with regards
+to a connected subnetwork $U$ of the network $G$, as arises
+as the set-theoretic intersection of all local chains $\mathcal{B}_u$ held by
+nodes $u\in U$.
+
 \begin{figure*}
 	\centering
-	\begin{tabular}{|c||c|c|c|}
+	\begin{tabular}{|p{2cm}||p{5cm}|p{1.5cm}|p{2.5cm}|p{3cm}|}
 		\hline
-		\ & \textbf{P2P Topology} & \textbf{Local Blockchain (per node)} & \textbf{Global Blockchain} \\
-		\hhline{|=||=|=|=|}
-		\textbf{Bitcoin P2P} & \ & \ & \ \\
+		\ & \textbf{P2P Topology} & \textbf{Local Block-chain (per node)} & \textbf{Global Blockchain} & \textbf{Semi-Global Blockchain (per neighborhood)}\\
+		\hhline{|=||=|=|=|=|}
+		\textbf{Bitcoin P2P} 
+			& The Bitcoin protocol relies on the assumption that
+				no node in the underlying network can have
+				complete global knowledge of the state of the
+				network, especially given nodes can spontaneously enter or
+				exit the network. However, it is also assumed that
+				this network never becomes disconnected and never
+				becomes vulnerable to man-in-the-middle attacks.
+				In this way, it is safe to assume that all local
+				nodes can eventually agree on some global state
+				information.
+			& Very similar, up to slight differences in protocol
+			& The global blockchain is implicitly induced as the
+				set-theoretic intersection of all local blockchains.
+				It is guaranteed in probability that this intersection
+				chain is always growing; failure to grow would imply
+				that this global chain has forked.
+			& For any connected subnetwork $G^\prime$ of the network, the
+				global chain of the restriction to $G^\prime$ always
+				(asymptotically) agrees with the well-defined global
+				chain. \\
 		\hline
-		\textbf{SPAN P2P} & \ & \ & \ \\
+		\textbf{SPAN P2P}
+			& SPANs are highly volatile. The frequent making and
+				breaking of connections causes the SPAN
+				to fragment into disconnected components. It is hopeless,
+				therefore, to assume that all the nodes will ever
+				agree on global state information that is not
+				granted \textit{a priori}.
+			& Very similar, up to slight differences in protocol
+			& Though the set-theoretic intersection of all local
+				blockchains is well-defined, this intersection is
+				likely to be noninteresting and stop growing after some
+				timestep due to forking.
+			& Let $G$ be the network. For each node $u\in G$, there exists
+				neighborhoods $U,u\in U\subset G$ such that the global
+				chain is well defined with respect to the restriction
+				to $U$. We can define \textit{semi-global blockchains}
+				as the intersection of local chains with respect to
+				such restrictions. \\
 		\hline
 	\end{tabular}
 	\caption{The Nakamoto paper assumes that the blockchain protocol is
 		implemented over a relatively stable P2P network. If we attempt to
 		implement a blockchain protocol over a SPAN, however, many of the
-		definitions that naturally arise in the case of Bitcoin fail to arise.}
+		notions that naturally arise in the case of Bitcoin no longer appear.}
 	\label{tab:three_table}
 \end{figure*}
 
