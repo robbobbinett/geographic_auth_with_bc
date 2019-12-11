@@ -112,7 +112,19 @@ terminating.
 The bottom of Figure \ref{fig:old_town_road} shows the local blockchain held by a
 specific node in the described SPAN. The local chain recognizes all blocks indices
 zero through nine, as all problem formulations and blocks from all other nodes
-reached the node in question. However, 
+reached the node in question. However, this node does not recognize all of blocks ten
+through 19, as some of these were discovered by nodes in the other partition during the
+period of disconnection. By the time the two partitions joined back together, we see two
+branches in the local chain competing for status as global chain; one of these, which
+begins with the edge from node zero to node 21, represents the continuation of what had
+been the longest chain in the other partition. As half the nodes in the network recognize
+it as the longest chain, leaves on this chain become parent references for roughly half
+of the problem proposals created in the network. Though the branch which corresponds to
+the global chain in what had been the node's own partition continues to grow, it is
+actively competing with the continuation of the other partition's leading chain. This
+long-term coexistence of these two branches is strictly an artifact of the network's
+partition and reunification, and the lengths of the branches correspond to the duration
+of this separation.
 
 \begin{figure}
 	\centering
