@@ -2,19 +2,33 @@
 
 % TODO: Write more about simulation results
 
-The protocol, as described in this paper,
-is able to provide distributed geographical authentication.
-An obvious next step would be actually deploying this protocol in a real-life scenario,
-to both test its reliability and compute the simulation parameters.
+We have shown that when a blockchain protocol is implemented over an
+\textit{ad hoc} network, it is possible to encode information about the network's evolution within
+nodes' copies of the local blockchain. We motivate the utility of using blockchains
+to encode this information in the context of local geographic authentication
+---fully acknowledging that implementing our protocol to the problem of geographic
+authentication requires hardware considerations which we do not address here.
+However, given sufficient exploration of the hardware side of the problem,
+it is plausible to use the protocol described in this paper
+to implement distributed geographical authentication.
+
+More importantly, our work suggests that there exist applications for which
+a blockchain that sports ``forking as a feature'' are desirable. Given the
+nauseating volume of research currently focused on blockchain technology,
+we hope that our findings here---as well as the SPANchain simulator---provide
+a platform for blockchain researchers to solve more varied problems using
+blockchain variations.
 
 Since using forking as a feature is a novel concept,
 there are several questions regarding its behavior over a SPAN
 which have no answer yet.
 For example,
-we may enquire how long are semi-global blockchains;
-what is the expected number of forks in a typical network;
-how to visualize the forking behavior over time.
-Tools for analyzing and visualizing these forks are also required.
+we may enquire, over a given SPAN, the average radius from a source node $u$
+for which non-trivial semi-global blockchains cease to exist. We may also wish
+to formalize means of counting discrete forks, or otherwise making an indiscrete
+forking index, for applications wherein ``forking as a feature'' is desireable.
+Tools for analyzing and visualizing these forks, of course, would also be 
+required in such a wave of next steps.
 
 As outlined in Section~\ref{sec:first-order-attacks},
 making the protocol resilient to first-order attacks is an open problem.
@@ -23,14 +37,3 @@ to enter and stay in the network;
 for example,
 honest nodes could simply try to solve cryptographic challenges
 from nodes which have appeared ``recently'' in the blockchain.
-
-Another issue is that,
-in the analysis,
-we assume that the computational power of each node
-is roughly the same.
-This makes the network vulnerable to a smartphone user using,
-say,
-their personal computer to speed up the computation of hashes
-to control the network.
-A possible solution is to replace the highly parallizable hash function
-with non-parallelizable cryptographic challenges~\cite{Tritilanunt2007}.
