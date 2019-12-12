@@ -1,0 +1,47 @@
+\subsection{Visualizing the Interplay between Local and Semi-Global Chains}
+
+Due to the SPANchain module existing for less than a quarter of a year, it
+lacks a complete set of visualization tools for analyzing the
+behavior of semi-global blockchains over SPANs. Partly, this is due to
+our module being the first to accommodate forking as a feature rather than
+a bug; the only degree to which forking is well-understood in the literature
+is how one can best prevent it from happening. Though furthering our work
+will require rigorous measures of semi-global blockchain formation and
+diversity, we offer the following toy case as a proof of concept that the persistence of
+semi-global chains in the network (i.e. the degree to which a non-trivial
+global blockchain failes to exist) preserve information as to how the SPAN
+topology has changed over time.
+
+The top of Figure \ref{fig:old_town_road} shows a connected SPAN which maintains
+its initial state long enough for ten blocks to form and propagate. The SPAN
+then partitions into two connected components, remains in this state long enough for
+ten more blocks to form and propagate, and finally reverts to its original state.
+The simulation randomly grants and deterministically propagates ten more blocks before
+terminating.
+
+The bottom of Figure \ref{fig:old_town_road} shows the local blockchain held by a
+specific node in the described SPAN. The local chain recognizes all blocks indices
+zero through nine, as all problem formulations and blocks from all other nodes
+reached the node in question. However, this node does not recognize all of blocks ten
+through 19, as some of these were discovered by nodes in the other partition during the
+period of disconnection. By the time the two partitions joined back together, we see two
+branches in the local chain competing for status as global chain; one of these, which
+begins with the edge from node zero to node 21, represents the continuation of what had
+been the longest chain in the other partition. As half the nodes in the network recognize
+it as the longest chain, leaves on this chain become parent references for roughly half
+of the problem proposals created in the network. Though the branch which corresponds to
+the global chain in what had been the node's own partition continues to grow, it is
+actively competing with the continuation of the other partition's leading chain. This
+long-term coexistence of these two branches is strictly an artifact of the network's
+partition and reunification, and the lengths of the branches correspond to the duration
+of this separation.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\columnwidth]{horseshoe.pdf}
+	\includegraphics[width=\columnwidth]{horseshoe_0.pdf}
+	\caption{A proof-of-concept SPAN-distribted blockchain simulated in SPANchain.
+		The simulation is performed in the script \texttt{horseshoe\_partition.py},
+		visualization of the output is performed using \texttt{make\_figures.sh}.}
+	\label{fig:old_town_road}
+\end{figure}
