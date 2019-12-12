@@ -1,14 +1,6 @@
 \section{Adapting the Bitcoin Protocol}
 \label{sec:blockchain}
 
-Once a block is generated and published,
-it is never removed from the local blockchain of a node recognizing
-this block. The Bitcoin network ensures this feature with high
-probability by forcing a child block to reference a pre-existing parent
-block using a nonce $n$ which, together with a hashed parent ID $P$, satisfies
-the inequality $H(n,P)<\tau$ for globally define hash function $H$ and
-threshold value $\tau$~\cite{nakamoto2008bitcoin}.
-
 This section formalizes how the SPANchain module models the Bitcoin protocol
 for block creation and validation. This adaptation loses the notion of
 a transaction---the primitive stored by the blocks in Bitcoin---and convolves the notion
