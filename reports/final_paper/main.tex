@@ -26,15 +26,16 @@
 	Blockchains are an implementation of a public distributed ledger,
 	which allows for information to be agreed upon by several parties
 	without the need of a central authority.
-	This work adapts this distributed ledger
-	to implement local geographical authentication.
-	By forcing the global blockchain to fork,
-	each maximal chain is shared by only a few nodes in close geographical proximity,
-	so each geographical location is represented by a maximal chain.
-	Furthermore,
-	the distributed nature of the blockchain
-	makes this protocol decentralized,
-	thus preventing issues stemming from centralized authorities.
+	When transposing the concept of blockchains to smartphone ad-hoc networks (SPANs),
+	assumptions like relative stability of the underlying network are violated,
+	which inevitably forces the blockchain to fork.
+	In this context,
+	instead of avoiding the creation of forks,
+	we propose leveraging these long-term global forks
+	as a way to record information about geographical proximity of the undelying SPAN.
+	We present a simulation package for analyzing the forking behavior,
+	alongside with a protocol for performing local geographical authentication
+	based on this forking behavior.
 \end{abstract}
 
 \input{introduction}
