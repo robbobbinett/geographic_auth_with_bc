@@ -1,0 +1,172 @@
+\section{Blockchains over SPANs}
+\label{sec:motivation}
+
+Many smartphones today are equipped with wireless functionality specifically
+geared towards interacting with other smartphones in near geographic proximity.
+Assuming these connections faithfully represent one's geographic
+authentication\footnote{This is an important problem which we do not attempt to
+address in this paper. We are only concerned with whether a blockchain-like distributed
+ledger implemented over a SPAN can reliably encode information about the SPAN's evolution
+over time using nothing more than the topology of local copies of the blockchain.},
+it follows immediately that, if each smartphone is a node $u$ connected to node $v$ if and only
+if $u$ and $v$ are within interaction proximity---the set of neighbors of $u$ serves as
+a valid representation of $u$'s geographic location. Further, if two nodes $u,v$ claim to be
+in the same geographic location (given the location is sufficiently granular), it is expected
+that the set of neighbors they report would significantly overlap. For this reason,
+recording ``handshakes'' with peers in geographic proximity should serve as a valid
+representation of one's location over time.
+
+\subsection{Three Evolving Topologies: Implications of Blockchain over a SPAN}
+
+The Bitcoin protocol is heavily dependent on a few assumptions concerning
+the topology of the underlying network. While it relies on the fact that no
+node can have global knowledge of what nodes are in the network due to the
+ease with which nodes may enter and exit the network, it also assumes that the
+network is stable enough to offer such features as never partitioning and never
+being susceptible to man-in-the-middle attacks~\cite{nakamoto2008bitcoin}. This
+relative stability is what allows all nodes in the network to asymptotically
+agree on which blocks constitute the global blockchain. Further, this global
+blockchain naturally arises as the set-theoretic intersection of all local 
+chains in the network.
+
+Implementing a blockchain system over a SPAN, however, breaks all of the
+aforementioned assumptions. SPANs are highly volatile, and they can easily
+partition into disconnected components. This makes the idea of nodes
+globally converging to agreement on what is a global blockchain ridiculous, as
+the intersection of all local blockchains would cease to grow as soon as
+nodes disagree on which is the longest chain. It is guaranteed, however,
+that for all nodes $u$ in the SPAN $G$, there exists some neighborhood
+$U\subset G$ containing $u$ such that, if one takes the intersection
+$$\mathbf{B}_U=\bigcup_{u^\prime\in U}\mathcal{B}_{u^\prime}$$
+of all local blockchains $\mathcal{B}_{u^\prime}$ for all $u^\prime\in U$, 
+it holds that $\mathbf{B}_U$ grows nontrivially for all timesteps\footnote{To 
+	see that this is correct, it is sufficient to note that this trivially
+	holds for $U=\{u\}$.}.
+
+The degree to which all subsets $U\subset G$ satisfy this property is the
+degree to which a global blockchain is well defined, and the degree to which
+most subsets $U$ fail to do so can serve as a measure of the degree to which
+a global blockchain is poorly defined. For this reason, the authors present
+the idea of a \textit{semi-global blockchain}: the global blockchain with regards
+to a connected subnetwork $U$ of the network $G$, as arises
+as the set-theoretic intersection of all local chains $\mathcal{B}_u$ held by
+nodes $u\in U$.
+
+\begin{figure*}
+	\centering
+	\begin{tabular}{|p{2cm}||p{5cm}|p{1.5cm}|p{2.5cm}|p{3cm}|}
+		\hline
+		\ & \textbf{P2P Topology} & \textbf{Local Block-chain (per node)} & \textbf{Global Blockchain} & \textbf{Semi-Global Blockchain (per neighborhood)}\\
+		\hhline{|=||=|=|=|=|}
+		\textbf{Bitcoin P2P} 
+			& The Bitcoin protocol relies on the assumption that
+				no node in the underlying network can have
+				complete global knowledge of the state of the
+				network, especially given nodes can spontaneously enter or
+				exit the network. However, it is also assumed that
+				this network never becomes disconnected and never
+				becomes vulnerable to man-in-the-middle attacks.
+				In this way, it is safe to assume that all local
+				nodes can eventually agree on some global state
+				information.
+			& Very similar, up to slight differences in protocol
+			& The global blockchain is implicitly induced as the
+				set-theoretic intersection of all local blockchains.
+				It is guaranteed in probability that this intersection
+				chain is always growing; failure to grow would imply
+				that this global chain has forked.
+			& For any connected subnetwork $G^\prime$ of the network, the
+				global chain of the restriction to $G^\prime$ always
+				(asymptotically) agrees with the well-defined global
+				chain. \\
+		\hline
+		\textbf{SPAN P2P}
+			& SPANs are highly volatile. The frequent making and
+				breaking of connections causes the SPAN
+				to fragment into disconnected components. It is hopeless,
+				therefore, to assume that all the nodes will ever
+				agree on global state information that is not
+				granted \textit{a priori}.
+			& Very similar, up to slight differences in protocol
+			& Though the set-theoretic intersection of all local
+				blockchains is well-defined, this intersection is
+				likely to be noninteresting and stop growing after some
+				timestep due to forking.
+			& Let $G$ be the network. For each node $u\in G$, there exists
+				neighborhoods $U,u\in U\subset G$ such that the global
+				chain is well defined with respect to the restriction
+				to $U$. We can define \textit{semi-global blockchains}
+				as the intersection of local chains with respect to
+				such restrictions. \\
+		\hline
+	\end{tabular}
+	\caption{The Nakamoto paper assumes that the blockchain protocol is
+		implemented over a relatively stable P2P network. If we attempt to
+		implement a blockchain protocol over a SPAN, however, many of the
+		notions that naturally arise in the case of Bitcoin no longer appear.
+		The SPANchain simulator was written to allow for easy simulation of 
+		blockchains implemented over SPANs, together with graphic tools which
+		the authors hope helps the research community come up with ways
+		of studying semi-global blockchains in the case of a forking global chain.}
+	\label{tab:three_table}
+\end{figure*}
+
+Traditionally,
+blockchain networks strive mantain a single longest path
+starting from the root of the chain;
+that is,
+the goal is to avoid global forks.
+In the case of Bitcoin,
+for example,
+local, temporary forking still happens
+but one of those forks is usually quickly abandoned by the network~\cite{decker_2013}.
+In our case,
+since SPANs are often disconnected,
+the global blockchain will eventually fork.
+We actually embrace forking as a feature:
+each long-term fork represents a connected component of the underlying SPAN.
+
+\section{The SPANchain Simulator}
+\label{sec:SPANchain}
+
+We present a tool which allows for the simulation of the evolution of SPANs
+---represented as random geometric graphs---over time, and which, most saliently,
+allows for the simulation of a novel blockchain-like distributed ledger overlaid
+on this SPAN. While the authors are aware of 1) network simulation tools that
+accommodate dynamic network topologies~\cite{chaudhary2012study} and
+2) tools for simulating blockchain
+systems distributed over a network of nodes, we are unaware of any tool that
+allows for the simulation of a blockchain system implemented over arbitrary dynamic
+networks. Part of the reason for this is that SPANs, by nature, induce a network topology
+that fragments easily and from which nodes enter and exit with great frequency. For
+conventional blockchain systems, this inevitably leads to forking in the global
+chain---a property which, for cryptocurrency applications, is highly undesirable
+~\cite{decker_2013,nakamoto2008bitcoin}. Using our simulation tool, however, we show
+that the way global forks form in blockchain networks implemented over SPANs can encode
+geotemporal information about how the SPAN evolves over time.
+
+In order to observe the behavior of this network under several scenarios,
+we wrote a simulator package SPANchain%
+\footnote{
+	The code for the simulator is publicly available at
+	\url{https://github.com/robbobbinett/geographic_auth_with_bc}.
+}
+for the protocol.
+
+To the best of our knowledge,
+this is the first blockchain simulation framework which simulates
+blockchains implemented over SPANs, as well as the first
+to embrace forking as a feature rather than a bug.
+Therefore,
+there are no packages which are capable of simulating a forking blockchain.
+We also are not aware of any packages that implement blockchains over SPANs.
+
+Although we implemented the protocol described in sections
+\ref{sec:blockchain} in the simulator,
+the package is written to be agnostic to the protocol for block formation,
+as well as processes by which the underlying topology evolves\footnote{We have,
+	however, implemented a class of SPAN-nodes to specifically handle
+	the evolution of the SPAN with respect to a random geometric graph model.}.
+We hope that these packages can be used by other researchers
+to better understand how blockchains fork, and what information this forking
+encodes with respect to the history of the underlying topology.
