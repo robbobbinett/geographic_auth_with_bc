@@ -20,3 +20,4 @@ simulation/pickle_dir/*
 simulation/analysis/*
 compile_README_pdf.sh
 README.pdf
+*.tar.gz
