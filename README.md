@@ -5,9 +5,13 @@ This repository is a prototype for simulating blockchain protocols distributed o
 
 ## The Motivating Problem
 
-The problem of authenticating users based on geographical location has been considered for over 20 years [1]. The
-authors of [(1)] consider the problem of finding the location of an intruder; their approach easily generalizes to such
-applications as geographically restricted broadcasts<sup>2</sup>.
+Geographical authentication is the task of certify that
+someone is at a certain place;
+that is, the task of authenticating someone's geographical location.
+This problemhas been considered for over 20 years.
+Denning and MacDoran consider the problem of finding the location of anintruder;
+other applications include geographically restricted broadcasts,
+checkins at Foursquare, and withdrawing cash at an ATM.
 
 Beyond the scope of simple geographical authentication, however, are applications in which both geographical data
 and post facto temporal data are useful, such as proving someone was or was not present in a certain vicinity within
