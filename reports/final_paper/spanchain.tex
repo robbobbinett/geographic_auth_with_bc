@@ -1,7 +1,7 @@
 \section{The SPANchain Simulator}
 \label{sec:SPANchain}
 
-We present a tool which allows for the simulation of the evolution of SPANs
+We present a tool which allows for the simulation of the evolution of SPANs%
 ---represented as random geometric graphs---over time, and which, most saliently,
 allows for the simulation of a novel blockchain-like distributed ledger overlaid
 on this SPAN. While the authors are aware of 1) network simulation tools that
@@ -29,16 +29,19 @@ To the best of our knowledge,
 this is the first blockchain simulation framework which simulates
 blockchains implemented over SPANs, as well as the first
 to embrace forking as a feature rather than a bug.
-Therefore,
-there are no packages which are capable of simulating a forking blockchain.
 We also are not aware of any packages that implement blockchains over SPANs.
 
-Although we implemented the protocol described in sections
-\ref{sec:blockchain} in the simulator,
+Although we implemented the protocol
+described in section~\ref{sec:blockchain}
+in the simulator,
 the package is written to be agnostic to the protocol for block formation,
-as well as processes by which the underlying topology evolves\footnote{We have,
-	however, implemented a class of SPAN-nodes to specifically handle
-	the evolution of the SPAN with respect to a random geometric graph model.}.
+as well as processes by which the underlying topology evolves.%
+\footnote{
+	We have, however,
+	implemented a class of SPAN-nodes
+	to specifically handle the evolution of the SPAN
+	with respect to a random geometric graph model.
+}
 We hope that these packages can be used by other researchers
 to better understand how blockchains fork, and what information this forking
 encodes with respect to the history of the underlying topology.

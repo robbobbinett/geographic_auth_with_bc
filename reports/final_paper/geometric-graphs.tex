@@ -15,7 +15,7 @@ has no information about node positions,
 which makes it a poor representative of ad-hoc networks~\cite{Hekmat2006}.
 
 Instead,
-we will use random geometric graphs as our connectivity model.
+we used random geometric graphs as our connectivity model.
 Given parameters $n$ and $r$,
 the model randomly chooses $n$ points in the unit square $[0, 1]^2$,
 uniformly and independently,
@@ -37,16 +37,15 @@ For smaller values of $r$ this effect is less pronounced,
 because less nodes are affected.
 
 In order to avoid the border effect,
-we will use toroidal distances instead~\cite{Kenniche2010,Hekmat2006}.
-The nodes will be placed on the unit torus $[0, 1)^2$
+we used toroidal distances instead~\cite{Kenniche2010,Hekmat2006}.
+The nodes are placed on the unit torus $[0, 1)^2$
 and distances will be measured according to a toroidal metric.
 So,
 for example,
-for $r = 0.1$,
+for connectivity radius $r = 0.1$,
 the nodes at $(0.01, 0.01)$ and $(0.99, 0.99)$ are adjacent in this metric.
 
-We will denote
-the toroidal random geometric graph model with parameters $n$ and $r$
+We denote the toroidal random geometric graph model with parameters $n$ and $r$
 by $T(n, r)$.
 
 We want to model the underlying infrastructure to be dynamic,
@@ -55,7 +54,7 @@ That is,
 we will have a sequence $G_0, G_1, \dots$ of graphs over the same set of nodes,
 which represent the evolution of the network.
 
-Using the toroidal has the benefit that
+Using the toroidal model has the benefit that
 if the nodes move around randomly, but independently,
 then each resulting graph is still a geometric graph.
 More precisely,
@@ -76,12 +75,10 @@ regardless of the distribution of the translation vectors $u_v$
 (as long as each translation vector is chosen independently,
 and irrespective of the vector $v$).
 
-% TODO: Proof?
-
 However,
 there is nothing cohesive in the literature about using several different
 translation parameters at once.
-We will use a simplified version of the dynamic model of~\cite{Diaz2008}.
+We used a simplified version of the dynamic model of~\cite{Diaz2008}.
 Fixed a parameter $s$,
 $G_{i+1}$ is generated from $G_i$
 by translating each vertex by a vector with norm $s$,

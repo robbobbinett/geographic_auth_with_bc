@@ -41,7 +41,6 @@ is a valid block.
 This is the global root of the blockchain tree.
 
 We assume the existence of a cryptographically secure hash function $H$.
-Denote by $t_c k_C k_S b$ the concatenation of $t_c$, $k_C$, $k_S$ and $b$.
 A nonce $n$ is a \emph{solution} to the problem contained in a block $B$ as above
 if $H(B) < \tau$,
 where $\tau$ is a predefined threshold value known \emph{a priori} by the network.
@@ -50,8 +49,8 @@ where $\tau$ is a predefined threshold value known \emph{a priori} by the networ
 
 Nakamoto's original paper discusses regulating the rate of block formation in
 the global chain by
-periodically updating the threshold $\tau$ for which all blocks
-$B=(t_C, k_C, t_S, k_S, n, b)$ must satisfy $H(B)<\tau$~\cite{nakamoto2008bitcoin}.
+periodically updating the threshold $\tau$ for which all blocks $B$
+must satisfy $H(B)<\tau$~\cite{nakamoto2008bitcoin}.
 Decker \textit{et al.} subsequently show that the rate at which block collisions
 occur in the Bitcoin network can be modeled as a function of the rate of block
 creation. Putting these together, we surmise that our rates of block formation

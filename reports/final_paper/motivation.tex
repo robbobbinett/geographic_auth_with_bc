@@ -3,13 +3,15 @@
 
 Many smartphones today are equipped with wireless functionality specifically
 geared towards interacting with other smartphones in near geographic proximity.
-Assuming these connections faithfully represent one's geographic
-authentication\footnote{This is an important problem which we do not attempt to
-address in this paper. We are only concerned with whether a blockchain-like distributed
-ledger implemented over a SPAN can reliably encode information about the SPAN's evolution
-over time using nothing more than the topology of local copies of the blockchain.},
+Assuming these connections faithfully represent geographic proximity%
+\footnote{
+	Breaking this assumption is an important problem which we do not attempt to
+	address in this paper. We are only concerned with whether a blockchain-like distributed
+	ledger implemented over a SPAN can reliably encode information about the SPAN's evolution
+	over time using nothing more than the topology of local copies of the blockchain.
+},
 it follows immediately that, if each smartphone is a node $u$ connected to node $v$ if and only
-if $u$ and $v$ are within interaction proximity---the set of neighbors of $u$ serves as
+if $u$ and $v$ are within interaction distance---the set of neighbors of $u$ serves as
 a valid representation of $u$'s geographic location. Further, if two nodes $u,v$ claim to be
 in the same geographic location (given the location is sufficiently granular), it is expected
 that the set of neighbors they report would significantly overlap. For this reason,
@@ -37,11 +39,15 @@ the intersection of all local blockchains would cease to grow as soon as
 nodes disagree on which is the longest chain. It is guaranteed, however,
 that for all nodes $u$ in the SPAN $G$, there exists some neighborhood
 $U\subset G$ containing $u$ such that, if one takes the intersection
-$$\mathbf{B}_U=\bigcup_{u^\prime\in U}\mathcal{B}_{u^\prime}$$
-of all local blockchains $\mathcal{B}_{u^\prime}$ for all $u^\prime\in U$, 
-it holds that $\mathbf{B}_U$ grows nontrivially for all timesteps\footnote{To 
-	see that this is correct, it is sufficient to note that this trivially
-	holds for $U=\{u\}$.}.
+\begin{equation*}
+	\mathbf{B}_U = \bigcap_{v \in U}\mathcal{B}_v
+\end{equation*}
+of all local blockchains $\mathcal{B}_v$ for all $v \in U$,
+it holds that $\mathbf{B}_U$ grows nontrivially for all timesteps%
+\footnote{
+	To see that this is correct,
+	it is sufficient to note that this trivially holds for $U=\{u\}$.
+}.
 
 The degree to which all subsets $U\subset G$ satisfy this property is the
 degree to which a global blockchain is well defined, and the degree to which
@@ -49,8 +55,8 @@ most subsets $U$ fail to do so can serve as a measure of the degree to which
 a global blockchain is poorly defined. For this reason, the authors present
 the idea of a \textit{semi-global blockchain}: the global blockchain with regards
 to a connected subnetwork $U$ of the network $G$, as arises
-as the set-theoretic intersection of all local chains $\mathcal{B}_u$ held by
-nodes $u\in U$.
+as the set-theoretic intersection of all local chains $\mathcal{B}_v$ held by
+nodes $v \in U$.
 
 \begin{figure*}[t]
 	\centering
