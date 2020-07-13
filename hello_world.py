@@ -1,1 +1,1 @@
-print("Yeet Harambe")
+print("Harambe")
